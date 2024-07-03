@@ -1,5 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
+
+
+import React from 'react'
+import { Link } from 'react-router-dom'
+
 
 const AdminMenu = () => {
   return (
@@ -8,6 +11,7 @@ const AdminMenu = () => {
         <h2>Admin Menu</h2>
       </div>
       <div className="list-group">
+
         <Link to="/admin" className="list-group-item">
           Dashboard
         </Link>
@@ -32,6 +36,7 @@ const AdminMenu = () => {
         <Link tof="/admin/services" className="list-group-item">
           Services
         </Link>
+
       </div>
     </div>
   );
