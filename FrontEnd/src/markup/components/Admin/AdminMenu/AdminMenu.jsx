@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import "./adminMenu.css"
+
 const AdminMenu = () => {
   return (
     <div className="col-md-3 admin-left-side">
@@ -9,7 +9,7 @@ const AdminMenu = () => {
       </div>
       <div className="list-group">
         <Link  to="/admin" className="list-group-item">Dashboard</Link>
-        <Link to="/admin/orders" className="list-group-item">Orders</Link>
+        <Link to="/admin/all-orders" className="list-group-item">Orders</Link>
         <Link to="/admin/order" className="list-group-item">New order</Link>
         <Link to="/admin/add-employee" className="list-group-item">Add employee</Link>
         <Link  to="/admin/employees" className="list-group-item">Employees</Link>
