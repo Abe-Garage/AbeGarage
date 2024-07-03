@@ -11,7 +11,7 @@ const dbConfig = {
     connectionLimit: 10,
     // * add socket path for mac users
 };
-console.log(process.env.DB_USER);
+// console.log(process.env.DB_USER);
 //` create the connection pool
 
 const pool =  mysql.createPool(dbConfig);
