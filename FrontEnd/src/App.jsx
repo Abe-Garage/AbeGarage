@@ -1,15 +1,16 @@
-import React from 'react'
-
-
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Header from "./markup/components/Header/Header";
 
 function App() {
-
-
   return (
-    <>
-       <h1>Abe Garage</h1>
-    </>
-  )
+    <Router>
+      <Header />
+      <Routes>
+        
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
