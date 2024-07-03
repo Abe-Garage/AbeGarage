@@ -4,15 +4,10 @@ const mysql = require('mysql2/promise');
 
 // `  prepare the db parameters
 const dbConfig = {
-    // host: process.env.DB_HOST,
-    // user: process.env.DB_USER,
-    // password:  process.env.DB_PASSWORD,
-    // database: process.env.DB_NAME,
-    // connectionLimit: 10,
-    host: "localhost",
-    user: "testing_garage",
-    password:  "testing_garage",
-    database: "testing_garage",
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password:  process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     connectionLimit: 10,
     // * add socket path for mac users
 };
