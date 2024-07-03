@@ -13,6 +13,7 @@ import "./assets/template/css/color.css";
 
 // ` import custom css
 import "./assets/styles/custom.css"
+import Footer from "./markup/components/Footer/Footer";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <Routes>
         <Route path="/admin/all-orders" element={<AllOrdersPage />} />
       </Routes>
+      <Footer/>
     </>
   );
 
