@@ -3,11 +3,11 @@ import React from 'react'
 const TopBanner = () => {
   return (
     <section className="video-section">
-        <div
+        {/* <div
           data-parallax='{"y": 50}'
           className="sec-bg"
           style={{ backgroundImage: "url(assets/images/banner/banner1.jpg)" }}
-        ></div>
+        ></div> */}
         <div className="auto-container">
           <h5>Working since 1992</h5>
           <h2>
