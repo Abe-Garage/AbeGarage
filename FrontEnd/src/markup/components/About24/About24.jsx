@@ -1,5 +1,6 @@
 import React from "react";
-
+import vban1 from "../../../assets/images/misc/vban1.jpg";
+import vban2 from "../../../assets/images/misc/vban2.jpg";
 const About24 = () => {
   return (
     <section className="about-section">
@@ -7,11 +8,8 @@ const About24 = () => {
         <div className="row">
           <div className="col-lg-5">
             <div className="image-box">
-              <img src="../../assets/images/misc/vban1.jpg" alt="engine oil" />
-              <img
-                src="../../assets/images/misc/vban1.jpg"
-                alt="engine parts"
-              />
+              <img src={vban1} alt="engine oil" />
+              <img src={vban2} alt="engine parts" />
               <div className="year-experience" data-parallax='{"y": 30}'>
                 <strong>24</strong> years <br />
                 Experience{" "}

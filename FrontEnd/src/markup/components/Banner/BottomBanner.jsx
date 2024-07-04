@@ -1,5 +1,5 @@
-import React from 'react'
-import bg1 from '../../../assets/template/images/background/bg-1.jpg'
+import React from 'react';
+import bg1 from '../../../assets/template/images/background/bg-1.jpg';
 const BottomBanner = () => {
   return (
     <section className="video-section">
