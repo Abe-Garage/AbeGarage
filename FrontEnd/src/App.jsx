@@ -14,6 +14,7 @@ import "./assets/template/css/color.css";
 // ` import custom css
 import "./assets/styles/custom.css"
 import Footer from "./markup/components/Footer/Footer";
+import CreateOrderPage from "./markup/pages/Admin/Orders/CreateOrderPage";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         <Route path="/admin" element={<AdminDashBoard />} />
         <Route path="/admin/all-orders" element={<AllOrdersPage />} />
+        <Route path="/admin/create-order" element={<CreateOrderPage />} />
       </Routes>
       <Footer/>
     </>
