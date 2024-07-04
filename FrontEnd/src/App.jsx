@@ -5,8 +5,10 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./markup/components/Header/Header";
 import AllOrdersPage from "./markup/pages/Admin/Orders/AllOrdersPage";
 import Home from './markup/pages/Home/Home';
-import About from './markup/pages/Main/About/About'
+import About from './markup/pages/Main/About/About';
 import AdminDashBoard from "./markup/pages/Admin/AdminDashBoard/AdminDashBoard";
+import AddEmployee from "./markup/pages/Admin/Employee/AddEmployee";
+
 
 // ` Import css from the template 
 import "./assets/template/css/bootstrap.css";
@@ -33,6 +35,7 @@ function App() {
             <Route path="/aboutus" element={<About />} />
             <Route path="/admin" element={<AdminDashBoard />} />
             <Route path="/admin/all-orders" element={<AllOrdersPage />} />
+            <Route path="/admin/add-employee" element={<AddEmployee />} />
               
       </Routes>
       <Footer/>
