@@ -1,9 +1,9 @@
 import React from 'react'
-
+import bg1 from '../../../assets/template/images/background/bg-1.jpg'
 const BottomBanner = () => {
   return (
     <section className="video-section">
-      <div className="sec-bg" style={{ backgroundImage: 'url(assets/images/background/bg-1.jpg)' }} data-parallax={{ y: 50 }}></div>
+      <div className="sec-bg" style={{ backgroundImage: `url(${bg1})`}} data-parallax={{ y: 50 }}></div>
       <div className="auto-container">
         <h5>Working since 1992</h5>
         <h2>We are leader <br /> in Car Mechanical Work</h2>

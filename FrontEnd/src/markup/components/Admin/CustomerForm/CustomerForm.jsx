@@ -7,32 +7,35 @@ function AddCustomerForm() {
         <div className="contact-title">
           <h2>Add a new Customer</h2>
         </div>
-        <div className="row clearfix">
-          <div className="form-column col-lg-7">
-            <div className="inner-column">
-              <div className="contact-form">
-                <form>
-                  <div className="row clearfix">
-                    <div className="form-group col-md-12">
-                      <input
-                        type="email"
-                        name="employee_email"
-                        placeholder="Employee email"
+
+      <div className="row clearfix">
+        <div className="form-column col-lg-7">
+          <div className="inner-column">
+            <div className="contact-form">
+
+            <form>
+              <div className="row clearfix">
+                <div className="form-group col-md-12">
+                  <input
+                      type="email"
+                      name="Customer_email"
+                      placeholder="Customer email"
                       />
-                    </div>
-                    <div className="form-group col-md-12">
-                      <input
-                        type="text"
-                        name="employee_first_name"
-                        placeholder="Employee first name"
+                </div>
+
+                <div className="form-group col-md-12">
+                  <input
+                    type="text"
+                    name="Customer_first_name"
+                     placeholder="Customer first name"
                       />
-                    </div>
+                  </div>
 
                     <div className="form-group col-md-12">
                       <input
                         type="text"
-                        name="employee_last_name"
-                        placeholder="Employee last name"
+                        name="Customer_last_name"
+                        placeholder="Customer last name"
                         required
                       />
                     </div>
@@ -40,8 +43,8 @@ function AddCustomerForm() {
                     <div className="form-group col-md-12">
                       <input
                         type="text"
-                        name="employee_phone"
-                        placeholder="Employee phone (555-555-5555)"
+                        name="Customer_phone"
+                        placeholder="Customer phone (555-555-5555)"
                         required
                       />
                     </div>

@@ -1,11 +1,11 @@
 import React from "react";
-import About24 from "./About24";
-import ServicesSec from "./ServicesSec";
-import FeaturesSec from "./FeaturesSec";
-import WhyChooseUs from "./WhyChooseUs";
-import CtaSec from "./CtaSec";
-import BottomBanner from "./BottomBanner";
-import TopBanner from "./TopBanner";
+import About24 from "../../components/About24/About24";
+import ServicesSec from "../../components/ServiceSec/ServicesSec";
+import FeaturesSec from "../../components/FuaturesSec/FeaturesSec";
+import WhyChooseUs from "../../components/WyChoosUS/WhyChooseUs";
+import CtaSec from "../../components/CtaSec/CtaSec";
+import BottomBanner from "../../components/Banner/BottomBanner";
+import TopBannerHome from "../../components/Banner/TopBannerHome";
 
 const Home = () => {
   return (
@@ -26,7 +26,7 @@ const Home = () => {
         </div>
       </div>
       {/* Video Section */}
-      <TopBanner />
+      <TopBannerHome />
       {/* About Us Section */}
       <About24 />
       {/* Services Section */}
