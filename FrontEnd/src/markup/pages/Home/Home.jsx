@@ -11,7 +11,7 @@ const Home = () => {
   return (
     <div className="page-wrapper">
       {/* Preloader */}
-      <div className="loader-wrap">
+      {/* <div className="loader-wrap">
         <div className="preloader">
           <div className="preloader-close">Preloader Close</div>
         </div>
@@ -24,7 +24,7 @@ const Home = () => {
         <div className="layer layer-three">
           <span className="overlay"></span>
         </div>
-      </div>
+      </div> */}
       {/* Video Section */}
       <TopBannerHome />
       {/* About Us Section */}

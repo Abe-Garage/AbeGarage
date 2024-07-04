@@ -13,6 +13,7 @@ import "./assets/template/css/bootstrap.css";
 import "./assets/template/css/style.css";
 import "./assets/template/css/responsive.css";
 import "./assets/template/css/color.css";
+import "./assets/template/css/flaticon.css"
 
 
 
@@ -27,7 +28,6 @@ function App() {
     <>
       <Header />
       <Routes>
-
             <Route path="/" element={<Home />} />
             <Route path="/admin/all-orders" element={<AllOrdersPage />} />
             <Route path="/aboutus" element={<About />} />
