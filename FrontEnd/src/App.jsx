@@ -22,6 +22,7 @@ import "./assets/styles/custom.css"
 import Footer from "./markup/components/Footer/Footer";
 import CreateOrderPage from "./markup/pages/Admin/Orders/CreateOrderPage";
 import Login from "./markup/pages/Main/Login/Login";
+import Contact from "./markup/pages/Admin/ContactUs/Contact";
 
 
 function App() {
@@ -29,15 +30,16 @@ function App() {
     <>
       <Header />
       <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/admin/all-orders" element={<AllOrdersPage />} />
-            <Route path="/aboutus" element={<About />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/admin" element={<AdminDashBoard />} />
-            <Route path="/admin/all-orders" element={<AllOrdersPage />} />
-              
+        <Route path="/" element={<Home />} />
+        <Route path="/admin/all-orders" element={<AllOrdersPage />} />
+        <Route path="/aboutus" element={<About />} />
+
+<Route path="/contactus" element={<Contact />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/admin" element={<AdminDashBoard />} />
+        <Route path="/admin/all-orders" element={<AllOrdersPage />} />
       </Routes>
-      <Footer/>
+      <Footer />
     </>
   );
 
