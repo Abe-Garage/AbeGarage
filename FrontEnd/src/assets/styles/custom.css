@@ -1,3 +1,8 @@
+
+/* General/Home */
+a {
+  text-decoration: none !important;
+}
 /* Admin Menu */
 .admin-left-side {
     background-color:#222b48;
