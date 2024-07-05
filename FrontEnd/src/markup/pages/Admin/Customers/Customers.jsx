@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import AdminMenu from "../../components/AdminMenu/AdminMenu";
-import AddCustomerForm from "../../components/AddCustomerForm/AddCustomerForm";
+import AdminMenu from "../../../components/Admin/AdminMenu/AdminMenu";
+import AddCustomerForm from "../../../components/Admin/CustomerForm/CustomerForm";
 import classes from "./customers.module.css";
-import { Link } from "react-router-dom"; // Assuming you use react-router-dom
+import { Link } from "react-router-dom"; 
 
 function Customers() {
   const [customers, setCustomers] = useState([
