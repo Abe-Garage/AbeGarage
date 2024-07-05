@@ -21,6 +21,7 @@ import "./assets/template/css/flaticon.css"
 import "./assets/styles/custom.css"
 import Footer from "./markup/components/Footer/Footer";
 import CreateOrderPage from "./markup/pages/Admin/Orders/CreateOrderPage";
+import Login from "./markup/pages/Main/Login/Login";
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/admin/all-orders" element={<AllOrdersPage />} />
             <Route path="/aboutus" element={<About />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/admin" element={<AdminDashBoard />} />
             <Route path="/admin/all-orders" element={<AllOrdersPage />} />
               
