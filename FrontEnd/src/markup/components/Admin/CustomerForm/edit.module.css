@@ -1,0 +1,65 @@
+.contactSection {
+  text-align: center;
+  padding: 20px;
+}
+
+.contactTitle {
+  margin-bottom: 20px;
+}
+
+.contactTitle h2 {
+  margin-bottom: 10px;
+}
+
+.contactDetails {
+  margin-bottom: 20px;
+}
+
+.contactName {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.contactEmail {
+  font-size: 1.2em;
+  color: #555;
+}
+
+.contactForm {
+  display: inline-block;
+  text-align: left;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.formInput,
+.formCheckbox {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.formCheckboxLabel {
+  margin-bottom: 5px;
+}
+
+.themeBtn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.themeBtn:hover {
+  background-color: #0056b3;
+}
+
+.themeBtn span {
+  display: block;
+}
