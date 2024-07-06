@@ -11,7 +11,7 @@ const dbConfig = {
     connectionLimit: 10,
 
     // * add socket path for mac users
-    socketPath: '/Applications/MAMP/tmp/mysql/mysql.sock'
+    // socketPath: '/Applications/MAMP/tmp/mysql/mysql.sock'
 };
 // console.log(process.env.DB_USER);
 //` create the connection pool
