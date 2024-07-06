@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import classes from "./edit.module.css";
 
-function EditCustomer({ customer, onSave }) {
+function EditCustomerForm({ customer, onSave }) {
   const [formData, setFormData] = useState({
     email: "",
     first_name: "",
@@ -127,4 +127,4 @@ function EditCustomer({ customer, onSave }) {
   );
 }
 
-export default EditCustomer;
+export default EditCustomerForm;

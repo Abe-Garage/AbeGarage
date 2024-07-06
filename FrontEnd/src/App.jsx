@@ -7,11 +7,8 @@ import AllOrdersPage from "./markup/pages/Admin/Orders/AllOrdersPage";
 import Home from "./markup/pages/Home/Home";
 import About from "./markup/pages/Main/About/About";
 import AdminDashBoard from "./markup/pages/Admin/AdminDashBoard/AdminDashBoard";
-
-import AddEmployeeForm from "./markup/components/Admin/AddEmployeeForm/AddEmployeeForm";
-
 import AddCustomerForm from "./markup/components/Admin/CustomerForm/CustomerForm";
-import EditCustomer from "./markup/components/Admin/CustomerForm/EditCustomer";
+// import EditCustomer from "./markup/components/Admin/CustomerForm/EditCustomer";
 import CreateOrder from "./markup/components/Admin/Order/CreateOrder";
 
 
@@ -34,6 +31,8 @@ import CtaSec from "./markup/components/CtaSec/CtaSec";
 import EditEmployee from "./markup/pages/Admin/Employee/EditEmployee";
 import Employees from "./markup/pages/Admin/Employee/Employees";
 import AddEmployee from "./markup/pages/Admin/Employee/AddEmployee";
+import CustomerForm from "./markup/pages/Admin/Customers/CustomerForm";
+import EditCustomer from "./markup/pages/Admin/Customers/EditCustomer";
 
 
 function App() {
@@ -44,7 +43,7 @@ function App() {
 
 
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/aboutus" element={<About />} />
         <Route path="/services" element={<Services />} />
         <Route path="/contact" element={<CtaSec />} />
         <Route path="/login" element={<Login />} />
@@ -60,6 +59,7 @@ function App() {
         <Route path="/admin" element={<AdminDashBoard />} />
         <Route path="/admin/orders" element={<AllOrdersPage />} />
         <Route path="/admin/order" element={<NewOrder />} />
+        <Route path="/admin/create-order" element={<CreateOrder />} />
         {/* <Route path="admin/order/{orderHash}/edit" element={EditOrder} /> */}//* ALALEKEM(MALEK YALEBET)
 
 
@@ -73,13 +73,13 @@ function App() {
 
         //* routes related to customers
         <Route path="/admin/customers/:id" element={<Vehicle />} />
-        <Route path="/admin/add-customer" element={<AddCustomerForm />} />
-        <Route path="/admin/edit-customer/:id" element={<EditCustomer />} />
+        <Route path="/admin/add-customer" element={<CustomerForm />} />//* should be with AdminMenu
+        <Route path="/admin/edit-customer/:id" element={<EditCustomer />} />//* should be with AdminMenu
         {/* <Route path="admin/customers" element={Customers} /> */}//TODO
         
         {/* <Route path="admin/add-customer" element={Addvehicle} /> //* conditionally render */}
 
-        <Route path="/admin/create-order" element={<CreateOrder />} />
+        
 
 
 
@@ -91,7 +91,7 @@ function App() {
        
        
         
-      </Routes>
+  
       <Footer />
 
     </>
