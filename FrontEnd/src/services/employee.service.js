@@ -1,4 +1,6 @@
-import axios from "../axiosConfig";
+
+import axios from "../utils/axiosConfig";
+
 
 // A function to send post request to create a new employee
 async function createEmployee(formData, loggedInEmployeeToken) {
