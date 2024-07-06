@@ -23,6 +23,10 @@ import Login from "./markup/pages/Main/Login/Login";
 import Services from "./markup/pages/Main/Services/Services";
 import NewOrder from "./markup/pages/Admin/Orders/NewOrder";
 import Vehicle from "./markup/pages/Admin/Vehicle/Vehicle";
+import CtaSec from "./markup/components/CtaSec/CtaSec";
+import EditEmployee from "./markup/pages/Admin/Employee/EditEmployee";
+import Employees from "./markup/pages/Admin/Employee/Employees";
+import AddEmployee from "./markup/pages/Admin/Employee/AddEmployee";
 
 
 function App() {
@@ -30,17 +34,47 @@ function App() {
     <>
       <Header />
       <Routes>
+
         <Route path="/" element={<Home />} />
-        <Route path="/aboutus" element={<About />} />
+        <Route path="/about" element={<About />} />
         <Route path="/services" element={<Services />} />
+        <Route path="/contact" element={<CtaSec />} />
         <Route path="/login" element={<Login />} />
+        {/* <Route path="order/{orderHash}" element={OrdersDetail} /> */}//TODO:-ALALEKEM(MALEK YALEBET)
+
+
+       //* routes related to employee
+        <Route path="admin/employees" element={<Employees/>} />
+        <Route path="admin/add-employee" element={<AddEmployee />} />
+        <Route path="admin/employee/edit/:id" element={<EditEmployee />} />
+
+        //* routes related to orders
         <Route path="/admin" element={<AdminDashBoard />} />
-        <Route path="/admin/all-orders" element={<AllOrdersPage />} />
-        <Route path="/admin/new-order" element={<NewOrder />} />
-        <Route path="/admin/customer" element={<Vehicle />} />
+        <Route path="/admin/orders" element={<AllOrdersPage />} />
+        <Route path="/admin/order" element={<NewOrder />} />
+        {/* <Route path="admin/order/{orderHash}/edit" element={EditOrder} /> */}//* ALALEKEM(MALEK YALEBET)
+
+
+
+
+        //? MALEK YALEBET
+        {/* <Route path="/admin/services" element={Services} />
+        <Route path="/admin/add-service" element={AddServices} /> */}
+
+
+
+        //TODO:- routes related to customers
+        <Route path="/admin/customers/:id" element={<Vehicle />} />
+        {/* <Route path="admin/customers" element={Customers} />
+        <Route path="admin/add-customer" element={AddCustomer} />
+        <Route path="admin/customer/edit/:id" element={EditCustomer} /> */}
+        {/* <Route path="admin/add-customer" element={Addvehicle} /> //* conditionally render */}
+
 
       </Routes>
       <Footer />
+
+
     </>
   );
 }

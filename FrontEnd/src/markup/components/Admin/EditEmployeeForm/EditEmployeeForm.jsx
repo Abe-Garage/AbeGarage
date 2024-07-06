@@ -1,9 +1,9 @@
 
 import React, { useRef, useState, useEffect } from "react";
-import { BeatLoader } from "react-spinners";
+// import { BeatLoader } from "react-spinners";
 
 // import employee service
-import employeeService from "../../../../services/employee.services";
+// import employeeService from "../../../../services/employee.services";
 
 // import the useAuth hook
 import { useAuth } from "../../../../Context/AuthContext";
@@ -11,7 +11,7 @@ import { useAuth } from "../../../../Context/AuthContext";
 // import react router dom
 import { useParams, useNavigate } from "react-router-dom";
 
-function EditEmployee() {
+function EditEmployeeForm() {
   const navigate = useNavigate();
   const [employee_first_name, setFirstName] = useState("");
   const [employee_last_name, setLastName] = useState("");
@@ -67,38 +67,38 @@ function EditEmployee() {
   }
 
   // fetch employee data using useEffect
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await employeeService?.singleEmployee(
-          employee_hash,
-          loggedInEmployeeToken
-        );
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const data = await employeeService?.singleEmployee(
+  //         employee_hash,
+  //         loggedInEmployeeToken
+  //       );
 
-        if (data?.status !== 200) {
-          // set apiError to true
-          setApiError(true);
+  //       if (data?.status !== 200) {
+  //         // set apiError to true
+  //         setApiError(true);
 
-          if (data?.status === 403) {
-            setApiErrorMessage("Please login again");
-          } else if (data?.status === 401) {
-            setApiErrorMessage("You are not Authorized to view this page");
-          } else {
-            setApiErrorMessage("Please try again laterrrr");
-          }
-        }
-        setFirstName(data.data.singleEmployee[0].employee_first_name);
-        setLastName(data.data.singleEmployee[0].employee_last_name);
-        setPhoneNumber(data.data.singleEmployee[0].employee_phone);
-        setCompany_role_id(data.data.singleEmployee[0].company_role_id);
-        setEmployee1(data.data.singleEmployee[0]);
-        checkboxDOM.current.checked =
-          data.data.singleEmployee[0].active_employee;
-        setActiveEmployee(checkboxDOM.current.checked);
-      } catch (error) {}
-    };
-    fetchData();
-  }, []);
+  //         if (data?.status === 403) {
+  //           setApiErrorMessage("Please login again");
+  //         } else if (data?.status === 401) {
+  //           setApiErrorMessage("You are not Authorized to view this page");
+  //         } else {
+  //           setApiErrorMessage("Please try again laterrrr");
+  //         }
+  //       }
+  //       setFirstName(data.data.singleEmployee[0].employee_first_name);
+  //       setLastName(data.data.singleEmployee[0].employee_last_name);
+  //       setPhoneNumber(data.data.singleEmployee[0].employee_phone);
+  //       setCompany_role_id(data.data.singleEmployee[0].company_role_id);
+  //       setEmployee1(data.data.singleEmployee[0]);
+  //       checkboxDOM.current.checked =
+  //         data.data.singleEmployee[0].active_employee;
+  //       setActiveEmployee(checkboxDOM.current.checked);
+  //     } catch (error) {}
+  //   };
+  //   fetchData();
+  // }, []);
 
   async function handleSubmit(e) {
     // prevent the default behavior of the form submission
@@ -243,13 +243,13 @@ function EditEmployee() {
                           type="submit"
                           data-loading-text="Please wait..."
                         >
-                          <span>
+                          {/* <span>
                             {spin ? (
                               <BeatLoader color="white" size={8} />
                             ) : (
                               "Update Employee"
                             )}
-                          </span>
+                          </span> */}
                         </button>
                         {serverMsg && (
                           <div
@@ -280,4 +280,4 @@ function EditEmployee() {
   );
 }
 
-export default EditEmployee;
+export default EditEmployeeForm;
