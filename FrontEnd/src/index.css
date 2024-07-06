@@ -1,0 +1,52 @@
+
+.bgc{
+    background-color: #fff;
+    padding: 40px;
+    box-shadow: 8px 12px 12px rgba(158, 158, 158, 0.12);
+  }
+  
+  .pad{
+    padding: 20px 0 20px !important;
+    position: relative;
+  }
+  
+  .close-btn{
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    top: -55px;
+    right: -40px;
+  }
+  
+  .mrg{
+    margin: 0 !important;
+  }
+  
+  .mrg-1{
+    margin-bottom: 50px;
+  }
+  
+  .search input{
+    border: none !important;
+    box-shadow: 8px 12px 12px rgba(158, 158, 158, 0.12);
+  
+  }
+    
+  .customer-vehicle h2{
+    font-size: 40px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    line-height: 1.4em;
+    color: #001659 !important;
+  }
+  
+  .v_title{
+    line-height: 1.4em;
+    color: #001659 !important;
+    font-weight: 550;
+  }
+  
+  .v_info p{
+    line-height: 25px;
+    margin-bottom: 0;
+  }
