@@ -7,6 +7,7 @@ import AllOrdersPage from "./markup/pages/Admin/Orders/AllOrdersPage";
 import Home from "./markup/pages/Home/Home";
 import About from "./markup/pages/Main/About/About";
 import AdminDashBoard from "./markup/pages/Admin/AdminDashBoard/AdminDashBoard";
+import AddEmployeeForm from "./markup/components/Admin/AddEmployeeForm/AddEmployeeForm";
 
 // ` Import css from the template
 import "./assets/template/css/bootstrap.css";
@@ -69,6 +70,7 @@ function App() {
         <Route path="admin/add-customer" element={AddCustomer} />
         <Route path="admin/customer/edit/:id" element={EditCustomer} /> */}
         {/* <Route path="admin/add-customer" element={Addvehicle} /> //* conditionally render */}
+
 
 
       </Routes>
