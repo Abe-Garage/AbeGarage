@@ -7,7 +7,13 @@ import AllOrdersPage from "./markup/pages/Admin/Orders/AllOrdersPage";
 import Home from "./markup/pages/Home/Home";
 import About from "./markup/pages/Main/About/About";
 import AdminDashBoard from "./markup/pages/Admin/AdminDashBoard/AdminDashBoard";
+
 import AddEmployeeForm from "./markup/components/Admin/AddEmployeeForm/AddEmployeeForm";
+
+import AddCustomerForm from "./markup/components/Admin/CustomerForm/CustomerForm";
+import EditCustomer from "./markup/components/Admin/CustomerForm/EditCustomer";
+import CreateOrder from "./markup/components/Admin/Order/CreateOrder";
+
 
 // ` Import css from the template
 import "./assets/template/css/bootstrap.css";
@@ -35,6 +41,7 @@ function App() {
     <>
       <Header />
       <Routes>
+
 
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -64,18 +71,28 @@ function App() {
 
 
 
-        //TODO:- routes related to customers
+        //* routes related to customers
         <Route path="/admin/customers/:id" element={<Vehicle />} />
-        {/* <Route path="admin/customers" element={Customers} />
-        <Route path="admin/add-customer" element={AddCustomer} />
-        <Route path="admin/customer/edit/:id" element={EditCustomer} /> */}
+        <Route path="/admin/add-customer" element={<AddCustomerForm />} />
+        <Route path="/admin/edit-customer/:id" element={<EditCustomer />} />
+        {/* <Route path="admin/customers" element={Customers} /> */}//TODO
+        
         {/* <Route path="admin/add-customer" element={Addvehicle} /> //* conditionally render */}
+
+        <Route path="/admin/create-order" element={<CreateOrder />} />
 
 
 
       </Routes>
       <Footer />
 
+
+
+       
+       
+        
+      </Routes>
+      <Footer />
 
     </>
   );

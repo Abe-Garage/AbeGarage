@@ -70,7 +70,9 @@ async function getAllServices(req, res, next) {
 
 
 module.exports = {
+
   createService,
   updateService,
   getAllServices
+
 };
