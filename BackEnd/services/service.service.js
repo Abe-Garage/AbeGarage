@@ -22,7 +22,7 @@ async function createService(common_services) {
   }
 }
 
-
+// update service 
 async function updateService(service_id, service_name, service_description) {
   try {
     const result = await connection.query(
@@ -35,6 +35,21 @@ async function updateService(service_id, service_name, service_description) {
     throw new Error("Error updating service: " + error.message);
   }
 }
+
+// delete service
+async function deleteService(service_id) {
+  try {
+    const result = await connection.query(
+      "DELETE FROM common_services WHERE service_id = ?",
+      [ service_id]
+    );
+
+    return result;
+  } catch (error) {
+    throw new Error("Error Deleting service: " + error.message);
+  }
+}
+
 
 // Function to get all services
 
@@ -55,5 +70,6 @@ async function getAllServices() {
 module.exports = {
   createService,
   updateService,
+  deleteService,
   getAllServices,
 };
