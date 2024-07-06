@@ -51,9 +51,26 @@ async function updateService(req, res) {
     }
 }
 
+// Create the getAllServices controller
+async function getAllServices(req, res, next) {
+  // Call the getAllServices method from the service service
+  const services = await serviceService.getAllServices();
+  if (!services) {
+    res.status(400).json({
+      error: "Failed to get all services!"
+    });
+  } else {
+    res.status(200).json({
+      status: "success",
+      data: services,
+    });
+  }
+}
+
 
 
 module.exports = {
   createService,
-  updateService
+  updateService,
+  getAllServices
 };
