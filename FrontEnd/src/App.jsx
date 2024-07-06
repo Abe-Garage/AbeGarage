@@ -7,6 +7,7 @@ import AllOrdersPage from "./markup/pages/Admin/Orders/AllOrdersPage";
 import Home from "./markup/pages/Home/Home";
 import About from "./markup/pages/Main/About/About";
 import AdminDashBoard from "./markup/pages/Admin/AdminDashBoard/AdminDashBoard";
+import AddEmployeeForm from "./markup/components/Admin/AddEmployeeForm/AddEmployeeForm";
 
 // ` Import css from the template
 import "./assets/template/css/bootstrap.css";
@@ -38,6 +39,7 @@ function App() {
         <Route path="/admin/all-orders" element={<AllOrdersPage />} />
         <Route path="/admin/new-order" element={<NewOrder />} />
         <Route path="/admin/customer" element={<Vehicle />} />
+        <Route path="/admin/add-employee" element={<AddEmployeeForm />} />
 
       </Routes>
       <Footer />
