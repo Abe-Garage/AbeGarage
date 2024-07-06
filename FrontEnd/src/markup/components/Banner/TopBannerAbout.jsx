@@ -1,12 +1,9 @@
-import React from 'react'
-import b3 from "../../../assets/template/images/background/bg-3.jpg"
+import React from "react";
+import b3 from "../../../assets/template/images/background/bg-3.jpg";
 function TopBannerAbout() {
   return (
     <div>
-      <section
-        className="page-title"
-        style={{ backgroundImage: `url(${b3})`}}
-      >
+      <section className="page-title" style={{ backgroundImage: `url(${b3})` }}>
         <div className="auto-container">
           <h2>About us</h2>
           <ul className="page-breadcrumb">
