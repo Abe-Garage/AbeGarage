@@ -22,6 +22,7 @@ import CreateOrderPage from "./markup/pages/Admin/Orders/CreateOrderPage";
 import Login from "./markup/pages/Main/Login/Login";
 import Services from "./markup/pages/Main/Services/Services";
 import NewOrder from "./markup/pages/Admin/Orders/NewOrder";
+import Vehicle from "./markup/pages/Admin/Vehicle/Vehicle";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
         <Route path="/admin" element={<AdminDashBoard />} />
         <Route path="/admin/all-orders" element={<AllOrdersPage />} />
         <Route path="/admin/new-order" element={<NewOrder />} />
+        <Route path="/admin/customer" element={<Vehicle />} />
 
       </Routes>
       <Footer />

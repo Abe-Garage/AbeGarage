@@ -10,15 +10,15 @@ function EditCustomer({ customer, onSave }) {
     active: false,
   });
 
-  useEffect(() => {
-    setFormData({
-      email: customer.email || "",
-      first_name: customer.first_name || "",
-      last_name: customer.last_name || "",
-      phone: customer.phone || "",
-      active: customer.active || false,
-    });
-  }, [customer]);
+  // useEffect(() => {
+  //   setFormData({
+  //     email: customer.email || "",
+  //     first_name: customer.first_name || "",
+  //     last_name: customer.last_name || "",
+  //     phone: customer.phone || "",
+  //     active: customer.active || false,
+  //   });
+  // }, [customer]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
