@@ -21,19 +21,22 @@ import Footer from "./markup/components/Footer/Footer";
 import CreateOrderPage from "./markup/pages/Admin/Orders/CreateOrderPage";
 import Login from "./markup/pages/Main/Login/Login";
 import Services from "./markup/pages/Main/Services/Services";
+import NewOrder from "./markup/pages/Admin/Orders/NewOrder";
+
 
 function App() {
   return (
     <>
       <Header />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/admin/all-orders" element={<AllOrdersPage />} />
+        <Route path="/" element={<Home />} 
         <Route path="/aboutus" element={<About />} />
         <Route path="/services" element={<Services />} />
         <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<AdminDashBoard />} />
         <Route path="/admin/all-orders" element={<AllOrdersPage />} />
+        <Route path="/admin/new-order" element={<NewOrder />} />
+
       </Routes>
       <Footer />
     </>
