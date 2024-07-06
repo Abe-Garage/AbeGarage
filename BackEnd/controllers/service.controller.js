@@ -24,5 +24,6 @@ async function createService(req, res, next) {
 }
 
 module.exports = {
-  createService,
+  createService
+
 };

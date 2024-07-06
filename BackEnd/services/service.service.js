@@ -22,6 +22,18 @@ async function createService(common_services) {
   }
 }
 
+// get all services
+async function getAllServices() {
+  try {
+    const sql = `SELECT * FROM common_services`;
+    const result = await connection.query(sql);
+    return result;
+  } catch (error) {
+    console.error("Error getting services:", error);
+    throw new Error("Could not get services. Please try again later.");
+  }
+}
+
 // Export the function
 module.exports = {
   createService,

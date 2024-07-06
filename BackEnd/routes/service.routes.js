@@ -3,6 +3,8 @@ const router = express.Router();
 const serviceController = require("../controllers/service.controller");
 
 // POST request to add a service
-router.post("/api/service", serviceController.createService);
+router.post("/api/add-service", serviceController.createService);
+
+
 
 module.exports = router;
