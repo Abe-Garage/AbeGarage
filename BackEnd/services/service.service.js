@@ -22,7 +22,23 @@ async function createService(common_services) {
   }
 }
 
+
+async function updateService(service_id, service_name, service_description) {
+
+    try {
+        const result = await connection.query(
+            "UPDATE common_services SET service_name = ?, service_description = ? WHERE service_id = ?",
+            [service_name, service_description, service_id]
+        );
+       
+        return result;
+    } catch (error) {
+        throw new Error("Error updating service: " + error.message);
+    }
+}
+
 // Export the function
 module.exports = {
   createService,
+  updateService
 };
