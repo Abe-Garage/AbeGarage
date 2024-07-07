@@ -1,0 +1,138 @@
+const { response } = require("express");
+const connection = require("../config/db.config");
+
+
+async function singleVehicle(ID){
+    try {
+
+
+        const singleVehicleQuery = `SELECT customer_identifier.*, customer_info.* FROM customer_identifier INNER JOIN customer_info 
+                                     ON customer_identifier.customer_id = customer_info.customer_info_id
+                                     INNER JOIN  customer_vehicle_info 
+                                     ON customer_identifier.customer_id = customer_vehicle_info.customer_id
+                                     WHERE customer_vehicle_info.vehicle_id = ?`
+
+        const result = await connection.query(singleVehicleQuery, [ID])
+        // console.log(result.rows[0])
+
+        return result.rows[0];
+        
+    } catch (error) {
+        console.error("Error getting Vehicle:", error);
+        throw new Error("Could not get vehicle. Please try again later.");
+    }
+}
+
+async function addVehicle(vehicleData){
+
+    const {customer_id,vehicle_year,vehicle_make,vehicle_model,vehicle_type ,vehicle_mileage,vehicle_tag, vehicle_serial ,vehicle_color} = vehicleData
+
+    let response={}
+
+    if(!customer_id ||!vehicle_year || !vehicle_make || !vehicle_model || !vehicle_type || !vehicle_mileage || !vehicle_tag || !vehicle_serial || !vehicle_color){
+        return response;
+    }
+
+    try {
+        
+        const vehicleAddQuery = `INSERT INTO customer_vehicle_info(customer_id,vehicle_year,vehicle_make,vehicle_model,vehicle_type ,vehicle_mileage,vehicle_tag, vehicle_serial ,vehicle_color) VALUES(?,?,?,?,?,?,?,?,?)`
+
+        const result = await connection.query(vehicleAddQuery,[customer_id,vehicle_year,vehicle_make,vehicle_model,vehicle_type ,vehicle_mileage,vehicle_tag, vehicle_serial ,vehicle_color])
+
+        console.log(result.rows.affectedRows, result.rows.insertId)
+
+        if(result.rows.affectedRows !==0 ){
+            response ={
+                status:result.rows.affectedRows
+            }
+        }else{
+            response={
+
+            }
+        }
+
+
+    } catch (error) {
+        console.log(error)
+        return 'Internal Server Error ' + error ;
+    }
+console.log(response)
+    return response
+
+}
+
+async function updateVehicleInfo(updateVehicleData){
+    const {vehicle_id,vehicle_year,vehicle_make,vehicle_model,vehicle_type ,vehicle_mileage,vehicle_tag, vehicle_serial ,vehicle_color} = updateVehicleData;
+
+    let response={}
+
+    if(!vehicle_id ||!vehicle_year || !vehicle_make || !vehicle_model || !vehicle_type || !vehicle_mileage || !vehicle_tag || !vehicle_serial || !vehicle_color){
+        return response;
+    }
+
+    try {
+
+        const updateVehicleQuery = `UPDATE customer_vehicle_info   SET  vehicle_year = ?,vehicle_make = ? ,vehicle_model = ?,vehicle_type = ?  ,vehicle_mileage = ? ,vehicle_tag = ? , vehicle_serial = ?  ,vehicle_color = ?  WHERE vehicle_id = ? `
+
+        const result = await connection.query(updateVehicleQuery,[vehicle_year,vehicle_make,vehicle_model,vehicle_type ,vehicle_mileage,vehicle_tag, vehicle_serial ,vehicle_color,vehicle_id])
+        console.log('here w g')
+        
+        if(result.rows.affectedRows !==0){
+            response ={
+                status:result.rows.affectedRows
+            }
+        }else{
+            response={
+                
+            }
+        }
+        
+    } catch (error) {
+        console.log(error)
+        return 'Internal Server Error ' + error ;
+    }
+
+    return response;
+
+}
+
+
+async function vehiclePerCustomer(ID){
+
+
+    try {
+        console.log("customer_id",ID)
+        let response={}
+        const query = `SELECT * FROM customer_vehicle_info WHERE customer_id = ?`
+        const result = await connection.query(query,[ID]);
+        console.log(result.rows)
+
+        if(query.length == 0){
+            return response;
+        }
+
+        // const [ans] =  result.rows;
+        // console.log(ans)
+
+      
+
+        response ={
+            
+            resul:result.rows
+        }
+        // console.log(response)
+
+        return response;
+        
+        
+    } catch (error) {
+        console.error("Error getting Vehicle:", error);
+        throw new Error("Could not get vehicle. Please try again later.");
+    }
+
+    
+}
+
+module.exports={
+    singleVehicle,addVehicle,updateVehicleInfo,vehiclePerCustomer
+}
