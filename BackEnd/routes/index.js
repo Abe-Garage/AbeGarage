@@ -14,6 +14,7 @@ const installRouter = require('./install.routes')
 //  Import service router
 const serviceRoutes = require('./service.routes')
 const vehicleRoutes = require('./vehicle.routes')
+const employeeRoute = require('./employee.routes')
 
 
 // =========================
@@ -28,6 +29,8 @@ router.use(serviceRoutes);
 
 // Add the vehicle routes to the main router
 router.use(vehicleRoutes);
+router.use(employeeRoute);
+
 
 
 

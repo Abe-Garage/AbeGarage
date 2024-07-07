@@ -61,12 +61,12 @@ async function deleteService(req, res) {
   console.log("service_name ===>", service_name);
   console.log("service_description ===>", service_description);
 
-  if (!service_name || !service_description) {
-      return res.status(400).json({ msg: "Invalid input" });
-  }
+  // if (!service_name || !service_description) {
+  //     return res.status(400).json({ msg: "Invalid input" });
+  // }
 
   try {
-      const result = await serviceService.deleteService(service_id, service_name, service_description );
+      const result = await serviceService.deleteService(service_id );
 
       if (result.affectedRows === 0) {
           return res.status(404).json({ msg: "Service not found" });
