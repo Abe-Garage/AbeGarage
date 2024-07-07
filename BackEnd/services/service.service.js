@@ -22,7 +22,38 @@ async function createService(common_services) {
   }
 }
 
+
+async function updateService(service_id, service_name, service_description) {
+  try {
+    const result = await connection.query(
+      "UPDATE common_services SET service_name = ?, service_description = ? WHERE service_id = ?",
+      [service_name, service_description, service_id]
+    );
+
+    return result;
+  } catch (error) {
+    throw new Error("Error updating service: " + error.message);
+  }
+}
+
+// Function to get all services
+
+// get all services
+async function getAllServices() {
+  try {
+    const sql = `SELECT * FROM common_services`;
+    const result = await connection.query(sql);
+    return result;
+  } catch (error) {
+    console.error("Error getting services:", error);
+    throw new Error("Could not get services. Please try again later.");
+
+  }
+}
+
 // Export the function
 module.exports = {
   createService,
+  updateService,
+  getAllServices,
 };

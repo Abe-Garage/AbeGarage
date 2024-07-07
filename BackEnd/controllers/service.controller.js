@@ -23,6 +23,56 @@ async function createService(req, res, next) {
   }
 }
 
+
+
+async function updateService(req, res) {
+    const { service_name, service_description } = req.body;
+    const {service_id}=req.params
+   
+    // console.log("service_id ===>", service_id);
+    console.log("service_name ===>", service_name);
+    console.log("service_description ===>", service_description);
+
+    if (!service_name || !service_description) {
+        return res.status(400).json({ msg: "Invalid input" });
+    }
+
+    try {
+        const result = await serviceService.updateService(service_id, service_name, service_description );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ msg: "Service not found" });
+        }
+
+        return res.status(200).json({ msg: "The service has been updated" });
+    } catch (error) {
+        console.error("Error updating service:", error.message);
+        return res.status(500).json({ msg: "Something went wrong" });
+    }
+}
+
+// Create the getAllServices controller
+async function getAllServices(req, res, next) {
+  // Call the getAllServices method from the service service
+  const services = await serviceService.getAllServices();
+  if (!services) {
+    res.status(400).json({
+      error: "Failed to get all services!"
+    });
+  } else {
+    res.status(200).json({
+      status: "success",
+      data: services,
+    });
+  }
+}
+
+
+
 module.exports = {
+
   createService,
+  updateService,
+  getAllServices
+
 };

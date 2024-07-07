@@ -1,0 +1,107 @@
+.service-management {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+
+}
+
+.service-management h1 {
+    color: #0033a0;
+}
+.service-management .name{
+    color: #0033a0;
+}
+.service-management .description {
+    
+    margin-bottom: 20px;
+    font-style: italic;
+    text-align: start;
+}
+
+.services-list {
+    
+    margin-bottom: 20px;
+    text-align: start;
+}
+.services-list h3{
+    color: #0033a0;
+}
+
+.service-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.service-details {
+    flex-grow: 1;
+}
+
+.service-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.service-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+.service-provide{
+    text-align: start;
+}
+
+.add-service-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.add-new-service{
+    color: #0033a0;
+    text-align: start;
+}
+.add-new-service-container{
+    padding-left: 20px;
+    border: none;
+    border-radius: 5px;
+    padding-top: 20px;
+    border: 3px #ddd;
+    
+}
+
+.add-service-form input{
+    padding: 20px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.add-service-form textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 400px;
+    height: 100px;
+    
+}
+
+.add-service-form button {
+    padding: 10px 20px;
+    background-color: red;
+    margin: 10px 0;
+    width: 140px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-service-form button:hover {
+    background-color: red;
+}
