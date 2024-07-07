@@ -22,6 +22,7 @@ const dbConfig = {
 // console.log("DB Config - Database:", process.env.DB_NAME);
 // console.log("DB Config - Password:", process.env.DB_PASSWORD);
 // console.log("DB Config - Port:", process.env.PORT);
+// console.log("DB Config - Port:", process.env.DB_HOST);
 
 
 const pool =  mysql.createPool(dbConfig);
