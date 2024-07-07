@@ -24,6 +24,9 @@ import "./assets/styles/custom.css";
 import Footer from "./markup/components/Footer/Footer";
 import CreateOrderPage from "./markup/pages/Admin/Orders/CreateOrderPage";
 import Login from "./markup/pages/Main/Login/Login";
+
+import Contact from "./markup/pages/Admin/ContactUs/Contact";
+
 import Services from "./markup/pages/Main/Services/Services";
 import NewOrder from "./markup/pages/Admin/Orders/NewOrder";
 import Vehicle from "./markup/pages/Admin/Vehicle/Vehicle";
@@ -35,6 +38,7 @@ import CustomerForm from "./markup/pages/Admin/Customers/CustomerForm";
 import EditCustomer from "./markup/pages/Admin/Customers/EditCustomer";
 
 
+
 function App() {
   return (
     <>
@@ -42,10 +46,13 @@ function App() {
       <Routes>
 
 
+
+
         <Route path="/" element={<Home />} />
         <Route path="/aboutus" element={<About />} />
         <Route path="/services" element={<Services />} />
         <Route path="/contact" element={<CtaSec />} />
+        <Route path="/contactus" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         {/* <Route path="order/{orderHash}" element={OrdersDetail} /> */}//TODO:-ALALEKEM(MALEK YALEBET)
 
@@ -92,7 +99,8 @@ function App() {
        
         
   
-      <Footer />
+
+
 
     </>
   );
