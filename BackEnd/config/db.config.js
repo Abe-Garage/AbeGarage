@@ -36,7 +36,7 @@ async function query(sql, params) {
         const [rows, fields] = await pool.execute(sql, params);
 
         // Return an object containing both rows and fields
-        return { rows, fields };
+        return rows;
     } catch (error) {
         console.error('Error executing query:', error);
         throw error; // Throw error for the caller to handle
