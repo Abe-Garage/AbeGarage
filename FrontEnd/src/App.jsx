@@ -30,12 +30,12 @@ import Contact from "./markup/pages/Admin/ContactUs/Contact";
 import Services from "./markup/pages/Main/Services/Services";
 import NewOrder from "./markup/pages/Admin/Orders/NewOrder";
 import Vehicle from "./markup/pages/Admin/Vehicle/Vehicle";
-import CtaSec from "./markup/components/CtaSec/CtaSec";
 import EditEmployee from "./markup/pages/Admin/Employee/EditEmployee";
 import Employees from "./markup/pages/Admin/Employee/Employees";
 import AddEmployee from "./markup/pages/Admin/Employee/AddEmployee";
 import CustomerForm from "./markup/pages/Admin/Customers/CustomerForm";
 import EditCustomer from "./markup/pages/Admin/Customers/EditCustomer";
+import ServiceList from "./markup/pages/Main/Services/ServiceList";
 
 
 
@@ -49,10 +49,9 @@ function App() {
 
 
         <Route path="/" element={<Home />} />
-        <Route path="/aboutus" element={<About />} />
+        <Route path="/about" element={<About />} />
         <Route path="/services" element={<Services />} />
-        <Route path="/contact" element={<CtaSec />} />
-        <Route path="/contactus" element={<Contact />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         {/* <Route path="order/{orderHash}" element={OrdersDetail} /> */}//TODO:-ALALEKEM(MALEK YALEBET)
 
@@ -73,15 +72,15 @@ function App() {
 
 
         //? MALEK YALEBET
-        {/* <Route path="/admin/services" element={Services} />
-        <Route path="/admin/add-service" element={AddServices} /> */}
+        <Route path="/admin/services" element={<ServiceList />} />
+        {/* <Route path="/admin/add-service" element={AddServices} /> */}
 
 
 
         //* routes related to customers
         <Route path="/admin/customers/:id" element={<Vehicle />} />
-        <Route path="/admin/add-customer" element={<CustomerForm />} />//* should be with AdminMenu
-        <Route path="/admin/edit-customer/:id" element={<EditCustomer />} />//* should be with AdminMenu
+        <Route path="/admin/add-customer" element={<CustomerForm />} />
+        <Route path="/admin/edit-customer/:id" element={<EditCustomer />} />
         {/* <Route path="admin/customers" element={Customers} /> */}//TODO
         
         {/* <Route path="admin/add-customer" element={Addvehicle} /> //* conditionally render */}
