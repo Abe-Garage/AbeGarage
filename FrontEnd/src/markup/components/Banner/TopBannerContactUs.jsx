@@ -1,5 +1,5 @@
 import React from "react";
-import b3 from "../../../assets/template/images/background/bg-3.jpg";
+import b3 from "../../../assets/images/banner/banner4.jpeg";
 function TopBannerContactUs() {
   return (
     <div>

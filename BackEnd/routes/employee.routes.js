@@ -8,12 +8,13 @@ const router = express.Router();
 const {
   verifyToken,
   isAdmin,
-  isAdmin_Manager,
 } = require("../middlewares/auth.middleware");
 
 // import the employee controller
 const employeeController = require("../controllers/employee.controller");
 
+
+//*  [verifyToken, isAdmin],
 // create a route to handle the employee request in post
 router.post(
   "/api/employee",
@@ -23,21 +24,21 @@ router.post(
 
 // create a route to handle the get all employee request in get
 router.get(
-  "/api/employees",
-  [verifyToken, isAdmin_Manager],
+  "/api/employee",
+  [verifyToken, isAdmin],
   employeeController.getAllEmployeees
 );
 
 // create a route to handle the get single employee request in get
 router.get(
-  "/api/employee/single/:hash",
+  "/api/employee/:id",
   [verifyToken, isAdmin],
   employeeController.getSingleEmployee
 );
 
 // create a route to handle the employee request in put
 router.put(
-  "/api/employee/update",
+  "/api/employee",
   [verifyToken, isAdmin],
   employeeController.updateEmployee
 );

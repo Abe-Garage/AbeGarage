@@ -16,8 +16,8 @@ const loginRoutes = require("./login.routes");
 const serviceRoutes = require('./service.routes')
 const customerRoutes = require('./customer.routes')
 const vehicleRoutes = require('./vehicle.routes')
-const employeeRoute = require('./employee.routes')
-const createOrder =require('./order.routes')
+const employeeRoutes = require('./employee.routes')
+const OrderRoutes =require('./order.routes')
 
 
 
@@ -35,11 +35,11 @@ router.use(loginRoutes);
 // add the customer routes to the main router
 router.use(customerRoutes);
 // add the vehicle routes to the main router
-router.use(createOrder);
+router.use(OrderRoutes);
 
 // Add the vehicle routes to the main router
 router.use(vehicleRoutes);
-router.use(employeeRoute);
+router.use(employeeRoutes);
 
 
 

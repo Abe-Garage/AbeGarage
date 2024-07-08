@@ -1,5 +1,5 @@
 import React from 'react';
-import bg1 from '../../../assets/template/images/background/bg-1.jpg';
+import bg1 from '../../../assets/images/banner/wheelntire.jpeg';
 const BottomBanner = () => {
   return (
     <section className="video-section">
@@ -9,7 +9,7 @@ const BottomBanner = () => {
         <h2>We are leader <br /> in Car Mechanical Work</h2>
         <div className="video-box">
           <div className="video-btn">
-            <a href="https://www.youtube.com/watch?v=nfP5N9Yc72A&t=28s" className="overlay-link lightbox-image video-fancybox ripple">
+            <a href="https://youtu.be/PUkAIAIzA0I?si=ugtpBZ2RHYXcn037" className="overlay-link lightbox-image video-fancybox ripple">
               <i className="flaticon-play"></i>
             </a>
           </div>
