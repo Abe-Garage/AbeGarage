@@ -1,22 +1,143 @@
-// import the customer service to handle communication with the database
-const customerService = require("../services/customer.service");
+// import Customer services
 
-async function customers(req, res, next) {
-  // call the customer service to create the database tables
-  const customerMessage = await customerService.customers();
+const {
+  checkIfCustomerExists,
+  createCustomer,
+  getCustomerByEmail,
+  getSingleCustomer,
+  getAllCustomers,
+  updateCustomer,
+  deleteCustomer,
+} = require("../services/customer.service");
 
-  // check if the customer was successfully created or not and send a response to the client
-  if (customerMessage.status === 200) {
-    res.status(200).json({
-      message: customerMessage,
+// Create Customer controller
+async function createCustomerController(req, res, next) {
+  const { customer_email } = req.body;
+
+  try {
+    const customerExists = await checkIfCustomerExists(customer_email);
+
+    if (customerExists) {
+      return res.status(400).json({
+        msg: "This email address is already associated with another customer!",
+      });
+    }
+
+    const customerData = req.body;
+    const customer = await createCustomer(customerData);
+
+    if (!customer) {
+      return res.status(400).json({
+        error: "Failed to add the customer!",
+      });
+    }
+
+    return res.status(200).json({
+      status: "Customer added successfully!",
+      customer,
     });
-  } else {
-    res.status(500).json({
-      message: customerMessage,
+  } catch (error) {
+    return res.status(400).json({
+      error: "Something went wrong!",
     });
   }
 }
-// export the customers function
+
+// Get all Customers controller
+async function getAllCustomersController(req, res, next) {
+  try {
+    const customers = await getAllCustomers();
+
+    if (!customers) {
+      return res.status(400).json({
+        error: "Failed to get all customers!",
+      });
+    }
+
+    return res.status(200).json({
+      status: "Customers retrieved successfully!",
+      customers,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      error: "Something went wrong!",
+    });
+  }
+}
+
+// Get single Customer controller
+async function getSingleCustomerController(req, res, next) {
+  const customer_id = req.params.id;
+
+  try {
+    const singleCustomer = await getSingleCustomer(customer_id);
+
+    if (!singleCustomer) {
+      return res.status(400).json({
+        error: "Failed to get customer!",
+      });
+    }
+
+    return res.status(200).json({
+      status: "Customer retrieved successfully!",
+      customer: singleCustomer,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      error: "Something went wrong!",
+    });
+  }
+}
+
+// Update Customer controller
+async function updateCustomerController(req, res, next) {
+  try {
+    const updateResult = await updateCustomer(req.body);
+
+    if (!updateResult) {
+      return res.status(400).json({
+        error: "Failed to update customer!",
+      });
+    }
+
+    return res.status(200).json({
+      status: "Customer successfully updated!",
+      updateResult,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      error: "Something went wrong!",
+    });
+  }
+}
+
+// Delete Customer controller
+async function deleteCustomerController(req, res, next) {
+  const { customer_id } = req.body;
+
+  try {
+    const deleteResult = await deleteCustomer(customer_id);
+
+    if (!deleteResult) {
+      return res.status(400).json({
+        error: "Delete incomplete!",
+      });
+    }
+
+    return res.status(200).json({
+      status: "Customer successfully deleted!",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      error: "Something went wrong!",
+    });
+  }
+}
+
 module.exports = {
-  customers,
+  createCustomerController,
+  getAllCustomersController,
+  getSingleCustomerController,
+  updateCustomerController,
+  deleteCustomerController,
 };
