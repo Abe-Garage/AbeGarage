@@ -1,55 +1,193 @@
-const { query } = require("../config/db.config");
-const fs = require("fs");
-const path = require("path");
+const crypto = require("crypto");
+const bcrypt = require("bcrypt");
+const connection = require("../config/db.config");
 
-async function customers() {
-  const sqlFilePath = path.join(__dirname, "sql/initial-queries.sql");
-  let queries = [];
-  let finalMessage = {};
-  let tempLine = "";
+// Check if customer exists
+async function checkIfCustomerExists(email) {
+  try {
+    const query = "SELECT * FROM customer_identifier WHERE customer_email = ?";
+    const [rows] = await connection.query(query, [email]);
+
+    return rows.length > 0;
+  } catch (error) {
+    console.error("Error checking customer existence:", error);
+    throw new Error(
+      "Could not check customer existence. Please try again later."
+    );
+  }
+}
+
+// Create a new customer
+async function createCustomer(customer) {
+  let createdCustomer = {};
 
   try {
-    const fileContent = fs.readFileSync(sqlFilePath, "utf-8");
-    const lines = fileContent.split("\n");
+    const hash_id = crypto.randomUUID();
 
-    lines.forEach((line) => {
-      if (line.trim().startsWith("--") || line.trim() === "") {
-        return;
-      }
-      tempLine += line;
+    const queryCustomer = `
+      INSERT INTO customer_identifier (customer_email, customer_phone_number, customer_hash)
+      VALUES (?, ?, ?)
+    `;
 
-      if (line.trim().endsWith(";")) {
-        const sqlQuery = tempLine.trim();
-        queries.push(sqlQuery);
-        tempLine = "";
-      }
-    });
+    const result = await connection.query(queryCustomer, [
+      customer.customer_email,
+      customer.customer_phone_number,
+      hash_id,
+    ]);
 
-    for (let i = 0; i < queries.length; i++) {
-      try {
-        await query(queries[i]);
-        console.log("Table Created");
-      } catch (error) {
-        finalMessage.message = "Not all tables were created";
-        console.log("Error creating table:", error.message);
-      }
+    if (result.affectedRows !== 1) {
+      return false;
     }
 
-    if (!finalMessage.message) {
-      finalMessage.message = "All tables are created successfully";
-      finalMessage.status = 200;
-    } else {
-      finalMessage.status = 500;
+    const customer_id = result.insertId;
+
+    const queryCustomerInfo = `
+      INSERT INTO customer_info (customer_id, customer_first_name, customer_last_name, active_customer_status)
+      VALUES (?, ?, ?, ?)
+    `;
+
+    const result2 = await connection.query(queryCustomerInfo, [
+      customer_id,
+      customer.customer_first_name,
+      customer.customer_last_name,
+      customer.active_customer_status,
+    ]);
+
+    if (result2.affectedRows !== 1) {
+      return false;
     }
+
+    createdCustomer = {
+      customer_id,
+      customer_email: customer.customer_email,
+      customer_first_name: customer.customer_first_name,
+      customer_last_name: customer.customer_last_name,
+    };
   } catch (error) {
-    console.error("Error reading the SQL file:", error.message);
-    finalMessage.message = "Error reading the SQL file";
-    finalMessage.status = 500;
+    console.error("Error creating customer:", error);
+    throw new Error("Could not create customer. Please try again later.");
   }
 
-  return finalMessage;
+  return createdCustomer;
+}
+
+// Get customer by email
+async function getCustomerByEmail(customer_email) {
+  try {
+    const query = `
+      SELECT *
+      FROM customer_identifier
+      INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id
+      WHERE customer_identifier.customer_email = ?
+    `;
+
+    const [rows] = await connection.query(query, [customer_email]);
+
+    return rows;
+  } catch (error) {
+    console.error("Error getting customer by email:", error);
+    throw new Error("Could not get customer by email. Please try again later.");
+  }
+}
+
+// Get single customer by ID
+async function getSingleCustomer(customer_id) {
+  try {
+    const query = `
+      SELECT *
+      FROM customer_identifier
+      INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id
+      WHERE customer_identifier.customer_id = ?
+    `;
+
+    const [rows] = await connection.query(query, [customer_id]);
+
+    return rows;
+  } catch (error) {
+    console.error("Error getting single customer:", error);
+    throw new Error("Could not get customer. Please try again later.");
+  }
+}
+
+// Get all customers
+async function getAllCustomers() {
+  try {
+    const query = `
+      SELECT *
+      FROM customer_identifier
+      INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id
+      ORDER BY customer_info.active_customer_status DESC, customer_info.customer_first_name ASC
+      LIMIT 10
+    `;
+
+    const [rows] = await connection.query(query);
+
+    return rows;
+  } catch (error) {
+    console.error("Error getting all customers:", error);
+    throw new Error("Could not get customers. Please try again later.");
+  }
+}
+
+// Update customer by ID
+async function updateCustomer(customer) {
+  try {
+    const customer_id = customer.customer_id;
+
+    const query1 = `
+      UPDATE customer_identifier
+      SET customer_email = ?, customer_phone_number = ?
+      WHERE customer_id = ?
+    `;
+
+    const query2 = `
+      UPDATE customer_info
+      SET customer_first_name = ?, customer_last_name = ?, active_customer_status = ?
+      WHERE customer_id = ?
+    `;
+
+    const result1 = await connection.query(query1, [
+      customer.customer_email,
+      customer.customer_phone_number,
+      customer_id,
+    ]);
+
+    const result2 = await connection.query(query2, [
+      customer.customer_first_name,
+      customer.customer_last_name,
+      customer.active_customer_status,
+      customer_id,
+    ]);
+
+    return { result1, result2 };
+  } catch (error) {
+    console.error("Error updating customer:", error);
+    throw new Error("Could not update customer. Please try again later.");
+  }
+}
+
+// Delete customer by ID
+async function deleteCustomer(customer_id) {
+  try {
+    const query1 = "DELETE FROM customer_info WHERE customer_id = ?";
+    const query2 = "DELETE FROM customer_identifier WHERE customer_id = ?";
+
+    const result1 = await connection.query(query1, [customer_id]);
+    const result2 = await connection.query(query2, [customer_id]);
+
+    return { result1, result2 };
+  } catch (error) {
+    console.error("Error deleting customer:", error);
+    throw new Error("Could not delete customer. Please try again later.");
+  }
 }
 
 module.exports = {
-  customers,
+  checkIfCustomerExists,
+  createCustomer,
+  getCustomerByEmail,
+  getSingleCustomer,
+  getAllCustomers,
+  updateCustomer,
+  deleteCustomer,
 };
