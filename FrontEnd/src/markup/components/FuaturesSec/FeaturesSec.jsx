@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import carRev from "../../../assets/images/misc/EngineTachometer.jpeg";
 
 const FeaturesSec = () => {
   return (
@@ -17,7 +18,7 @@ const FeaturesSec = () => {
           </div>
         </div>
         <div className="col-lg-6">
-          <div className="image"><img src="assets/images/resource/image-3.jpg" alt="" /></div>
+          <div className="image"><img src={carRev} alt="engine tachometer" /></div>
         </div>
       </div>
     </div>
