@@ -37,69 +37,69 @@ import CustomerForm from "./markup/pages/Admin/Customers/CustomerForm";
 import EditCustomer from "./markup/pages/Admin/Customers/EditCustomer";
 import ServiceList from "./markup/pages/Main/Services/ServiceList";
 
-
+// Import the PrivateAuthRoute component 
+import PrivateAuthRoute from './markup/components/Auth/PrivateAuthRoute';
+import Unauthorized from "./markup/pages/Main/Unauthorized/Unauthorized";
 
 function App() {
   return (
     <>
       <Header />
       <Routes>
-
-
-
-
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
-        {/* <Route path="order/{orderHash}" element={OrdersDetail} /> */}//TODO:-ALALEKEM(MALEK YALEBET)
-
-
-       //* routes related to employee
-        <Route path="admin/employees" element={<Employees/>} />
-        <Route path="admin/add-employee" element={<AddEmployee />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        {/* // Add the Orders Route  */}
+        <Route
+          path="/admin/orders"
+          element={
+            <PrivateAuthRoute roles={[1, 2, 3]}>
+              <AllOrdersPage />
+            </PrivateAuthRoute>
+          }
+        />
+        {/* // Add the Customers Route  */}
+        <Route
+          path="/admin/customers"
+          element={
+            <PrivateAuthRoute roles={[2, 3]}>
+              <CustomerForm />
+            </PrivateAuthRoute>
+          }
+        />
+        <Route
+          path="/admin/add-employee"
+          element={
+            <PrivateAuthRoute roles={[3]}>
+              <AddEmployee />
+            </PrivateAuthRoute>
+          }
+        />
+        <Route path="/services" element={<Services />} />
+        {/* <Route path="order/{orderHash}" element={OrdersDetail} /> */}
+        //TODO:-ALALEKEM(MALEK YALEBET) //* routes related to employee
+        <Route path="admin/employees" element={<Employees />} />
+        {/* <Route path="admin/add-employee" element={<AddEmployee />} /> */}
         <Route path="admin/employee/edit/:id" element={<EditEmployee />} />
-
         //* routes related to orders
         <Route path="/admin" element={<AdminDashBoard />} />
-        <Route path="/admin/orders" element={<AllOrdersPage />} />
+        {/* <Route path="/admin/orders" element={<AllOrdersPage />} /> */}
         <Route path="/admin/order" element={<NewOrder />} />
         <Route path="/admin/create-order" element={<CreateOrder />} />
-        {/* <Route path="admin/order/{orderHash}/edit" element={EditOrder} /> */}//* ALALEKEM(MALEK YALEBET)
-
-
-
-
-        //? MALEK YALEBET
+        {/* <Route path="admin/order/{orderHash}/edit" element={EditOrder} /> */}
+        //* ALALEKEM(MALEK YALEBET) //? MALEK YALEBET
         <Route path="/admin/services" element={<ServiceList />} />
-         {/* <Route path="/admin/add-service" element={AddServices} />  */}
-
-
+        {/* <Route path="/admin/add-service" element={AddServices} />  */}
         {/* //* routes related to customers */}
         <Route path="/admin/customers/:id" element={<Vehicle />} />
-        <Route path="/admin/add-customer" element={<CustomerForm />} />
+        {/* <Route path="/admin/add-customer" element={<CustomerForm />} /> */}
         <Route path="/admin/edit-customer/:id" element={<EditCustomer />} />
         {/* <Route path="admin/customers" element={Customers} /> */}//TODO
-        
         {/* <Route path="admin/add-customer" element={Addvehicle} /> //* conditionally render */}
-
-        
-
-
-
       </Routes>
       <Footer />
-
-
-
-       
-       
-        
-  
-
-
-
     </>
   );
 }
