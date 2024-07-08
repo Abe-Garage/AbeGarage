@@ -30,5 +30,38 @@ async function createOrder(req, res) {
     res.status(500).json({ error: 'An error occurred while creating the order' });
   }
 }
+// Get all orders
+async function getAllOrders(req, res)  {
+  try {
+      const { limit, sortby, completed } = req.query;
+      const orders = await orderService.getAllOrders({ limit, sortby, completed });
+      res.status(200).json(orders);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+};
 
-module.exports = { createOrder };
+// Get single order by ID
+async function getOrderById (req, res)  {
+  try {
+      const { id } = req.params;
+      const order = await orderService.getOrderById(id);
+      res.status(200).json(order);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+};
+
+// Update an order
+async function updateOrder(req, res) {
+  try {
+      const { id } = req.params;
+      const orderData = req.body;
+      const result = await orderService.updateOrder(id, orderData);
+      res.status(200).json(result);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { createOrder, getAllOrders, getOrderById, updateOrder   };
