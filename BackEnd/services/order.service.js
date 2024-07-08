@@ -135,4 +135,76 @@ async function createOrders(orderData) {
   }
 }
 
-module.exports = { createOrders, checkVehicle, checkEmployee,checkService };
+
+async function getAllOrders({ limit, sortby, completed }) {
+  try {
+      let query = "SELECT * FROM orders";
+      let queryParams = [];
+
+      if (completed !== undefined) {
+          query += " WHERE order_completed = ?";
+          queryParams.push(completed);
+      }
+
+      if (sortby) {
+          query += ` ORDER BY ${sortby}`;
+      }
+
+      if (limit) {
+          query += " LIMIT ?";
+          queryParams.push(parseInt(limit));
+      }
+
+      const [orders] = await conn.query(query, queryParams);
+      return orders;
+  } catch (error) {
+      throw new Error(error);
+  }
+}
+
+async function getOrderById(id) {
+  try {
+      const query = "SELECT * FROM orders WHERE order_id = ?";
+      const [order] = await conn.query(query, [id]);
+      return order[0];
+  } catch (error) {
+      throw new Error(error);
+  }
+}
+
+
+// Existing createOrders function
+
+async function updateOrder(id, orderData) {
+  try {
+      const {
+          order_description,
+          estimated_completion_date,
+          completion_date,
+          order_completed
+      } = orderData;
+
+      const query = `
+          UPDATE orders
+          SET order_description = ?, estimated_completion_date = ?, completion_date = ?, order_completed = ?
+          WHERE order_id = ?
+      `;
+
+      const [result] = await conn.query(query, [
+          order_description,
+          estimated_completion_date,
+          completion_date,
+          order_completed,
+          id
+      ]);
+
+      if (result.affectedRows === 0) {
+          throw new Error(`Order with ID ${id} not found`);
+      }
+
+      return { message: "Order updated successfully" };
+  } catch (error) {
+      throw new Error(error);
+  }
+}
+module.exports = { createOrders, checkVehicle, checkEmployee,checkService,getAllOrders,getOrderById,updateOrder };
