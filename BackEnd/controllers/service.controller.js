@@ -1,5 +1,7 @@
 const serviceService = require("../services/service.service");
 
+// create service
+
 async function createService(req, res, next) {
   try {
     const serviceData = req.body; // Extract service data from request body
@@ -78,7 +80,9 @@ async function deleteService(req, res) {
       return res.status(500).json({ msg: "Something went wrong" });
   }
 }
+
 // Create the getAllServices controller
+
 async function getAllServices(req, res, next) {
   // Call the getAllServices method from the service service
   const services = await serviceService.getAllServices();
@@ -94,13 +98,31 @@ async function getAllServices(req, res, next) {
   }
 }
 
+// get single service
 
+async function getSingleService(req, res, next) {
+  try {
+    const serviceId = req.params.id;
+    const service = await serviceService.getSingleService(serviceId);
+    res.status(200).json({
+      status: 'success',
+      data: service,
+    });
+  } catch (error) {
+    console.error('Error getting single service:', error);
+    res.status(400).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+}
 
 module.exports = {
 
   createService,
   updateService,
   deleteService,
-  getAllServices
+  getAllServices,
+  getSingleService
 
 };
