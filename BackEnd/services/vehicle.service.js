@@ -11,11 +11,11 @@ async function singleVehicle(ID){
                                      INNER JOIN  customer_vehicle_info 
                                      ON customer_identifier.customer_id = customer_vehicle_info.customer_id
                                      WHERE customer_vehicle_info.vehicle_id = ?`
-
+console.log(ID)
         const result = await connection.query(singleVehicleQuery, [ID])
-        // console.log(result.rows[0])
+        console.log(result)
 
-        return result.rows[0];
+        return result;
         
     } catch (error) {
         console.error("Error getting Vehicle:", error);
@@ -105,9 +105,9 @@ async function vehiclePerCustomer(ID){
         let response={}
         const query = `SELECT * FROM customer_vehicle_info WHERE customer_id = ?`
         const result = await connection.query(query,[ID]);
-        console.log(result.rows)
+        // console.log(result,result.length)
 
-        if(query.length == 0){
+        if(result.length == 0){
             return response;
         }
 
@@ -118,7 +118,7 @@ async function vehiclePerCustomer(ID){
 
         response ={
             
-            resul:result.rows
+            result
         }
         // console.log(response)
 

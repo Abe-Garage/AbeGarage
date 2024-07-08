@@ -8,7 +8,6 @@ const router = express.Router();
 const {
   verifyToken,
   isAdmin,
-  isAdmin_Manager,
 } = require("../middlewares/auth.middleware");
 
 // Import the customer controller
@@ -24,7 +23,7 @@ router.post(
 // Create a route to handle the get all customers request in get
 router.get(
   "/api/customers",
-  [verifyToken, isAdmin_Manager],
+  [verifyToken, isAdmin],
   customerController.getAllCustomersController
 );
 
