@@ -73,11 +73,10 @@ function App() {
 
         //? MALEK YALEBET
         <Route path="/admin/services" element={<ServiceList />} />
-        {/* <Route path="/admin/add-service" element={AddServices} /> */}
+         {/* <Route path="/admin/add-service" element={AddServices} />  */}
 
 
-
-        //* routes related to customers
+        {/* //* routes related to customers */}
         <Route path="/admin/customers/:id" element={<Vehicle />} />
         <Route path="/admin/add-customer" element={<CustomerForm />} />
         <Route path="/admin/edit-customer/:id" element={<EditCustomer />} />
