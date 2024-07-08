@@ -39,11 +39,11 @@ async function addVehicle(vehicleData){
 
         const result = await connection.query(vehicleAddQuery,[customer_id,vehicle_year,vehicle_make,vehicle_model,vehicle_type ,vehicle_mileage,vehicle_tag, vehicle_serial ,vehicle_color])
 
-        console.log(result.rows.affectedRows, result.rows.insertId)
-
-        if(result.rows.affectedRows !==0 ){
+        // console.log(result.rows.affectedRows, result.rows.insertId)
+        console.log(result);
+        if(result.affectedRows !==0 ){
             response ={
-                status:result.rows.affectedRows
+                status:result.affectedRows
             }
         }else{
             response={
@@ -77,9 +77,9 @@ async function updateVehicleInfo(updateVehicleData){
         const result = await connection.query(updateVehicleQuery,[vehicle_year,vehicle_make,vehicle_model,vehicle_type ,vehicle_mileage,vehicle_tag, vehicle_serial ,vehicle_color,vehicle_id])
         console.log('here w g')
         
-        if(result.rows.affectedRows !==0){
+        if(result.affectedRows !==0){
             response ={
-                status:result.rows.affectedRows
+                status:result.affectedRows
             }
         }else{
             response={
