@@ -12,8 +12,8 @@ async function createService(req, res, next) {
     }
     res.status(200).json({
       status: "Service added successfully",
-      service: service, // Include the created service data
-      serviceData: serviceData
+      // service: service, // Include the created service data
+      // serviceData: serviceData
     });
   } catch (error) {
     console.error(error); // Log the actual error object for debugging
@@ -26,8 +26,8 @@ async function createService(req, res, next) {
 // update service
 
 async function updateService(req, res) {
-    const { service_name, service_description } = req.body;
-    const {service_id}=req.params
+    const { service_id, service_name, service_description } = req.body;
+    // const {service_id}=req.params
    
     // console.log("service_id ===>", service_id);
     console.log("service_name ===>", service_name);

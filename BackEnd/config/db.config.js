@@ -100,9 +100,13 @@ async function testConnection() {
 // Function to execute SQL queries asynchronously
 async function query(sql, params) {
     try {
-        // Execute the query and destructure the result into rows
-        const [rows] = await pool.execute(sql, params);
-        return { rows };
+
+        // Execute the query and destructure the result into rows and fields
+        const [rows, fields] = await pool.execute(sql, params);
+
+        // Return an object containing both rows and fields
+        return rows;
+
     } catch (error) {
         console.error('Error executing query:', error);
         throw error; // Throw error for the caller to handle
