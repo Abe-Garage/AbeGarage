@@ -6,14 +6,14 @@ const jwt = require("jsonwebtoken");
 // Import the employee service
 const employeeService = require("../services/employee.service");
 
-// A function to verify the token received from the frontend
+// A function to verify the token received from the frontend 
 const verifyToken = async (req, res, next) => {
   let token = req.headers["x-access-token"];
-  console.log(token);
+  console.log(token)
   if (!token) {
     return res.status(403).send({
       status: "fail",
-      message: "No token provided!",
+      message: "No token provided!"
     });
   }
 
@@ -29,7 +29,8 @@ const verifyToken = async (req, res, next) => {
     req.employee_email = decoded.employee_email;
     next();
   });
-};
+}
+
 
 // A function to check if the user is an admin
 const isAdmin = async (req, res, next) => {
@@ -52,4 +53,7 @@ const authMiddleware = {
   isAdmin,
 };
 
+
+
 module.exports = authMiddleware;
+

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import image8 from "../../../assets/template/images/resource/image-8.jpg"
+import image8 from "../../../assets/images/misc/ethiopianwomanmechanic.jpeg"
 function Description() {
   return (
     <div> <section class="about-section-three">

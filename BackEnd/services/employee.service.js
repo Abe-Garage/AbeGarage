@@ -88,13 +88,13 @@ async function createEmploye(employee) {
     ]);
 
     // insert the employee hash id table data
-    const queryEmployeeHashId =
-      "INSERT INTO employee_hash_id (employee_id, employee_hash) VALUES (?,?)";
+    // const queryEmployeeHashId =
+    //   "INSERT INTO employee_hash_id (employee_id, employee_hash) VALUES (?,?)";
 
-    const rows5 = await connection.query(queryEmployeeHashId, [
-      employee_id,
-      hash_id,
-    ]);
+    // const rows5 = await connection.query(queryEmployeeHashId, [
+    //   employee_id,
+    //   hash_id,
+    // ]);
 
     // construct to the employee object to return
     createdEmployee = {
@@ -125,12 +125,12 @@ async function getEmployeeByEmail(employee_email) {
 // A FUNCTION TO GET SINGLE EMPLOYEE BY HASH ID
 async function getSingleEmploye(employee) {
   try {
-    const employee_hash = employee;
+    const employee_id = employee;
 
     const query =
-      "SELECT * FROM employee INNER JOIN employee_info ON employee.employee_id = employee_info.employee_id INNER JOIN employee_role ON employee.employee_id = employee_role.employee_id INNER JOIN company_roles ON employee_role.company_role_id = company_roles.company_role_id WHERE employee.employee_hash = ?";
+      "SELECT * FROM employee INNER JOIN employee_info ON employee.employee_id = employee_info.employee_id INNER JOIN employee_role ON employee.employee_id = employee_role.employee_id INNER JOIN company_roles ON employee_role.company_role_id = company_roles.company_role_id WHERE employee.employee_id = ?";
 
-    const rows = await connection.query(query, [employee_hash]);
+    const rows = await connection.query(query, [employee_id]);
 
     return rows;
   } catch (error) {
@@ -154,32 +154,32 @@ async function getAllEmployees() {
 // A function to update employees by id
 async function updateEmploye(employee) {
   try {
-    const employee_hash = employee.employee_hash;
+    const employee_id = employee.employee_id;
 
-    const query1 = ` UPDATE employee_info SET employee_first_name = ?, employee_last_name = ?, employee_phone = ? WHERE employee_hash = ?`;
+    const query1 = ` UPDATE employee_info SET employee_first_name = ?, employee_last_name = ?, employee_phone = ? WHERE employee_id = ?`;
 
-    const query2 = `UPDATE employee_role SET company_role_id = ? WHERE employee_hash = ?`;
+    const query2 = `UPDATE employee_role SET company_role_id = ? WHERE employee_id= ?`;
 
-    const query3 = `UPDATE employee SET active_employee = ? WHERE employee_hash = ?`;
+    const query3 = `UPDATE employee SET active_employee = ? WHERE employee_id = ?`;
 
     // for employee_info table
     const rows1 = await connection.query(query1, [
       employee.employee_first_name,
       employee.employee_last_name,
       employee.employee_phone,
-      employee_hash,
+      employee_id,
     ]);
 
     // for employee_role table
     const rows2 = await connection.query(query2, [
       employee.company_role_id,
-      employee_hash,
+      employee_id,
     ]);
 
     // for employee table
     const rows3 = await connection.query(query3, [
       employee.active_employee,
-      employee_hash,
+      employee_id,
     ]);
 
     return { rows1, rows2, rows3 };

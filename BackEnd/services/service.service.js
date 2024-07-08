@@ -66,10 +66,23 @@ async function getAllServices() {
   }
 }
 
+// Get a single service by ID
+async function getSingleService(service_id) {
+  try {
+    const sql = `SELECT * FROM common_services WHERE service_id = ?`;
+    const result = await connection.query(sql, [service_id]);
+    return result;
+  } catch (error) {
+    console.error("Error getting single service:", error);
+    throw new Error("Could not get service. Please try again later.");
+  }
+}
+
 // Export the function
 module.exports = {
   createService,
   updateService,
   deleteService,
   getAllServices,
+  getSingleService
 };

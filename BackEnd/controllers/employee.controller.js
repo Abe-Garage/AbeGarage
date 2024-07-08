@@ -68,7 +68,7 @@ async function getAllEmployeees(req, res, next) {
 
 // get single employee data controller
 async function getSingleEmployee(req, res, next) {
-  const employee_hash = req.params.hash;
+  const employee_hash = req.params.id;
   try {
     const singleEmployee = await getSingleEmploye(employee_hash);
 

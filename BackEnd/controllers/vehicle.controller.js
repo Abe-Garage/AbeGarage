@@ -119,10 +119,11 @@ async function vehiclePerCustomer(req,res){
         const ID = customer_id
 
         const result = await vehicleService.vehiclePerCustomer(ID);
+        // console.log(result)
 
-        if(result.resul){
+        if(result){
 
-            res.status(200).json(result.resul)
+            res.status(200).json(result)
         } else{
 
             res.status(400).json({message:'not found '})

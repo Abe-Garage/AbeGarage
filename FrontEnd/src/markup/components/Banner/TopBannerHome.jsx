@@ -16,7 +16,7 @@ const TopBanner = () => {
         <div className="video-box">
           <div className="video-btn">
             <a
-              href="https://www.youtube.com/watch?v=nfP5N9Yc72A&amp;t=28s"
+              href="https://youtu.be/PUkAIAIzA0I?si=ugtpBZ2RHYXcn037"
               className="overlay-link lightbox-image video-fancybox ripple"
             >
               <i className="flaticon-play"></i>
