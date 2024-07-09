@@ -52,10 +52,23 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         {/* // Add the Orders Route  */}
+
+
+
+        <Route
+          path="/admin"
+          element={
+            <PrivateAuthRoute roles={[1, 2, 3]}>
+              <AdminDashBoard />
+            </PrivateAuthRoute>
+          }
+        />
+
+
         <Route
           path="/admin/orders"
           element={
-            <PrivateAuthRoute roles={[1, 2, 3]}>
+            <PrivateAuthRoute roles={[3]}>
               <AllOrdersPage />
             </PrivateAuthRoute>
           }
@@ -77,14 +90,35 @@ function App() {
             </PrivateAuthRoute>
           }
         />
+
+        <Route
+          path="admin/employees"
+          element={
+            <PrivateAuthRoute roles={[3]}>
+              <Employees />
+            </PrivateAuthRoute>
+          }
+        />
+
+         <Route
+          path="admin/employee/edit/:id"
+          element={
+            <PrivateAuthRoute roles={[3]}>
+              <EditEmployee />
+            </PrivateAuthRoute>
+          }
+        />
+
+
+
         <Route path="/services" element={<Services />} />
         {/* <Route path="order/{orderHash}" element={OrdersDetail} /> */}
         //TODO:-ALALEKEM(MALEK YALEBET) //* routes related to employee
-        <Route path="admin/employees" element={<Employees />} />
+        {/* <Route path="admin/employees" element={<Employees />} /> */}
         {/* <Route path="admin/add-employee" element={<AddEmployee />} /> */}
-        <Route path="admin/employee/edit/:id" element={<EditEmployee />} />
+        {/* <Route path="admin/employee/edit/:id" element={<EditEmployee />} /> */}
         //* routes related to orders
-        <Route path="/admin" element={<AdminDashBoard />} />
+        {/* <Route path="/admin" element={<AdminDashBoard />} /> */}
         {/* <Route path="/admin/orders" element={<AllOrdersPage />} /> */}
         <Route path="/admin/order" element={<NewOrder />} />
         <Route path="/admin/create-order" element={<CreateOrder />} />

@@ -656,12 +656,14 @@ function CreateNewOrder() {
             type="text"
             placeholder="service description"
             value={serviceDescription}
+            style={{paddingLeft:'15px'}}
             onChange={handleServiceDescriptionChange}
           />
         </div>
         <div className="price">
           <input
             type="text"
+            style={{padding:'10px 15px'}}
             placeholder="price"
             value={servicePrice}
             onChange={handleServicePriceChange}

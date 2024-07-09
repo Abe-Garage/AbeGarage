@@ -45,7 +45,7 @@ function LoginForm() {
       employee_email,
       employee_password,
     };
-    console.log(formData);
+    // console.log(formData);
     // Call the service
     const loginEmployee = loginService.logIn(formData);
     console.log(loginEmployee);
@@ -64,9 +64,9 @@ function LoginForm() {
           console.log(location);
           if (location.pathname === "/login") {
             // navigate('/admin');
-            // window.location.replace('/admin');
+            window.location.replace('/admin');
             // To home for now
-            window.location.replace("/");
+            // window.location.replace("/");
           } else {
             window.location.reload();
           }
