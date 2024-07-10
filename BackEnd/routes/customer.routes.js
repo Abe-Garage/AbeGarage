@@ -43,7 +43,7 @@ router.put(
 
 // Create a route to handle the customer deletion request in delete
 router.delete(
-  "/api/customer/delete",
+  "/api/customer/delete/:customer_id",
   [verifyToken, isAdmin],
   customerController.deleteCustomerController
 );

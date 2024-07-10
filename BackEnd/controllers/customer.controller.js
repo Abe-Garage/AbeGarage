@@ -113,9 +113,12 @@ async function updateCustomerController(req, res, next) {
 
 // Delete Customer controller
 async function deleteCustomerController(req, res, next) {
-  const { customer_id } = req.body;
-
   try {
+    const { customer_id } = req.params;
+
+    if (!customer_id) {
+      return res.status(400).json({ error: "Customer ID is required" });
+    }
     const deleteResult = await deleteCustomer(customer_id);
 
     if (!deleteResult) {

@@ -121,16 +121,22 @@ async function updateEmployee(req, res, next) {
 
 // delete Employee controller
 async function deleteEmployee(req, res, next) {
-  const { employee_id } = req.body;
   try {
+    const { employee_id } = req.params;
+
+    if (!employee_id) {
+      return res.status(400).json({ error: 'Employee ID is required' });
+    }
+    console.log(`Received request to delete employee with ID: ${employee_id}`);
+
     const deleteEmployee = await deleteEmploye(employee_id);
 
     if (!deleteEmployee) {
-      res.status(200).json({
-        error: "Delete Incomplete!",
+      res.status(400).json({
+        error: "Failed to delete employee!",
       });
     } else {
-      res.status(400).json({
+      res.status(200).json({
         status: "Employee Succesfully Delete!",
       });
     }
