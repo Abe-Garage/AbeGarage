@@ -7,8 +7,6 @@ import AllOrdersPage from "./markup/pages/Admin/Orders/AllOrdersPage";
 import Home from "./markup/pages/Home/Home";
 import About from "./markup/pages/Main/About/About";
 import AdminDashBoard from "./markup/pages/Admin/AdminDashBoard/AdminDashBoard";
-import AddCustomerForm from "./markup/components/Admin/CustomerForm/CustomerForm";
-// import EditCustomer from "./markup/components/Admin/CustomerForm/EditCustomer";
 import CreateOrder from "./markup/components/Admin/Order/CreateOrder";
 
 
