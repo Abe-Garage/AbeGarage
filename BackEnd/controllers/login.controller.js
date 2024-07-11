@@ -10,6 +10,8 @@ async function logIn(req, res, next) {
   try {
     console.log(req.body);
     const employeeData = req.body;
+
+    console.log("req data",employeeData);
     // Call the logIn method from the login service
     const employee = await loginService.logIn(employeeData);
     // If the employee is not found

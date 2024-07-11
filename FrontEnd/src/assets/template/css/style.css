@@ -558,6 +558,10 @@ img {
 .header-top .right-column .phone-number {
     font-size: 18px;
     color: #fff;
+    font-weight: 500;
+    margin-right: 30px;
+    position: relative;
+    display: flex;
 }
 
 .header-top .right-column .phone-number strong {

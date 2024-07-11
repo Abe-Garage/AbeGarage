@@ -39,10 +39,10 @@ async function createEmploye(employee) {
 
     // Insert the email in to the employee table
     const queryEmployee =
-      "INSERT INTO employee (employee_hash,employee_email,active_employee) VALUES (?,?,?)";
+      "INSERT INTO employee (employee_email,active_employee) VALUES (?,?)";
 
     const rows = await connection.query(queryEmployee, [
-      hash_id,
+
       employee.employee_email,
       employee.active_employee,
     ]);
@@ -57,10 +57,10 @@ async function createEmploye(employee) {
     // insert the employee_info table data
 
     const queryEmployeeInfo =
-      "INSERT INTO employee_info (employee_hash,employee_id, employee_first_name, employee_last_name, employee_phone) VALUES (?,?,?,?,?)";
+      "INSERT INTO employee_info (employee_id, employee_first_name, employee_last_name, employee_phone) VALUES (?,?,?,?)";
 
     const rows2 = await connection.query(queryEmployeeInfo, [
-      hash_id,
+   
       employee_id,
       employee.employee_first_name,
       employee.employee_last_name,
@@ -69,20 +69,20 @@ async function createEmploye(employee) {
 
     // insert the employee_pass table data
     const queryEmployeePass =
-      "INSERT INTO employee_pass (employee_hash,employee_id, employee_password_hashed) VALUES (?,?,?)";
+      "INSERT INTO employee_pass (employee_id, employee_password_hashed) VALUES (?,?)";
 
     const rows3 = await connection.query(queryEmployeePass, [
-      hash_id,
+   
       employee_id,
       hashedPassword,
     ]);
 
     // insert the employee_role table data
     const queryEmployeeRole =
-      "INSERT INTO employee_role (employee_hash,employee_id, company_role_id) VALUES (?,?,?)";
+      "INSERT INTO employee_role (employee_id, company_role_id) VALUES (?,?)";
 
     const rows4 = await connection.query(queryEmployeeRole, [
-      hash_id,
+     
       employee_id,
       employee.company_role_id,
     ]);

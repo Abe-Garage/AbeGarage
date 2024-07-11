@@ -73,6 +73,7 @@ function LoginForm() {
         } else {
           // Show an error message
           setServerError(response.message);
+          console.log(response);
         }
       })
       .catch((err) => {
