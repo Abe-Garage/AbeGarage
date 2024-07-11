@@ -3,20 +3,20 @@ const crypto = require("crypto");
 
 async function checkCustomerExists(customer_id) {
   const query = "SELECT * FROM customer_identifier WHERE customer_id = ?";
-  const [result] = await conn.query(query, [customer_id]);
+  const result = await conn.query(query, [customer_id]);
   console.log(`Query result for customer_id ${customer_id}:`, result);
   return Array.isArray(result) && result.length > 0;
 }
 
 async function checkVehicle(vehicle_id) {
   const query = "SELECT * FROM customer_vehicle_info WHERE vehicle_id = ?";
-  const [result] = await conn.query(query, [vehicle_id]);
+  const result = await conn.query(query, [vehicle_id]);
   return Array.isArray(result) && result.length > 0;
 }
 
 async function checkEmployee(employee_id) {
   const query = "SELECT * FROM employee WHERE employee_id = ?";
-  const [result] = await conn.query(query, [employee_id]);
+  const result = await conn.query(query, [employee_id]);
   return Array.isArray(result) && result.length > 0;
 }
 
@@ -117,7 +117,7 @@ async function createOrders(orderData) {
       ) VALUES (?, ?, ?)`;
     for (const service of order_services) {
       const serviceCompletedValue = service.service_completed ? 1 : 0;
-      const [orderServiceResult] = await conn.query(orderServiceQuery, [
+      const orderServiceResult = await conn.query(orderServiceQuery, [
         order_id,
         service.service_id,
         serviceCompletedValue,

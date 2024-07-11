@@ -10,7 +10,7 @@ async function createOrder(req, res) {
       'employee_id',
       'vehicle_id',
       // 'order_description',
-      'estimated_completion_date',
+      // 'estimated_completion_date',
       'order_services'
     ];
 
