@@ -110,14 +110,15 @@ async function getSingleCustomer(customer_id) {
 }
 
 // Get all customers
-async function getAllCustomers() {
+async function getAllCustomers(offset) {
+  
   try {
     const query = `
       SELECT *
       FROM customer_identifier
       INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id
-      ORDER BY customer_info.active_customer_status DESC, customer_info.customer_first_name ASC
-      LIMIT 10
+      ORDER BY customer_info.customer_id DESC, customer_info.customer_first_name ASC
+      LIMIT 10  OFFSET ${offset}
     `;
 
     const rows = await connection.query(query);
@@ -193,6 +194,45 @@ async function deleteCustomer(customer_id) {
   }
 }
 
+
+async function totalNumberOfCustomers(){
+  try {
+      const[ result] = await connection.query('SELECT COUNT(customer_id) AS num FROM customer_identifier') 
+     //  console.log(result)
+
+      return result
+
+  } catch (error) {
+     console.log(error)
+     throw new Error("Could not get customers. Please try again later.");
+       
+  }
+}
+
+
+async function searchedCustomers(searchWord){
+
+  
+  try {
+    const query = `
+      SELECT *
+      FROM customer_identifier
+      INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id
+      WHERE customer_identifier.customer_email LIKE ? OR customer_identifier.customer_phone_number LIKE ? OR customer_info.customer_first_name LIKE ? OR customer_info.customer_last_name LIKE ?
+    `;
+
+    const rows = await connection.query(query, [`%${searchWord}%`,`%${searchWord}%`,`%${searchWord}%`,`%${searchWord}%`]);
+    console.log(rows)
+    // console.log(await connection.query(query, [`%${searchWord}%`,`%${searchWord}%`,`%${searchWord}%`,`%${searchWord}%`]))
+
+    return rows;
+  } catch (error) {
+    console.error("Error getting customer by email:", error);
+    throw new Error("Could not get customer by email. Please try again later.");
+  }
+}
+
+
 module.exports = {
   checkIfCustomerExists,
   createCustomer,
@@ -201,4 +241,6 @@ module.exports = {
   getAllCustomers,
   updateCustomer,
   deleteCustomer,
+  totalNumberOfCustomers,
+  searchedCustomers
 };

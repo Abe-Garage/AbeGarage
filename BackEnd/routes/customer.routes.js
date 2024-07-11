@@ -22,7 +22,7 @@ router.post(
 
 // Create a route to handle the get all customers request in get
 router.get(
-  "/api/customers",
+  "/api/customers/:offset",
   [verifyToken, isAdmin],
   customerController.getAllCustomersController
 );
@@ -47,6 +47,11 @@ router.delete(
   [verifyToken, isAdmin],
   customerController.deleteCustomerController
 );
+
+
+
+router.get('/api/total_customers',customerController.totalNCustomers)
+router.get('/api/searched_customer/:credential',customerController.searchedCustomerController)
 
 // Export the router
 module.exports = router;

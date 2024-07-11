@@ -38,6 +38,8 @@ import ServiceList from "./markup/pages/Main/Services/ServiceList";
 // Import the PrivateAuthRoute component 
 import PrivateAuthRoute from './markup/components/Auth/PrivateAuthRoute';
 import Unauthorized from "./markup/pages/Main/Unauthorized/Unauthorized";
+import Customers from "./markup/pages/Admin/Customers/Customers";
+import CustomerList from "./markup/components/Admin/CustomerList/CustomerList";
 
 function App() {
   return (
@@ -73,13 +75,25 @@ function App() {
         />
         {/* // Add the Customers Route  */}
         <Route
-          path="/admin/customers"
+          path="/admin/add-customer"
           element={
             <PrivateAuthRoute roles={[2, 3]}>
               <CustomerForm />
             </PrivateAuthRoute>
           }
         />
+
+        <Route
+          path="/admin/customers"
+          element={
+            <PrivateAuthRoute roles={[2, 3]}>
+              <Customers />
+              {/* <CustomerList /> */}
+            </PrivateAuthRoute>
+          }
+        />
+
+
         <Route
           path="/admin/add-employee"
           element={
