@@ -169,7 +169,7 @@ const ServiceList = () => {
     const [currentServiceId, setCurrentServiceId] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:3000/api/services')
+        fetch('http://localhost:3001/api/services')
             .then(res => res.json())
             .then(data => setServices(data.data.rows))
             .catch(error => console.error('Error fetching services:', error));
@@ -181,7 +181,7 @@ const ServiceList = () => {
     };
 
     const handleDelete = (id) => {
-        fetch(`http://localhost:3000/api/deleteservice/${id}`, { method: 'DELETE' })
+        fetch(`http://localhost:3001/api/deleteservice/${id}`, { method: 'DELETE' })
             .then(() => setServices(services.filter(service => service.service_id !== id)))
             .catch(error => console.error('Error deleting service:', error));
     };
@@ -198,7 +198,7 @@ const ServiceList = () => {
 
         // setTimeout(()=> { 
         //     window.location.reload();
-        //  }, 3000)
+        //  }, 3001)
         
     };
    
@@ -206,7 +206,7 @@ const ServiceList = () => {
     const handleSaveEdit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:3000/api/service/${currentServiceId}`, {
+            const response = await fetch(`http://localhost:3001/api/service/${currentServiceId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newService)
@@ -231,7 +231,7 @@ const ServiceList = () => {
     const handleAddService = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:3000/api/service", {
+            const response = await fetch("http://localhost:3001/api/service", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newService)
@@ -260,7 +260,7 @@ const ServiceList = () => {
                 a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution.
             </p>
             <div className="services-list">
-                {services.map((service) => (
+                {services?.map((service) => (
                     <div key={service.service_id} className="service-item">
                         <div className="service-details">
                             <h3>{service.service_name}</h3>
