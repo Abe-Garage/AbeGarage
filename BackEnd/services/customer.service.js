@@ -120,8 +120,8 @@ async function getAllCustomers() {
       LIMIT 10
     `;
 
-    const [rows] = await connection.query(query);
-
+    const rows = await connection.query(query);
+ // console.log(await connection.query(query))
     return rows;
   } catch (error) {
     console.error("Error getting all customers:", error);
