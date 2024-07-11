@@ -12,7 +12,7 @@ const CustomerList = () => {
 
     const [offset, setOffset] = useState(0)
     const [last, setLast]=useState('')
-    const [search , setSearch] =useState('')
+    const [search , setSearch] =useState([])
     const[val,setValue]= useState('')
     
 
@@ -53,7 +53,7 @@ const handleSearchCustomer = async() =>{
   setSearch(data)
 
 }
-// console.log(search)
+console.log(search)
 
 
      const customersData= async()=>{
@@ -165,7 +165,7 @@ const handleSearchCustomer = async() =>{
                             <Link to={`/admin/edit-customer/${customer.customer_id}`} className='editButton'>  <LiaEdit className='px-1 svg' size={32}  /></Link>
 
                             <Link
-                                to={`/edit-customer/${customer.id}`}
+                                to={`/admin/customers/${customer.customer_id}`}
                                 className='editButton'
                             >
                                 <FiExternalLink className='px-1' size={30} />
