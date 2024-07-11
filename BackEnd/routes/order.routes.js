@@ -1,17 +1,17 @@
 const express = require("express");
-const orderController = require("../controllers/order.controller");
 const router = express.Router();
+const orderController = require("../controllers/order.controller");
 
 // Route to create a new order
-router.post("api/orders", orderController.createOrder);
+router.post("/order", orderController.createOrder);
 
 // Route to get all orders
-router.get("api/orders", orderController.getAllOrders);
+router.get("/orders", orderController.getAllOrders);
 
 // Route to get an order by ID
-router.get("api/order/:id", orderController.getOrderById);
+router.get("/order/:id", orderController.getOrderById);
 
 // Route to update an order
-router.put("api/order/:id", orderController.updateOrder);
+router.put("/order/:id", orderController.updateOrder);
 
 module.exports = router;

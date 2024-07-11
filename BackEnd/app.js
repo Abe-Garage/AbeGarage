@@ -15,7 +15,7 @@ require("dotenv").config();
 app.use(cors());
 
 // Enable JSON middleware
-app.use(express.json());
+app.use(bodyParser.json());
 
 // ` create a port from env file
 const port = process.env.PORT || 3000 // Use a configurable port
