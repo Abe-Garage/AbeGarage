@@ -1,7 +1,50 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { IoCloseSharp } from "react-icons/io5";
+import { useAuth } from '../../../../Context/AuthContext';
+import vehicleService from '../../../../services/vehicle.service';
 
-const Vehicleform = () => {
+const Vehicleform = ({id}) => {
+
+    const customer_id =id;
+
+    const [serverError, setServerError] = useState("");
+    const {employee}=  useAuth()
+    const [vehicle_year,setVehicleYear]=useState('')
+    const [vehicle_make,setVehicleMake]=useState('')
+    const [vehicle_model,setVehicleModel]=useState('')
+    const [vehicle_type,setVehicleType]=useState('')
+    const [vehicle_mileage,setVehicleMileage]=useState('')
+    const [vehicle_tag,setVehicleTag]=useState('')
+    const [vehicle_serial,setVehicleSerial]=useState('')
+    const [vehicle_color,setVehicleColor]=useState('')
+    // console.log(employee,employee?.employee_token)
+
+   const token = employee?.employee_token;
+
+    const handleSubmit = async(e)=>{
+        e.preventDefault();
+
+        // if(){
+        //     return 
+        // }
+
+
+        const formData={
+            customer_id,vehicle_year, vehicle_make,vehicle_model,vehicle_type,vehicle_mileage,vehicle_tag,vehicle_serial,vehicle_color
+        }
+
+        try {
+
+            const result = await vehicleService.AddVehicle(formData,token)
+
+            console.log(result)
+            
+        } catch (error) {
+            console.log(error)
+        }
+
+
+    }
   return (
     <section className="contact-section row pad">
          
@@ -18,51 +61,76 @@ const Vehicleform = () => {
                 <div className="inner-column ">
                     <div className="contact-form  col-lg-10 ">
                         
-                        <form >
+                        <form  onSubmit={handleSubmit}>
                             <div className="row clearfix">
 
                                 <div className="form-group col-md-12">
-                                    {/* {serverError && <div className="validation-error" role="alert">{serverError}</div>} */}
-                                    <input type="text" name="vehicle-year"  placeholder="Vehicle year" required  />
+                                    {serverError && <div className="validation-error" role="alert">{serverError}</div>}
+                                    <input type="text" name="vehicle-year" 
+                                    value={vehicle_year}
+                                    onChange={(event) => setVehicleYear(event.target.value)}  
+                                    placeholder="Vehicle year" required  />
 
-                                    {/* {emailError && <div className="validation-error" role="alert">{emailError}</div>} */}
+                                   
                                 </div>
 
                                 <div className="form-group col-md-12">
-                                    <input type="text" name="first-name" placeholder="Vehicle make"/>
+                                    <input type="text" name="first-name" 
+                                    value={vehicle_make}
+                                      onChange={(event) => setVehicleMake(event.target.value)} 
 
-                                    {/* {firstNameRequired && <div className="validation-error" role="alert">{firstNameRequired}</div>} */}
+                                      placeholder="Vehicle make"/>
+
+                                    
                                 </div>
                                 
                                 
                                 <div className="form-group col-md-12">
-                                    <input type="text" name="vehicle-model" placeholder="Vehicle model" required/>
+                                    <input type="text" name="vehicle-model" 
+                                    value={vehicle_model}
+                                    onChange={(event) => setVehicleModel(event.target.value)} 
+                                    placeholder="Vehicle model" required/>
                                 </div>
                                 
                                 <div className="form-group col-md-12">
-                                    <input type="text" name="vehicle-type"  placeholder="Vehicle type" required  />
+                                    <input type="text" name="vehicle-type"
+                                     value={vehicle_type}
+                                     onChange={(event) => setVehicleType(event.target.value)} 
+                                    placeholder="Vehicle type" required  />
                                 </div>
 
                                 <div className="form-group col-md-12">
-                                    <input type="text" name="vehicle-mileage"  placeholder="Vehicle mileage" required  />
+                                    <input type="text" name="vehicle-mileage" 
+                                    value={vehicle_mileage}
+                                    onChange={(event) => setVehicleMileage(event.target.value)}  
+                                    placeholder="Vehicle mileage" required  />
                                 </div>
 
                                 <div className="form-group col-md-12">
-                                    <input type="text" name="vehicle-tag"  placeholder="Vehicle tag" required  />
+                                    <input type="text" name="vehicle-tag" 
+                                    value={vehicle_tag}
+                                    onChange={(event) => setVehicleTag(event.target.value)}  
+                                    placeholder="Vehicle tag" required  />
                                 </div>
 
                                 <div className="form-group col-md-12">
-                                    <input type="text" name="vehicle-serial"  placeholder="Vehicle serial" required  />
+                                    <input type="text" name="vehicle-serial"
+                                    value={vehicle_serial}
+                                    onChange={(event) => setVehicleSerial(event.target.value)} 
+                                      placeholder="Vehicle serial" required  />
                                 </div>
 
 
                                 <div className="form-group col-md-12">
-                                    <input type="text" name="vehicle-color"  placeholder="Vehicle color" required  />
+                                    <input type="text" name="vehicle-color" 
+                                    value={vehicle_color}
+                                    onChange={(event) => setVehicleColor(event.target.value)} 
+                                    placeholder="Vehicle color" required  />
                                 </div>
 
                           
                                 <div className="form-group col-md-12">
-                                    <input id="form_botcheck" name="form_botcheck" className="form-control" type="hidden" value="" />
+                                    {/* <input id="form_botcheck" name="form_botcheck" className="form-control" type="hidden" value="" /> */}
                                     <button className="theme-btn btn-style-one" type="submit" data-loading-text="Please wait..."><span>ADD VEHICLE</span></button>
                                 </div>
 
