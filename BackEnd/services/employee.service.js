@@ -190,7 +190,13 @@ async function updateEmploye(employee) {
 
 // A function to delete employees by id
 async function deleteEmploye(employee_id) {
-  // console.log(employee_id);
+  try {
+    // console.log(employee_id);
+    if (!employee_id) {
+      throw new Error('Employee ID is undefined');
+    }
+
+  console.log(`Deleting employee with ID: ${employee_id}`);
 
   const query1 = "DELETE FROM employee_info WHERE  employee_id = ?";
 
@@ -209,6 +215,10 @@ async function deleteEmploye(employee_id) {
   const rows4 = await connection.query(query4, [employee_id]);
 
   return { rows1, rows2, rows3, rows4 };
+} catch (error) {
+  console.error("Error deleting employee:", error);
+  throw new Error("Could not delete employee. Please try again later.");
+}
 }
 
 module.exports = {

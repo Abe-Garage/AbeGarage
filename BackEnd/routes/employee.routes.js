@@ -18,7 +18,7 @@ const employeeController = require("../controllers/employee.controller");
 // create a route to handle the employee request in post
 router.post(
   "/api/employee",
-  [verifyToken, isAdmin],
+  // [verifyToken, isAdmin],
   employeeController.createEmployee
 );
 
@@ -42,6 +42,14 @@ router.put(
   [verifyToken, isAdmin],
   employeeController.updateEmployee
 );
+
+// create a route to handle the employee request in delete
+router.delete(
+  "/api/employee/:employee_id",
+  [verifyToken, isAdmin],
+  employeeController.deleteEmployee
+  );
+
 
 // export the router
 module.exports = router;
