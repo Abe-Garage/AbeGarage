@@ -9,7 +9,7 @@ async function createOrder(req, res) {
       'customer_id',
       'employee_id',
       'vehicle_id',
-      'order_description',
+      // 'order_description',
       'estimated_completion_date',
       'order_services'
     ];
@@ -19,9 +19,7 @@ async function createOrder(req, res) {
         return res.status(400).json({ error: `Field ${field} is required` });
       }
     }
-    // if (!Array.isArray(orderData.services) || orderData.services.length === 0) {
-    //   return res.status(400).json({ error: "Field 'services' must be a non-empty array" });
-    // }
+    
     // Pass the validated data to the service
     const result = await orderService.createOrders(orderData);
     res.status(201).json(result);
