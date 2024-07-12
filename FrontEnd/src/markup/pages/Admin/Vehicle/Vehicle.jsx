@@ -1,13 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AdminMenu from '../../../components/Admin/AdminMenu/AdminMenu';
 import Vehicleform from '../../../components/Admin/VehicleForm/Vehicleform';
 import EditCalendarOutlinedIcon from "@mui/icons-material/EditCalendarOutlined";
 import { MdBorderClear } from 'react-icons/md';
 import zIndex from '@mui/material/styles/zIndex';
 import { useParams } from 'react-router-dom';
+import customerService from '../../../../services/customer.service';
+import { useAuth } from '../../../../Context/AuthContext';
 
 
 const Vehicle = () => {
+
+    const [customerinfo, setCustomerInfo] = useState({})
+    const {employee}=  useAuth()
+    // console.log(employee,employee?.employee_token)
+    const{id}= useParams()
+    console.log(id)
+
+    const token = employee?.employee_token;
 
     const circleStyle = {
         width: '100px',
@@ -33,8 +43,19 @@ const Vehicle = () => {
 
       }
 
-     const{id}= useParams()
-     console.log(id)
+      const singCustomerData =async () =>{
+         const data = await customerService.singleCustomer(id,token)
+        //  console.log(data.customer)
+         setCustomerInfo(data.customer)
+      }
+
+   
+
+     useEffect(()=>{
+         singCustomerData()
+     },[])
+
+    //  console.log(customerinfo)
 
  
   return (
@@ -73,13 +94,13 @@ const Vehicle = () => {
 
                                     <div className='auto-container col-md-10'>
                                     <div className='customer-vehicle'>
-                                        <h2>Customer : Elias</h2>
+                                        <h2>Customer : {customerinfo.customer_first_name}</h2>
                                     </div>
 
                                     <div className='v_info'>
-                                            <p><span className='v_title'>Email</span> :<span>elias@eva.com</span></p>
-                                            <p><span className='v_title'>phone no</span> :<span>555555</span></p>
-                                            <p><span className='v_title'> Active Customer</span> :<span>yes</span></p>
+                                            <p><span className='v_title'>Email</span> :<span>{customerinfo.customer_email}</span></p>
+                                            <p><span className='v_title'>phone no</span> :<span>{customerinfo.customer_phone_number}</span></p>
+                                            <p><span className='v_title'> Active Customer</span> :<span>{customerinfo.active_customer_status ? 'Yes': 'No'}</span></p>
                                             <p><span className='v_title'>Edit Customer info</span> :<span><EditCalendarOutlinedIcon /></span></p>
                                     </div>
                                     </div>

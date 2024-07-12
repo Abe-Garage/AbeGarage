@@ -53,7 +53,7 @@ const handleSearchCustomer = async() =>{
   setSearch(data)
 
 }
-console.log(search)
+// console.log(search)
 
 
      const customersData= async()=>{
