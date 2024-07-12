@@ -32,16 +32,37 @@ async function createOrders(orderData) {
       vehicle_id,
       active_order,
       customer_id, 
-      employee_id, 
+      employee_id,
+      order_description, 
       order_status,
       order_total_price,
       completion_date,
       additional_request,
       additional_requests_completed,
-     
       order_services,
       estimated_completion_date
     } = orderData;
+
+    // Validate order_services existence and type
+    if (!Array.isArray(order_services)) {
+      throw new Error('order_services must be an array');
+    }
+
+    // Validate order_services is not empty
+    if (order_services.length === 0) {
+      throw new Error('order_services must not be empty');
+    }
+
+    // Validate each service in order_services
+    for (const service of order_services) {
+      if (typeof service !== 'object' || !service.service_id || service.service_completed === undefined) {
+        throw new Error('Each service in order_services must have service_id and service_completed');
+      }
+    }
+
+    console.log('Order Services:', order_services);
+
+  
 
     const order_hash = crypto.randomUUID();
 
@@ -65,14 +86,15 @@ async function createOrders(orderData) {
     // Create order
     const orderQuery = `
       INSERT INTO orders (
-        employee_id, customer_id, vehicle_id, active_order, order_hash
-      ) VALUES (?, ?, ?, ?, ?)
+        employee_id, customer_id, vehicle_id, active_order, order_description, order_hash
+      ) VALUES (?, ?, ?, ?, ?, ?)
     `;
     const orderResult = await conn.query(orderQuery, [
       employee_id,
       customer_id,
       vehicle_id,
       active_order,
+      order_description,
       order_hash,
     ]);
 
@@ -95,7 +117,7 @@ async function createOrders(orderData) {
       ) VALUES (?, ?, ?, ?, ?, ?)`;
     const orderInfoResult = await conn.query(orderInfoQuery, [
       order_id,
-      order_total_price,
+      order_total_price || 0,
       estimated_completion_date || null,
       completion_date || null,
       additional_request || null,

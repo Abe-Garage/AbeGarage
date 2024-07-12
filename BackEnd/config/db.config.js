@@ -104,6 +104,9 @@ async function query(sql, params) {
         // Execute the query and destructure the result into rows and fields
         const [rows, fields] = await pool.execute(sql, params);
 
+        // Log the query results for debugging
+        console.log('Query result:', rows);
+        
         // Return an object containing both rows and fields
         return rows;
 
