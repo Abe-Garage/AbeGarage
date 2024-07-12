@@ -9,8 +9,10 @@ async function createOrder(req, res) {
       'customer_id',
       'employee_id',
       'vehicle_id',
-      // 'order_description',
-      // 'estimated_completion_date',
+      'order_status',
+      'order_total_price',
+      'order_description',
+      'estimated_completion_date',
       'order_services'
     ];
 
@@ -20,6 +22,10 @@ async function createOrder(req, res) {
       }
     }
     
+    if (!Array.isArray(orderData.order_services) || orderData.order_services.length === 0) {
+      return res.status(400).json({ error: "Field 'order_services' must be a non-empty array" });
+  }
+
     // Pass the validated data to the service
     const result = await orderService.createOrders(orderData);
     res.status(201).json(result);
@@ -64,6 +70,14 @@ async function updateOrder(req, res) {
   try {
     const { id } = req.params;
     const orderData = req.body;
+
+    // Validate required fields
+    const requiredFields = ['estimated_completion_date', 'completion_date', 'order_completed'];
+    for (const field of requiredFields) {
+        if (orderData[field] === undefined) {
+            return res.status(400).json({ error: `Field ${field} is required` });
+        }
+    }
 
     const result = await orderService.updateOrder(id, orderData);
     res.status(200).json(result);
