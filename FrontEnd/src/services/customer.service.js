@@ -25,6 +25,7 @@ async function getAllCustomers(token,offset) {
   return data;
 }
 
+
 // afunction to customer update request
 async function updateCustomer(formData, loggedInCustomerToken) {
   const headers = {
@@ -37,15 +38,18 @@ async function updateCustomer(formData, loggedInCustomerToken) {
 
   return data;
 }
+
 // a funtion to get single customer
-async function singleCustomer(formData, loggedInCustomerToken) {
+async function singleCustomer(ID, Token) {
+
   const headers = {
-    "x-access-token": loggedInCustomerToken,
+    "x-access-token": Token,
   };
   // console.log(formData);
-  const data = await axios.get(`/api/customer/single/${formData}`, { headers });
+  console.log(ID, Token)
+  const {data }= await axios.get(`${api_url}/api/customer/single/${ID}`, {headers});
 
-  // console.log(data);
+  console.log(data);
 
   return data;
 }
@@ -103,6 +107,7 @@ const customerService = {
   formatDate,
   totalNofCustomers,
   searchedCustomers
+
 };
 
 export default customerService;
