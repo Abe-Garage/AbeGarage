@@ -94,7 +94,7 @@ const Vehicle = () => {
 
                                     <div className='auto-container col-md-10'>
                                     <div className='customer-vehicle'>
-                                        <h2>Customer : {customerinfo.customer_first_name}</h2>
+                                        <h2>Customer : {customerinfo.customer_first_name}  {customerinfo.customer_last_name}</h2>
                                     </div>
 
                                     <div className='v_info'>
@@ -111,7 +111,7 @@ const Vehicle = () => {
                                         <div className='auto-container  col-md-10 '>
                                         
                                             <div className="contact-title mrg">
-                                                <h2>Vehicles of Team4</h2>
+                                                <h2>Vehicles of {customerinfo.customer_first_name}</h2>
                                                 <div className='contact-form'>
                                                         <div className='row clearfix'>
                                                                 <div className="form-group col-md-12 search">
