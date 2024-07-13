@@ -3,9 +3,9 @@ const {
   checkIfEmployeeExists,
   createEmploye,
   getAllEmployees,
-  updateEmploye,
-  deleteEmploye,
-  getSingleEmploye,
+  updateEmployeeService,
+  ServicedeleteEmployee,
+  getSingleEmployeeService,
 } = require("../services/employee.service");
 
 // create Employee controller
@@ -70,7 +70,7 @@ async function getAllEmployeees(req, res, next) {
 async function getSingleEmployee(req, res, next) {
   const employee_hash = req.params.id;
   try {
-    const singleEmployee = await getSingleEmploye(employee_hash);
+    const singleEmployee = await getSingleEmployeeService(employee_hash);
 
     if (!singleEmployee) {
       res.status(400).json({
@@ -92,7 +92,7 @@ async function getSingleEmployee(req, res, next) {
 // update Employee controller
 async function updateEmployee(req, res, next) {
   try {
-    const updateEmployee = await updateEmploye(req.body);
+    const updateEmployee = await updateEmployeeService(req.body);
 
     // the returned rows value
     const rows1 = updateEmployee.rows1.affectedRows;
@@ -121,17 +121,17 @@ async function updateEmployee(req, res, next) {
 
 // delete Employee controller
 async function deleteEmployee(req, res, next) {
-  const { employee_id } = req.body;
+  const id = req.params.id;
   try {
-    const deleteEmployee = await deleteEmploye(employee_id);
+    const deleteEmployeeResult = await ServicedeleteEmployee(id);
 
-    if (!deleteEmployee) {
+    if (deleteEmployeeResult) {
       res.status(200).json({
-        error: "Delete Incomplete!",
+        message: "Employee successfully deleted!",
       });
     } else {
       res.status(400).json({
-        status: "Employee Succesfully Delete!",
+        status: "Delete incomplete!",
       });
     }
   } catch (error) {
