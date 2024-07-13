@@ -32,13 +32,13 @@ import EditEmployee from "./markup/pages/Admin/Employee/EditEmployee";
 import Employees from "./markup/pages/Admin/Employee/Employees";
 import AddEmployee from "./markup/pages/Admin/Employee/AddEmployee";
 import CustomerForm from "./markup/pages/Admin/Customers/CustomerForm";
-import EditCustomer from "./markup/pages/Admin/Customers/EditCustomer";
+import EditCustomer from "./markup/components/Admin/CustomerForm/EditCustomer";
 import ServiceList from "./markup/pages/Main/Services/ServiceList";
 
 // Import the PrivateAuthRoute component 
 import PrivateAuthRoute from './markup/components/Auth/PrivateAuthRoute';
 import Unauthorized from "./markup/pages/Main/Unauthorized/Unauthorized";
-import Customers from "./markup/pages/Admin/Customers/Customers";
+// import Customers from "./markup/pages/Admin/Customers/Customers";
 import CustomerList from "./markup/components/Admin/CustomerList/CustomerList";
 
 function App() {
@@ -52,9 +52,6 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         {/* // Add the Orders Route  */}
-
-
-
         <Route
           path="/admin"
           element={
@@ -63,8 +60,6 @@ function App() {
             </PrivateAuthRoute>
           }
         />
-
-
         <Route
           path="/admin/orders"
           element={
@@ -82,18 +77,15 @@ function App() {
             </PrivateAuthRoute>
           }
         />
-
         <Route
           path="/admin/customers"
           element={
             <PrivateAuthRoute roles={[2, 3]}>
-              <Customers />
-              {/* <CustomerList /> */}
+              {/* <Customers /> */}
+              <CustomerList />
             </PrivateAuthRoute>
           }
         />
-
-
         <Route
           path="/admin/add-employee"
           element={
@@ -102,7 +94,6 @@ function App() {
             </PrivateAuthRoute>
           }
         />
-
         <Route
           path="admin/employees"
           element={
@@ -111,8 +102,7 @@ function App() {
             </PrivateAuthRoute>
           }
         />
-
-         <Route
+        <Route
           path="admin/employee/edit/:id"
           element={
             <PrivateAuthRoute roles={[3]}>
@@ -120,9 +110,6 @@ function App() {
             </PrivateAuthRoute>
           }
         />
-
-
-
         <Route path="/services" element={<Services />} />
         {/* <Route path="order/{orderHash}" element={OrdersDetail} /> */}
         //TODO:-ALALEKEM(MALEK YALEBET) //* routes related to employee
@@ -141,7 +128,10 @@ function App() {
         {/* //* routes related to customers */}
         <Route path="/admin/customers/:id" element={<Vehicle />} />
         {/* <Route path="/admin/add-customer" element={<CustomerForm />} /> */}
-        <Route path="/admin/edit-customer/:id" element={<EditCustomer />} />
+        <Route
+          path="/admin/edit-customer/:customerId"
+          element={<EditCustomer />}
+        />
         {/* <Route path="admin/customers" element={Customers} /> */}//TODO
         {/* <Route path="admin/add-customer" element={Addvehicle} /> //* conditionally render */}
       </Routes>

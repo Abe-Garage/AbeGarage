@@ -1,5 +1,5 @@
 import React from "react";
-import EditCustomerForm from "../../../components/Admin/CustomerForm/EditCustomer";
+import EditCustomer from "../../../components/Admin/CustomerForm/EditCustomer";
 import AdminMenu from "../../../components/Admin/AdminMenu/AdminMenu";
 
 function EditCustomer(props) {
@@ -23,7 +23,7 @@ function EditCustomer(props) {
             <AdminMenu />
           </div>
           <div className="col-md-9 admin-right-side">
-            <EditCustomerForm customer={customer} onSave={handleSave} />
+            <EditCustomer customer={customer} onSave={handleSave} />
           </div>
         </div>
       </div>
