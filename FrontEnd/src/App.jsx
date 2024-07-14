@@ -40,7 +40,11 @@ import PrivateAuthRoute from './markup/components/Auth/PrivateAuthRoute';
 import Unauthorized from "./markup/pages/Main/Unauthorized/Unauthorized";
 // import Customers from "./markup/pages/Admin/Customers/Customers";
 import CustomerList from "./markup/components/Admin/CustomerList/CustomerList";
+
+import ErrorComponent from "./markup/pages/Main/404/404";
+
 import Customers from "./markup/pages/Admin/Customers/Customers";
+
 
 function App() {
   return (
@@ -52,6 +56,7 @@ function App() {
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="*" element={<ErrorComponent />} />
         {/* // Add the Orders Route  */}
         <Route
           path="/admin"
