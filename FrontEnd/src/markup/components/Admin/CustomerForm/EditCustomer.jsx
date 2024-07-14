@@ -6,7 +6,7 @@ import { LiaEdit } from "react-icons/lia";
 import { FiExternalLink } from "react-icons/fi";
 import { useAuth } from "../../../../Context/AuthContext";
 
-const EditCustomer = () => {
+const EditCustomerForm = () => {
   const { customerId } = useParams();
   const [customer, setCustomer] = useState(true);
   const [formData, setFormData] = useState({
@@ -163,4 +163,4 @@ const EditCustomer = () => {
   );
 };
 
-export default EditCustomer;
+export default EditCustomerForm;
