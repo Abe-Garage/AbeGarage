@@ -8,7 +8,7 @@ async function checkIfCustomerExists(email) {
     const query = "SELECT * FROM customer_identifier WHERE customer_email = ?";
     const [rows] = await connection.query(query, [email]);
 
-    return rows.length > 0;
+    return rows;
   } catch (error) {
     console.error("Error checking customer existence:", error);
     throw new Error(
@@ -110,18 +110,19 @@ async function getSingleCustomer(customer_id) {
 }
 
 // Get all customers
-async function getAllCustomers() {
+async function getAllCustomers(offset) {
+  
   try {
     const query = `
       SELECT *
       FROM customer_identifier
       INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id
-      ORDER BY customer_info.active_customer_status DESC, customer_info.customer_first_name ASC
-      LIMIT 10
+      ORDER BY customer_info.customer_id DESC, customer_info.customer_first_name ASC
+      LIMIT 10  OFFSET ${offset}
     `;
 
-    const [rows] = await connection.query(query);
-
+    const rows = await connection.query(query);
+ // console.log(await connection.query(query))
     return rows;
   } catch (error) {
     console.error("Error getting all customers:", error);
@@ -133,6 +134,13 @@ async function getAllCustomers() {
 async function updateCustomer(customer) {
   try {
     const customer_id = customer.customer_id;
+
+    // Replace undefined values with null
+    const customer_email = customer.customer_email || null;
+    const customer_phone_number = customer.customer_phone_number || null;
+    const customer_first_name = customer.customer_first_name || null;
+    const customer_last_name = customer.customer_last_name || null;
+    const active_customer_status = customer.active_customer_status || null;
 
     const query1 = `
       UPDATE customer_identifier
@@ -147,15 +155,15 @@ async function updateCustomer(customer) {
     `;
 
     const result1 = await connection.query(query1, [
-      customer.customer_email,
-      customer.customer_phone_number,
+      customer_email,
+      customer_phone_number,
       customer_id,
     ]);
 
     const result2 = await connection.query(query2, [
-      customer.customer_first_name,
-      customer.customer_last_name,
-      customer.active_customer_status,
+      customer_last_name,
+      customer_first_name,
+      active_customer_status,
       customer_id,
     ]);
 
@@ -169,6 +177,10 @@ async function updateCustomer(customer) {
 // Delete customer by ID
 async function deleteCustomer(customer_id) {
   try {
+    if (!customer_id) {
+      throw new Error('Customer ID is undefined');
+    }
+    
     const query1 = "DELETE FROM customer_info WHERE customer_id = ?";
     const query2 = "DELETE FROM customer_identifier WHERE customer_id = ?";
 
@@ -182,6 +194,45 @@ async function deleteCustomer(customer_id) {
   }
 }
 
+
+async function totalNumberOfCustomers(){
+  try {
+      const[ result] = await connection.query('SELECT COUNT(customer_id) AS num FROM customer_identifier') 
+     //  console.log(result)
+
+      return result
+
+  } catch (error) {
+     console.log(error)
+     throw new Error("Could not get customers. Please try again later.");
+       
+  }
+}
+
+
+async function searchedCustomers(searchWord){
+
+  
+  try {
+    const query = `
+      SELECT *
+      FROM customer_identifier
+      INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id
+      WHERE customer_identifier.customer_email LIKE ? OR customer_identifier.customer_phone_number LIKE ? OR customer_info.customer_first_name LIKE ? OR customer_info.customer_last_name LIKE ?
+    `;
+
+    const rows = await connection.query(query, [`%${searchWord}%`,`%${searchWord}%`,`%${searchWord}%`,`%${searchWord}%`]);
+    console.log(rows)
+    // console.log(await connection.query(query, [`%${searchWord}%`,`%${searchWord}%`,`%${searchWord}%`,`%${searchWord}%`]))
+
+    return rows;
+  } catch (error) {
+    console.error("Error getting customer by email:", error);
+    throw new Error("Could not get customer by email. Please try again later.");
+  }
+}
+
+
 module.exports = {
   checkIfCustomerExists,
   createCustomer,
@@ -190,4 +241,6 @@ module.exports = {
   getAllCustomers,
   updateCustomer,
   deleteCustomer,
+  totalNumberOfCustomers,
+  searchedCustomers
 };

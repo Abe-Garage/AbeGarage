@@ -218,6 +218,8 @@ async function updateEmployeeService(employee) {
 async function ServicedeleteEmployee(employee_id) {
   console.log("employee to be deleted id>>>",employee_id);
 
+  try{
+
   const query1 = "DELETE FROM employee_info WHERE  employee_id = ?";
 
   const query2 = "DELETE FROM employee_role WHERE employee_id = ?";
@@ -235,6 +237,10 @@ async function ServicedeleteEmployee(employee_id) {
   const rows4 = await connection.query(query4, [employee_id]);
 
   return { rows1, rows2, rows3, rows4 };
+} catch (error) {
+  console.error("Error deleting employee:", error);
+  throw new Error("Could not delete employee. Please try again later.");
+}
 }
 
 module.exports = {

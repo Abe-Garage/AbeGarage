@@ -7,8 +7,6 @@ import AllOrdersPage from "./markup/pages/Admin/Orders/AllOrdersPage";
 import Home from "./markup/pages/Home/Home";
 import About from "./markup/pages/Main/About/About";
 import AdminDashBoard from "./markup/pages/Admin/AdminDashBoard/AdminDashBoard";
-import AddCustomerForm from "./markup/components/Admin/CustomerForm/CustomerForm";
-// import EditCustomer from "./markup/components/Admin/CustomerForm/EditCustomer";
 import CreateOrder from "./markup/components/Admin/Order/CreateOrder";
 
 
@@ -36,13 +34,16 @@ import AddEmployee from "./markup/pages/Admin/Employee/AddEmployee";
 import EmployeeProfile from "./markup/pages/Admin/Employee/EmployeeProfile";
 
 import CustomerForm from "./markup/pages/Admin/Customers/CustomerForm";
-import EditCustomer from "./markup/pages/Admin/Customers/EditCustomer";
+import EditCustomer from "./markup/components/Admin/CustomerForm/EditCustomer";
 import ServiceList from "./markup/pages/Main/Services/ServiceList";
 
 
 // Import the PrivateAuthRoute component 
 import PrivateAuthRoute from './markup/components/Auth/PrivateAuthRoute';
 import Unauthorized from "./markup/pages/Main/Unauthorized/Unauthorized";
+// import Customers from "./markup/pages/Admin/Customers/Customers";
+import CustomerList from "./markup/components/Admin/CustomerList/CustomerList";
+import Customers from "./markup/pages/Admin/Customers/Customers";
 
 function App() {
   return (
@@ -73,10 +74,19 @@ function App() {
         />
         {/* // Add the Customers Route  */}
         <Route
-          path="/admin/customers"
+          path="/admin/add-customer"
           element={
             <PrivateAuthRoute roles={[2, 3]}>
               <CustomerForm />
+            </PrivateAuthRoute>
+          }
+        />
+        <Route
+          path="/admin/customers"
+          element={
+            <PrivateAuthRoute roles={[2, 3]}>
+              <Customers />
+              {/* <CustomerList /> */}
             </PrivateAuthRoute>
           }
         />
@@ -126,7 +136,10 @@ function App() {
         {/* //* routes related to customers */}
         <Route path="/admin/customers/:id" element={<Vehicle />} />
         {/* <Route path="/admin/add-customer" element={<CustomerForm />} /> */}
-        <Route path="/admin/edit-customer/:id" element={<EditCustomer />} />
+        <Route
+          path="/admin/edit-customer/:customerId"
+          element={<EditCustomer />}
+        />
         {/* <Route path="admin/customers" element={Customers} /> */}//TODO
         {/* <Route path="admin/add-customer" element={Addvehicle} /> //* conditionally render */}
       </Routes>

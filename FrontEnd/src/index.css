@@ -3,11 +3,17 @@
     background-color: #fff;
     padding: 40px;
     box-shadow: 8px 12px 12px rgba(158, 158, 158, 0.12);
+    margin: 0 !important;
+    margin-left: 100px !important;
   }
   
   .pad{
     padding: 20px 0 20px !important;
     position: relative;
+  }
+
+  .pad_1{
+   padding-bottom: 20px !important;
   }
   
   .close-btn{
@@ -29,9 +35,61 @@
   .search input{
     border: none !important;
     box-shadow: 8px 12px 12px rgba(158, 158, 158, 0.12);
-  
   }
+
+
+  .search_customer{
+    position: relative;
+  }
+
+
+  .search_btn{
+      position: absolute;
+      right: 20px;
+      top: 15px;
+  }
+
+  .search_customer input{
     
+    border:1px solid #DDD !important;
+    box-shadow: 12px 12px 12px rgba(158, 158, 158, 0.12);
+    margin-bottom: 20px;
+  }
+
+
+  .customer_list .btns {
+    margin-bottom: 50px;
+    margin-top: 30px;
+  }
+
+  .customer_list .btns button{
+     padding: 5px 15px;
+     background-color: #fff;
+     border: 1px solid #DDD;
+     width: 120px;
+  }
+
+  .customer_name{
+    color:#081336;
+    font-weight: 550;
+  }
+
+
+  .customer_list .btns button:nth-of-type(1), .customer_list .btns button:nth-of-type(2){
+    border-right: 1px solid #DDD;
+  }
+
+  .customer_list .btns button:nth-of-type(3), .customer_list .btns button:nth-of-type(4){
+     background-color: #081336;
+     color:#fff;
+     border-right: 1px solid #fff;
+  }
+
+  .editButton{
+    color: #081336;
+    
+  }
+
   .customer-vehicle h2{
     font-size: 40px;
     font-weight: 600;

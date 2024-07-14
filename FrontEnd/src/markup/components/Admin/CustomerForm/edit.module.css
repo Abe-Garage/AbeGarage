@@ -28,32 +28,46 @@
 .contactForm {
   display: inline-block;
   text-align: left;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .formGroup {
   margin-bottom: 15px;
 }
 
-.formInput,
-.formCheckbox {
+.formInput {
   display: block;
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.formCheckbox {
+  display: inline-block;
+  margin-right: 10px;
 }
 
 .formCheckboxLabel {
+  display: block;
   margin-bottom: 5px;
+  cursor: pointer;
 }
 
 .themeBtn {
   display: block;
   width: 100%;
   padding: 10px;
-  background-color: #007bff;
+  background-color: rgb(239, 52, 52);
   color: white;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
 }
 
 .themeBtn:hover {
@@ -62,4 +76,24 @@
 
 .themeBtn span {
   display: block;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .contactForm {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .formGroup {
+    margin-bottom: 10px;
+  }
+
+  .formInput {
+    padding: 8px;
+  }
+
+  .themeBtn {
+    padding: 8px;
+  }
 }

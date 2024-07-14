@@ -1,19 +1,17 @@
-const express = require('express');
-const { createOrder,getAllOrders,getOrderById,updateOrder } = require('../controllers/order.controller');
+const express = require("express");
 const router = express.Router();
+const orderController = require("../controllers/order.controller");
 
-router.post('/api/createOrder', createOrder);
+// Route to create a new order
+router.post("/order", orderController.createOrder);
 
-// Get all orders with optional limit, sortby, and filter by completed
-router.get('/api/getAllOrders', getAllOrders);
-// Get single order by ID
-router.get('/api/getOrderById', getOrderById);
-// Update an order
-router.put('/api/updateOrder',updateOrder);
+// Route to get all orders
+router.get("/orders", orderController.getAllOrders);
 
+// Route to get an order by ID
+router.get("/order/:id", orderController.getOrderById);
 
-
-
-
+// Route to update an order
+router.put("/order", orderController.updateOrder);
 
 module.exports = router;

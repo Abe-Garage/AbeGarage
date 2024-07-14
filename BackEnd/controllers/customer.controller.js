@@ -8,6 +8,8 @@ const {
   getAllCustomers,
   updateCustomer,
   deleteCustomer,
+  totalNumberOfCustomers,
+  searchedCustomers
 } = require("../services/customer.service");
 
 // Create Customer controller
@@ -45,8 +47,9 @@ async function createCustomerController(req, res, next) {
 
 // Get all Customers controller
 async function getAllCustomersController(req, res, next) {
+  const {offset} =req.params
   try {
-    const customers = await getAllCustomers();
+    const customers = await getAllCustomers(offset);
 
     if (!customers) {
       return res.status(400).json({
@@ -113,9 +116,12 @@ async function updateCustomerController(req, res, next) {
 
 // Delete Customer controller
 async function deleteCustomerController(req, res, next) {
-  const { customer_id } = req.body;
-
   try {
+    const { customer_id } = req.params;
+
+    if (!customer_id) {
+      return res.status(400).json({ error: "Customer ID is required" });
+    }
     const deleteResult = await deleteCustomer(customer_id);
 
     if (!deleteResult) {
@@ -134,10 +140,58 @@ async function deleteCustomerController(req, res, next) {
   }
 }
 
+async function totalNCustomers(req,res){
+  try {
+    const customers = await totalNumberOfCustomers();
+
+    if (!customers) {
+      return res.status(400).json({
+        error: "Failed to get all customers!",
+      });
+    }
+
+    return res.status(200).json({
+      status: "Customers retrieved successfully!",
+      customers,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      error: "Something went wrong!",
+    });
+  }
+
+  
+}
+
+
+async function searchedCustomerController(req,res){
+  const{credential}=req.params
+  try {
+    const customers = await searchedCustomers(credential);
+
+    if (!customers) {
+      return res.status(400).json({
+        error: "Failed to get all customers!",
+      });
+    }
+
+    return res.status(200).json({
+      status: "Customers retrieved successfully!",
+      customers,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      error: "Something went wrong!",
+    });
+  }
+}
+
 module.exports = {
   createCustomerController,
   getAllCustomersController,
   getSingleCustomerController,
   updateCustomerController,
   deleteCustomerController,
+  totalNCustomers,
+  searchedCustomerController
 };
