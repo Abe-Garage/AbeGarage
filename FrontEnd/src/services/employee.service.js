@@ -49,7 +49,7 @@ async function singleEmployee( loggedInEmployeeToken) {
   // console.log(data);
 
   return data;
-}git 
+}
 // a function to delete employee
 async function deleteEmployee(loggedInEmployeeToken, id) {
 

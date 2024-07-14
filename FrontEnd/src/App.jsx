@@ -90,8 +90,8 @@ function App() {
           path="/admin/customers"
           element={
             <PrivateAuthRoute roles={[2, 3]}>
-              {/* <Customers /> */}
-              <CustomerList />
+              <Customers />
+              {/* <CustomerList /> */}
             </PrivateAuthRoute>
           }
         />

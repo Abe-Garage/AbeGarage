@@ -25,7 +25,7 @@ const verifyToken = async (req, res, next) => {
       });
     }
     // console.log("Here is the decoded token");
-    // console.log(decoded);
+    console.log(decoded);
     req.employee_email = decoded.employee_email;
     next();
   });
