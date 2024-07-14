@@ -12,6 +12,6 @@ router.get("/orders", orderController.getAllOrders);
 router.get("/order/:id", orderController.getOrderById);
 
 // Route to update an order
-router.put("/order/:id", orderController.updateOrder);
+router.put("/order", orderController.updateOrder);
 
 module.exports = router;

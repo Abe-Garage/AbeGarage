@@ -31,38 +31,42 @@ async function createOrders(orderData) {
     const {
       vehicle_id,
       active_order,
-      customer_id, 
+      customer_id,
       employee_id,
-      order_description, 
+      order_description,
       order_status,
       order_total_price,
       completion_date,
       additional_request,
       additional_requests_completed,
       order_services,
-      estimated_completion_date
+      estimated_completion_date,
     } = orderData;
 
     // Validate order_services existence and type
     if (!Array.isArray(order_services)) {
-      throw new Error('order_services must be an array');
+      throw new Error("order_services must be an array");
     }
 
     // Validate order_services is not empty
     if (order_services.length === 0) {
-      throw new Error('order_services must not be empty');
+      throw new Error("order_services must not be empty");
     }
 
     // Validate each service in order_services
     for (const service of order_services) {
-      if (typeof service !== 'object' || !service.service_id || service.service_completed === undefined) {
-        throw new Error('Each service in order_services must have service_id and service_completed');
+      if (
+        typeof service !== "object" ||
+        !service.service_id ||
+        service.service_completed === undefined
+      ) {
+        throw new Error(
+          "Each service in order_services must have service_id and service_completed"
+        );
       }
     }
 
-    console.log('Order Services:', order_services);
-
-  
+    console.log("Order Services:", order_services);
 
     const order_hash = crypto.randomUUID();
 
@@ -195,7 +199,7 @@ async function getAllOrders({ limit, sortby, completed }) {
       queryParams.push(parseInt(limit));
     }
 
-    const [orders] = await conn.query(query, queryParams);
+    const orders = await conn.query(query, queryParams);
     return orders;
   } catch (error) {
     throw new Error(error);
@@ -204,53 +208,90 @@ async function getAllOrders({ limit, sortby, completed }) {
 
 async function getOrderById(id) {
   try {
-    const query = "SELECT * FROM orders WHERE order_id = ?";
-    const [order] = await conn.query(query, [id]);
-    return order[0];
+    // Query to get order details
+    const orderQuery = `SELECT * FROM orders WHERE order_id = ?`;
+    const orderResult = await conn.query(orderQuery, [id]);
+    if (orderResult.length === 0) {
+      return null; // No order found
+    }
+
+    const order = orderResult;
+    // Query to get associated services
+    const servicesQuery = `
+      SELECT * FROM order_services
+      WHERE order_id = ?
+    `;
+    const servicesResult = await conn.query(servicesQuery, [id]);
+    order.order_services = servicesResult || [];
+
+    return order;
   } catch (error) {
-    throw new Error(error);
+    console.error(`Error fetching order with ID ${id}:`, error);
+    throw new Error("An error occurred while retrieving the order");
   }
 }
 
-// Existing createOrders function
+// updating createOrder function
 
-async function updateOrder(id, orderData) {
+async function updateOrder(orderData) {
   try {
-    const { estimated_completion_date, completion_date, order_completed } =
-      orderData;
+    const {
+      order_id,
+      order_description,
+      estimated_completion_date,
+      completion_date,
+      order_services,
+    } = orderData;
 
     const query = `
       UPDATE orders
-      SET estimated_completion_date = ?, completion_date = ?, order_completed = ?
+      SET order_description = ?
       WHERE order_id = ?
     `;
-
-    const [result] = await conn.query(query, [id]);
+    const result = await conn.query(query, [order_description, order_id]);
 
     if (result.affectedRows === 0) {
       throw new Error(`Order with ID ${id} not found`);
     }
 
-    // Update order info
     const orderInfoQuery = `
-    UPDATE order_info
-    SET estimated_completion_date = ?, 
-        completion_date = ?,
-        order_completed = ?
-    WHERE order_id = ?
-  `;
-
+      UPDATE order_info
+      SET estimated_completion_date = ?, 
+          completion_date = ?
+          WHERE order_id = ?
+    `;
     await conn.query(orderInfoQuery, [
       estimated_completion_date,
       completion_date,
-      order_completed,
-      id,
+      order_id,
     ]);
+
+    const deleteOrderServicesQuery = `
+      DELETE FROM order_services WHERE order_id = ?
+    `;
+    await conn.query(deleteOrderServicesQuery, [order_id]);
+
+    const orderServiceQuery = `
+      INSERT INTO order_services (order_id, service_id, service_completed)
+      VALUES (?, ?, ?)
+    `;
+    for (const service of order_services) {
+      const serviceCompletedValue = service.service_completed ? 1 : 0;
+      const orderServiceResult = await conn.query(orderServiceQuery, [
+        order_id,
+        service.service_id,
+        serviceCompletedValue,
+      ]);
+      if (!orderServiceResult.affectedRows) {
+        throw new Error("Failed to create order service");
+      }
+    }
     return { message: "Order updated successfully" };
   } catch (error) {
     throw new Error(error);
   }
 }
+
 module.exports = {
   createOrders,
   checkVehicle,

@@ -42,15 +42,23 @@ const CustomerList = () => {
   const token = employee?.employee_token;
 
   const handleSearchCustomer = async () => {
-    const data = await customerService.searchedCustomers(val, token);
-    setSearch(data);
+      try {
+          const data = await customerService.searchedCustomers(val, token);
+          setSearch(data);
+      } catch (error) {
+          console.log(error)
+      }
   };
 
   const customersData = async () => {
-    const { data } = await customerService.getAllCustomers(token, offset);
-    const l = await customerService.totalNofCustomers(token);
-    setLast(l);
-    setCustomers(data.customers);
+      try {
+          const { data } = await customerService.getAllCustomers(token, offset);
+          const l = await customerService.totalNofCustomers(token);
+          setLast(l);
+          setCustomers(data.customers);
+      } catch (error) {
+        console.log(error)
+      }
   };
 
   const First = () => {
@@ -83,7 +91,7 @@ const CustomerList = () => {
     if (val) {
       handleSearchCustomer();
     }
-  }, [offset, val]);
+  }, [,offset, val]);
 
   return (
     <div>
