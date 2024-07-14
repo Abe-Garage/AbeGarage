@@ -41,8 +41,10 @@ import Unauthorized from "./markup/pages/Main/Unauthorized/Unauthorized";
 // import Customers from "./markup/pages/Admin/Customers/Customers";
 import CustomerList from "./markup/components/Admin/CustomerList/CustomerList";
 
-
 import ErrorComponent from "./markup/pages/Main/404/404";
+
+import Customers from "./markup/pages/Admin/Customers/Customers";
+
 
 function App() {
   return (
