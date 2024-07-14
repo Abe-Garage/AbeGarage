@@ -33,9 +33,12 @@ import Vehicle from "./markup/pages/Admin/Vehicle/Vehicle";
 import EditEmployee from "./markup/pages/Admin/Employee/EditEmployee";
 import Employees from "./markup/pages/Admin/Employee/Employees";
 import AddEmployee from "./markup/pages/Admin/Employee/AddEmployee";
+import EmployeeProfile from "./markup/pages/Admin/Employee/EmployeeProfile";
+
 import CustomerForm from "./markup/pages/Admin/Customers/CustomerForm";
 import EditCustomer from "./markup/pages/Admin/Customers/EditCustomer";
 import ServiceList from "./markup/pages/Main/Services/ServiceList";
+
 
 // Import the PrivateAuthRoute component 
 import PrivateAuthRoute from './markup/components/Auth/PrivateAuthRoute';
@@ -52,9 +55,6 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         {/* // Add the Orders Route  */}
-
-
-
         <Route
           path="/admin"
           element={
@@ -63,8 +63,6 @@ function App() {
             </PrivateAuthRoute>
           }
         />
-
-
         <Route
           path="/admin/orders"
           element={
@@ -90,7 +88,6 @@ function App() {
             </PrivateAuthRoute>
           }
         />
-
         <Route
           path="admin/employees"
           element={
@@ -99,8 +96,7 @@ function App() {
             </PrivateAuthRoute>
           }
         />
-
-         <Route
+        <Route
           path="admin/employee/edit/:id"
           element={
             <PrivateAuthRoute roles={[3]}>
@@ -108,7 +104,8 @@ function App() {
             </PrivateAuthRoute>
           }
         />
-
+        {/* //page for employee profile  */}
+        <Route path="/admin/employee-profile/:id" element={<EmployeeProfile />} />
 
 
         <Route path="/services" element={<Services />} />

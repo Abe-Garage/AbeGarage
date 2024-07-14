@@ -9,6 +9,8 @@ import LoginForm from "../../../components/LoginForm/LoginForm";
 // import the admin menu component
 import AdminMenu from "../../../components/Admin/AdminMenu/AdminMenu";
 
+import EmployeesList from "../../../components/Admin/EmployeesList/EmployeesList";
+
 // import EmployeesList from "../../components/Admin/EmployeesList/EmployeesList";
 import { Link } from "react-router-dom";
 
@@ -30,6 +32,7 @@ function Employees() {
               </div>
               <div className="col-md-9 admin-right-side">
                 {/* <EmployeesList /> */}
+                <EmployeesList />
               </div>
             </div>
           </div>
