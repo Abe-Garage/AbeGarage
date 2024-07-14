@@ -4,7 +4,7 @@ import Vehicleform from '../../../components/Admin/VehicleForm/Vehicleform';
 import EditCalendarOutlinedIcon from "@mui/icons-material/EditCalendarOutlined";
 import { MdBorderClear } from 'react-icons/md';
 import zIndex from '@mui/material/styles/zIndex';
-import { useParams } from 'react-router-dom';
+import { useParams,Link } from 'react-router-dom';
 import customerService from '../../../../services/customer.service';
 import { useAuth } from '../../../../Context/AuthContext';
 
@@ -12,10 +12,11 @@ import { useAuth } from '../../../../Context/AuthContext';
 const Vehicle = () => {
 
     const [customerinfo, setCustomerInfo] = useState({})
+    const [addvehicle, setVehicle]=useState(false)
     const {employee}=  useAuth()
     // console.log(employee,employee?.employee_token)
     const{id}= useParams()
-    console.log(id)
+    // console.log(id)
 
     const token = employee?.employee_token;
 
@@ -89,7 +90,7 @@ const Vehicle = () => {
                             </div>
 
 
-                            <div>
+                            <div className='col-md-9'>
                                 <div className=' contact-section row'>
 
                                     <div className='auto-container col-md-10'>
@@ -101,7 +102,7 @@ const Vehicle = () => {
                                             <p><span className='v_title'>Email</span> :<span>{customerinfo.customer_email}</span></p>
                                             <p><span className='v_title'>phone no</span> :<span>{customerinfo.customer_phone_number}</span></p>
                                             <p><span className='v_title'> Active Customer</span> :<span>{customerinfo.active_customer_status ? 'Yes': 'No'}</span></p>
-                                            <p><span className='v_title'>Edit Customer info</span> :<span><EditCalendarOutlinedIcon /></span></p>
+                                            <p><span className='v_title'>Edit Customer info</span> :<span><Link to={`/admin/edit-customer/${id}`}><EditCalendarOutlinedIcon /></Link></span></p>
                                     </div>
                                     </div>
                                 
@@ -119,13 +120,25 @@ const Vehicle = () => {
                                                                 </div>
                                                         </div>
                                                 </div>
+
+
+                                                 {
+                                                 !addvehicle && 
+                                                  (<div className="form-group col-md-10" style={{paddingLeft:'0'}}>
+                                                     <button className="theme-btn btn-style-one" type="submit" data-loading-text="Please wait..." onClick={()=>setVehicle(!addvehicle)}><span>ADD NEW VEHICLE</span></button>
+                                                  </div>)
+                                                 }
                                             </div>
                                     
 
                                         </div>
+
+                                       
                                 </div>
 
-                                    <Vehicleform id={id}/>
+                                
+
+                                  {addvehicle &&  <Vehicleform id={id} v={{addvehicle,setVehicle}} />}
                             </div>
                     </div>
 
