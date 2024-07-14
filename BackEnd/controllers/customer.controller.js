@@ -70,10 +70,10 @@ async function getAllCustomersController(req, res, next) {
 
 // Get single Customer controller
 async function getSingleCustomerController(req, res, next) {
-  const customer_id = req.params.id;
+  const id = req.params.customer_id;
 
   try {
-    const singleCustomer = await getSingleCustomer(customer_id);
+    const singleCustomer = await getSingleCustomer(id);
 
     if (!singleCustomer) {
       return res.status(400).json({

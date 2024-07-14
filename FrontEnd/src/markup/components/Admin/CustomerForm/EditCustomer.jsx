@@ -40,7 +40,7 @@ const EditCustomer = () => {
     };
 
     fetchCustomer();
-  }, [,customerId]);
+  }, [customerId]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
