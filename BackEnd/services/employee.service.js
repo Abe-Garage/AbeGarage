@@ -123,7 +123,7 @@ async function getEmployeeByEmail(employee_email) {
 }
 
 // A FUNCTION TO GET SINGLE EMPLOYEE BY HASH ID
-async function getSingleEmploye(employee) {
+async function getSingleEmployeeService(employee) {
   try {
     const employee_id = employee;
 
@@ -142,7 +142,7 @@ async function getSingleEmploye(employee) {
 async function getAllEmployees() {
   try {
     const query =
-      "SELECT * FROM employee INNER JOIN employee_info ON employee.employee_id = employee_info.employee_id INNER JOIN employee_role ON employee.employee_id = employee_role.employee_id INNER JOIN company_roles ON employee_role.company_role_id = company_roles.company_role_id ORDER BY employee.active_employee DESC, employee_info.employee_first_name ASC LIMIT 10";
+      "SELECT * FROM employee INNER JOIN employee_info ON employee.employee_id = employee_info.employee_id INNER JOIN employee_role ON employee.employee_id = employee_role.employee_id INNER JOIN company_roles ON employee_role.company_role_id = company_roles.company_role_id ORDER BY employee.active_employee DESC, employee_info.employee_first_name ASC LIMIT 40";
 
     const rows = await connection.query(query);
     return rows;
@@ -152,51 +152,73 @@ async function getAllEmployees() {
 }
 
 // A function to update employees by id
-async function updateEmploye(employee) {
+async function updateEmployeeService(employee) {
   try {
-    const employee_id = employee.employee_id;
+    // Check if all required fields are provided
+    const {
+      employee_id,
+      employee_first_name,
+      employee_last_name,
+      employee_phone,
+      company_role_id,
+      employee_email,
+      active_employee,
+    } = employee;
 
-    const query1 = ` UPDATE employee_info SET employee_first_name = ?, employee_last_name = ?, employee_phone = ? WHERE employee_id = ?`;
+    if (
+      employee_id === undefined ||
+      employee_first_name === undefined ||
+      employee_last_name === undefined ||
+      employee_phone === undefined ||
+      company_role_id === undefined ||
+      employee_email === undefined ||
+      active_employee === undefined
+    ) {
+      throw new Error("One or more parameters are undefined.");
+    }
 
-    const query2 = `UPDATE employee_role SET company_role_id = ? WHERE employee_id= ?`;
+    // Log the input data
+    console.log("Updating employee with data:", employee);
 
-    const query3 = `UPDATE employee SET active_employee = ? WHERE employee_id = ?`;
+    const query1 = `UPDATE employee_info SET employee_first_name = ?, employee_last_name = ?, employee_phone = ? WHERE employee_id = ?`;
+
+    const query2 = `UPDATE employee_role SET company_role_id = ? WHERE employee_id = ?`;
+
+    const query3 = `UPDATE employee SET employee_email = ?, active_employee = ? WHERE employee_id = ?`;
 
     // for employee_info table
     const rows1 = await connection.query(query1, [
-      employee.employee_first_name,
-      employee.employee_last_name,
-      employee.employee_phone,
+      employee_first_name,
+      employee_last_name,
+      employee_phone,
       employee_id,
     ]);
 
     // for employee_role table
     const rows2 = await connection.query(query2, [
-      employee.company_role_id,
+      company_role_id,
       employee_id,
     ]);
 
     // for employee table
     const rows3 = await connection.query(query3, [
-      employee.active_employee,
+      employee_email,
+      active_employee,
       employee_id,
     ]);
 
     return { rows1, rows2, rows3 };
   } catch (error) {
-    console.log(error);
+    console.log("Error updating employee:", error);
+    throw error;
   }
 }
 
 // A function to delete employees by id
-async function deleteEmploye(employee_id) {
-  try {
-    // console.log(employee_id);
-    if (!employee_id) {
-      throw new Error('Employee ID is undefined');
-    }
+async function ServicedeleteEmployee(employee_id) {
+  console.log("employee to be deleted id>>>",employee_id);
 
-  console.log(`Deleting employee with ID: ${employee_id}`);
+  try{
 
   const query1 = "DELETE FROM employee_info WHERE  employee_id = ?";
 
@@ -226,7 +248,7 @@ module.exports = {
   createEmploye,
   getEmployeeByEmail,
   getAllEmployees,
-  updateEmploye,
-  deleteEmploye,
-  getSingleEmploye,
+  updateEmployeeService,
+  ServicedeleteEmployee,
+  getSingleEmployeeService,
 };

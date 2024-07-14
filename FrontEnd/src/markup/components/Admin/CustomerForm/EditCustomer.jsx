@@ -8,7 +8,7 @@ import { useAuth } from "../../../../Context/AuthContext";
 
 const EditCustomer = () => {
   const { customerId } = useParams();
-  const [customer, setCustomer] = useState(null);
+  const [customer, setCustomer] = useState(true);
   const [formData, setFormData] = useState({
     email: "",
     first_name: "",

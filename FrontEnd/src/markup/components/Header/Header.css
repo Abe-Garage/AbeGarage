@@ -1,0 +1,30 @@
+.account-btn {
+    color: white;
+    background-color: #08194A;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    margin: 0px 20px;
+    margin-top: 5px;
+}
+
+.account-btn:hover {
+    background-color: #D60C08;
+    
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+.account-btn:focus {
+    outline: none;
+}
+.account-btn:active {
+    background-color: #a30a07;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: rotate(360deg);
+    
+}

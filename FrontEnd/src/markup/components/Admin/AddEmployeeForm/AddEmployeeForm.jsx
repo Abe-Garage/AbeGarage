@@ -2,7 +2,7 @@ import React, { useState } from "react";
 // import employee.service.js
 import employeeService from "../../../../services/employee.service";
 // Import the useAuth hook
-// import { useAuth } from "../../../../Contexts/AuthContext";
+import { useAuth } from "../../../../Context/AuthContext";
 
 function AddEmployeeForm(props) {
   const [employee_email, setEmail] = useState("");
@@ -22,10 +22,10 @@ function AddEmployeeForm(props) {
   // Create a variable to hold the user's token
   let loggedInEmployeeToken = "";
   // Destructure the auth hook and get the token
-//   const { employee } = useAuth();
-//   if (employee && employee.employee_token) {
-//     loggedInEmployeeToken = employee.employee_token;
-//   }
+  const { employee } = useAuth();
+  if (employee && employee.employee_token) {
+    loggedInEmployeeToken = employee.employee_token;
+  }
 
   const handleSubmit = (e) => {
     // Prevent the default behavior of the form

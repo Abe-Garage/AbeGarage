@@ -3,7 +3,9 @@ import { IoCloseSharp } from "react-icons/io5";
 import { useAuth } from '../../../../Context/AuthContext';
 import vehicleService from '../../../../services/vehicle.service';
 
-const Vehicleform = ({id}) => {
+const Vehicleform = ({id,v}) => {
+
+    const {addvehicle,setVehicle}= v
 
     const customer_id =id;
 
@@ -49,7 +51,7 @@ const Vehicleform = ({id}) => {
     <section className="contact-section row pad">
          
     <div className="auto-container col-md-8 bgc ">
-        <div className='close-btn'><IoCloseSharp  color='#fff' style={{background:'red',borderRadius:'4px'}}/></div>
+        <div className='close-btn' onClick={()=>setVehicle(!addvehicle)}><IoCloseSharp  color='#fff' style={{background:'red',borderRadius:'4px',cursor:'pointer'}}/></div>
   
         <div className="contact-title ">
             <h2>Add a new  Vehicle</h2>

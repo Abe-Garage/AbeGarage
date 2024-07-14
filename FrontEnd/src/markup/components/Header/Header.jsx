@@ -8,6 +8,12 @@ import loginService from '../../../services/login.service';
 // Import the custom context hook
 import { useAuth } from '../../../Context/AuthContext';
 
+// Import the useNavigate hook from react-router-dom
+import { useNavigate } from "react-router-dom";
+
+//import css
+import "./Header.css";
+
 function Header(props) {
   // Use the custom hook to access the data in the context
   const { isLogged, setIsLogged, employee } = useAuth();
@@ -25,6 +31,25 @@ function Header(props) {
 
   // console.log(isLogged);
 
+  //navigate
+  const navigate = useNavigate();
+  const handleAdminClick = (event) => {
+    event.preventDefault();
+    navigate("/admin");
+  };
+
+    const handleProfileClick = (event) => {
+      event.preventDefault();
+      navigate("/profile");
+    };
+
+    console.log(employee)
+    let admin = employee?.employee_role === 3 ? true : false
+    let manager = employee?.employee_role === 2 ? true : false
+    let regular_employee = employee?.employee_role === 1 ? true : false
+    
+    console.log(admin)
+
   return (
     <div>
       <header className="main-header header-style-one">
@@ -40,13 +65,18 @@ function Header(props) {
               <div className="right-column">
                 {isLogged ? (
                   <div className="link-btn">
-                    <div className="phone-number"><strong>Welcome {employee?.employee_first_name}!</strong></div>
+                    <button
+                      onClick={admin ? handleAdminClick : handleProfileClick}
+                      className="account-btn"
+                    >
+                      <strong>Welcome {employee?.employee_first_name}!</strong>
+                    </button>
                   </div>
                 ) : (
-                <div className="phone-number">
-                  Schedule Appointment: <strong>1800 456 7890</strong>{" "}
-                </div>
-                 )}
+                  <div className="phone-number">
+                    Schedule Appointment: <strong>1800 456 7890</strong>{" "}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -91,15 +121,21 @@ function Header(props) {
                 <div className="search-btn"></div>
                 {isLogged ? (
                   <div className="link-btn">
-                    <Link to="/" className="theme-btn btn-style-one blue" onClick={logOut} >Log out</Link>
+                    <Link
+                      to="/"
+                      className="theme-btn btn-style-one blue"
+                      onClick={logOut}
+                    >
+                      Log out
+                    </Link>
                   </div>
                 ) : (
-                <div className="link-btn">
-                  <Link to="/login" className="theme-btn btn-style-one">
-                    Login
-                  </Link>
-                </div>
-                )} 
+                  <div className="link-btn">
+                    <Link to="/login" className="theme-btn btn-style-one">
+                      Login
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </div>
