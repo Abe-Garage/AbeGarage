@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 // Import the logo image
 import logo from "../../../assets/images/logo.png";
 // Import the login service to access the logout function
-import loginService from '../../../services/login.service';
+import loginService from "../../../services/login.service";
 // Import the custom context hook
-import { useAuth } from '../../../Context/AuthContext';
+import { useAuth } from "../../../Context/AuthContext";
 
 // Import the useNavigate hook from react-router-dom
 import { useNavigate } from "react-router-dom";
@@ -38,17 +38,18 @@ function Header(props) {
     navigate("/admin");
   };
 
-    const handleProfileClick = (event) => {
-      event.preventDefault();
-      navigate("/profile");
-    };
+  const handleProfileClick = (event) => {
+    event.preventDefault();
+    navigate("/profile");
+  };
 
-    console.log(employee)
-    let admin = employee?.employee_role === 3 ? true : false
-    let manager = employee?.employee_role === 2 ? true : false
-    let regular_employee = employee?.employee_role === 1 ? true : false
-    
-    console.log(admin)
+  console.log(employee);
+  let admin = employee?.employee_role === 3 ? true : false;
+  let manager = employee?.employee_role === 2 ? true : false;
+  let regular_employee = employee?.employee_role === 1 ? true : false;
+
+  console.log("is admin >>>>", admin);
+  // console.log(manager);
 
   return (
     <div>

@@ -31,9 +31,12 @@ import Vehicle from "./markup/pages/Admin/Vehicle/Vehicle";
 import EditEmployee from "./markup/pages/Admin/Employee/EditEmployee";
 import Employees from "./markup/pages/Admin/Employee/Employees";
 import AddEmployee from "./markup/pages/Admin/Employee/AddEmployee";
+import EmployeeProfile from "./markup/pages/Admin/Employee/EmployeeProfile";
+
 import CustomerForm from "./markup/pages/Admin/Customers/CustomerForm";
 import EditCustomer from "./markup/components/Admin/CustomerForm/EditCustomer";
 import ServiceList from "./markup/pages/Main/Services/ServiceList";
+
 
 // Import the PrivateAuthRoute component 
 import PrivateAuthRoute from './markup/components/Auth/PrivateAuthRoute';
@@ -116,6 +119,10 @@ function App() {
             </PrivateAuthRoute>
           }
         />
+        {/* //page for employee profile  */}
+        <Route path="/admin/employee-profile/:id" element={<EmployeeProfile />} />
+
+
         <Route path="/services" element={<Services />} />
         {/* <Route path="order/{orderHash}" element={OrdersDetail} /> */}
         //TODO:-ALALEKEM(MALEK YALEBET) //* routes related to employee
