@@ -108,3 +108,8 @@
     line-height: 25px;
     margin-bottom: 0;
   }
+
+
+  .contact_us textarea::placeholder{
+    color: #DDD;
+  }

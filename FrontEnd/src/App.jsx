@@ -34,7 +34,7 @@ import AddEmployee from "./markup/pages/Admin/Employee/AddEmployee";
 import EmployeeProfile from "./markup/pages/Admin/Employee/EmployeeProfile";
 
 import CustomerForm from "./markup/pages/Admin/Customers/CustomerForm";
-import EditCustomer from "./markup/components/Admin/CustomerForm/EditCustomer";
+import EditCustomer from "./markup/pages/Admin/Customers/EditCustomer";
 import ServiceList from "./markup/pages/Main/Services/ServiceList";
 
 
@@ -90,8 +90,8 @@ function App() {
           path="/admin/customers"
           element={
             <PrivateAuthRoute roles={[2, 3]}>
-              {/* <Customers /> */}
-              <CustomerList />
+              <Customers />
+              {/* <CustomerList /> */}
             </PrivateAuthRoute>
           }
         />

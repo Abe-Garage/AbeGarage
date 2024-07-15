@@ -56,6 +56,7 @@ async function singleEmployee(loggedInEmployeeToken, id) {
 }
 
 
+
 // a function to delete employee
 async function deleteEmployee(loggedInEmployeeToken, id) {
 

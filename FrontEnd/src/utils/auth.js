@@ -6,7 +6,9 @@ const getAuth = async() =>{
     if (employee && employee.employee_token) {
         // console.log("Inside auth if statement");
         const decodedToken = await decodeTokenPayload(employee.employee_token);
+
         console.log("decodedToken>>>>", decodedToken);
+
         employee.employee_role = decodedToken.employee_role;
         employee.employee_id = decodedToken.employee_id;
         employee.employee_first_name = decodedToken.employee_first_name;
