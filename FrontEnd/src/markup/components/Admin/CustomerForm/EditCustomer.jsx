@@ -1,165 +1,252 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import React, { useRef, useState, useEffect } from "react";
+import { BeatLoader } from "react-spinners";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import customerService from "../../../../services/customer.service";
-import classes from "./edit.module.css";
-import { LiaEdit } from "react-icons/lia";
-import { FiExternalLink } from "react-icons/fi";
 import { useAuth } from "../../../../Context/AuthContext";
+import classes from "./edit.module.css";
 
 const EditCustomer = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { customerId } = useParams();
-  const [customer, setCustomer] = useState(null);
-  const [formData, setFormData] = useState({
-    email: "",
-    first_name: "",
-    last_name: "",
-    phone: "",
-    active: false,
-  });
-  const naviagte = useNavigate();
-  const {employee} = useAuth()
-  const token = employee?.employee_token;
-  
+  const [customer_first_name, setFirstName] = useState("");
+  const [customer_last_name, setLastName] = useState("");
+  const [customer_phone, setPhoneNumber] = useState("");
+  const [customer_email, setEmail] = useState("");
+  const [active_customer_status, setActiveCustomerStatus] = useState(false);
+  const [customer1, setCustomer1] = useState({});
+  const [serverMsg, setServerMsg] = useState("");
+  const [apiError, setApiError] = useState(false);
+  const [apiErrorMessage, setApiErrorMessage] = useState("");
 
+  // Spinner handler state
+  const [spin, setSpinner] = useState(false);
+
+  // Refs
+  const firstNameDom = useRef();
+  const lastNameDom = useRef();
+  const phoneNumberDom = useRef();
+  const emailDom = useRef();
+  const checkboxDOM = useRef();
+
+
+  // Create a variable to hold the user's token
+  let loggedInEmployeeToken = "";
+  const { employee } = useAuth();
+  if (employee && employee.employee_token) {
+    loggedInEmployeeToken = employee.employee_token;
+  }
+
+
+  // Value trackers
+  const firstNameTracker = () => setFirstName(firstNameDom.current.value);
+  const lastNameTracker = () => setLastName(lastNameDom.current.value);
+  const phoneNumberTracker = () => setPhoneNumber(phoneNumberDom.current.value);
+  const emailTracker = () => setEmail(emailDom.current.value);
+  const activeCustomerStatusTracker = () =>
+    setActiveCustomerStatus(checkboxDOM.current.checked);
+
+  // Fetch customer data using useEffect
   useEffect(() => {
-    const fetchCustomer = async () => {
-      try {
-        const data = await customerService.getCustomerById(customerId);
-        // const data = await customerService.singleCustomer(customerId,token);
-        setCustomer(data);
-        setFormData({
-          email: data.customer_email || "",
-          first_name: data.customer_first_name || "",
-          last_name: data.customer_last_name || "",
-          phone: data.customer_phone_number || "",
-          active: data.active_customer_status || false,
-        });
-      } catch (error) {
-        console.error("Error fetching customer:", error);
-      }
+    const customerData = location.state?.customer;
+    if (customerData) {
+      setFirstName(customerData.customer_first_name);
+      setLastName(customerData.customer_last_name);
+      setPhoneNumber(customerData.customer_phone);
+      setEmail(customerData.customer_email);
+      setCustomer1(customerData);
+      checkboxDOM.current.checked = customerData.active_customer_status;
+      setActiveCustomerStatus(customerData.active_customer_status);
+    } else {
+      const fetchData = async () => {
+        try {
+          const data = await customerService.singleCustomer(
+            customerId,
+            loggedInEmployeeToken
+          );
+          if (data.status !== 200) {
+            setApiError(true);
+            if (data.status === 403) {
+              setApiErrorMessage("Please login again");
+            } else if (data.status === 401) {
+              setApiErrorMessage("You are not authorized to view this page");
+            } else {
+              setApiErrorMessage("Please try again later");
+            }
+          } else {
+            const customerData = data.data.singleCustomer[0];
+            setFirstName(customerData.customer_first_name);
+            setLastName(customerData.customer_last_name);
+            setPhoneNumber(customerData.customer_phone);
+            setEmail(customerData.customer_email);
+            setCustomer1(customerData);
+            checkboxDOM.current.checked = customerData.active_customer_status;
+            setActiveCustomerStatus(customerData.active_customer_status);
+          }
+        } catch (error) {
+          setApiError(true);
+          setApiErrorMessage("An error occurred while fetching data.");
+        }
+      };
+      fetchData();
+    }
+  }, [customerId, location.state, loggedInEmployeeToken]);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const formData = {
+      customer_id: customerId,
+      customer_first_name,
+      customer_last_name,
+      customer_phone,
+      customer_email,
+      active_customer_status: active_customer_status ? 1 : 0, // 1 for true, 0 for false
     };
 
-    fetchCustomer();
-  }, [customerId]);
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
     try {
-      await customerService.updateCustomer(customerId, formData);
-      naviagte("/admin/customers");
+      setSpinner(true);
+      const data = await customerService.updateCustomer(
+        customerId,
+        formData,
+        loggedInEmployeeToken
+      );
+
+      if (data.status === 200) {
+        setServerMsg("Redirecting To Customers page...");
+        setTimeout(() => {
+          setSpinner(false);
+          setServerMsg("");
+          navigate("/admin/customers");
+        }, 500);
+      }
     } catch (error) {
-      console.error("Error updating customer:", error);
+      setServerMsg("Failed to update customer. Please try again.");
+      setSpinner(false);
     }
-  };
+  }
 
   return (
-    <div>
-      {customer ? (
-        <section className={classes.contactSection}>
-          <div className="auto-container">
-            <div className={classes.contactTitle}>
-              <h2>
-                Edit: {customer.customer_first_name}{" "}
-                {customer.customer_last_name}
-              </h2>
-            </div>
-            <div className={classes.contactDetails}>
-              <div className={classes.contactName}>
-                {formData.first_name} {formData.last_name}
-              </div>
-              <div className={classes.contactEmail}>{formData.email}</div>
-            </div>
-            <div className="row clearfix">
-              <div className="form-column col-lg-7">
-                <div className="inner-column">
-                  <div className={classes.contactForm}>
-                    <form onSubmit={handleSubmit}>
-                      <div className="row clearfix">
-                        <div className={classes.formGroup}>
-                          <input
-                            type="email"
-                            name="email"
-                            className={classes.formInput}
-                            placeholder="Customer email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
-                          />
-                        </div>
-                        <div className={classes.formGroup}>
-                          <input
-                            type="text"
-                            name="first_name"
-                            className={classes.formInput}
-                            placeholder="Customer first name"
-                            value={formData.first_name}
-                            onChange={handleChange}
-                            required
-                          />
-                        </div>
-                        <div className={classes.formGroup}>
-                          <input
-                            type="text"
-                            name="last_name"
-                            className={classes.formInput}
-                            placeholder="Customer last name"
-                            value={formData.last_name}
-                            onChange={handleChange}
-                            required
-                          />
-                        </div>
-                        <div className={classes.formGroup}>
-                          <input
-                            type="text"
-                            name="phone"
-                            className={classes.formInput}
-                            placeholder="Customer phone (555-555-5555)"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            required
-                          />
-                        </div>
-                        <div className={classes.formGroup}>
-                          <label className={classes.formCheckboxLabel}>
-                            <input
-                              type="checkbox"
-                              name="active"
-                              className={classes.formCheckbox}
-                              checked={formData.active}
-                              onChange={handleChange}
-                            />
-                            Active
-                          </label>
-                        </div>
-                        <div className={classes.formGroup}>
-                          <button
-                            className={classes.themeBtn}
-                            type="submit"
-                            data-loading-text="Please wait..."
-                          >
-                            <span>Update Customer</span>
-                          </button>
-                        </div>
+    <>
+      <section className={classes.contactSection}>
+        <div className="auto-container">
+          <div className={classes.contactTitle}>
+            <h2>Edit: {customer1.customer_email || ""}</h2>
+          </div>
+          <div className="row clearfix">
+            <div className="form-column col-lg-7">
+              <div className="inner-column">
+                <div className={classes.contactForm}>
+                  <form onSubmit={handleSubmit}>
+                    <div className="row clearfix">
+                      <div className={`${classes.formGroup} col-md-12`}>
+                        <input
+                          type="text"
+                          name="customer_first_name"
+                          placeholder="Customer first name"
+                          ref={firstNameDom}
+                          value={customer_first_name}
+                          onChange={firstNameTracker}
+                          className={classes.formInput}
+                          required
+                        />
                       </div>
-                    </form>
-                  </div>
+                      <div className={`${classes.formGroup} col-md-12`}>
+                        <input
+                          type="text"
+                          name="customer_last_name"
+                          placeholder="Customer last name"
+                          required
+                          ref={lastNameDom}
+                          value={customer_last_name}
+                          onChange={lastNameTracker}
+                          className={classes.formInput}
+                        />
+                      </div>
+                      <div className={`${classes.formGroup} col-md-12`}>
+                        <input
+                          type="text"
+                          name="customer_phone"
+                          placeholder="Customer phone (555-555-5555)"
+                          ref={phoneNumberDom}
+                          required
+                          value={customer_phone}
+                          onChange={phoneNumberTracker}
+                          className={classes.formInput}
+                        />
+                      </div>
+                      <div className={`${classes.formGroup} col-md-12`}>
+                        <input
+                          type="email"
+                          name="customer_email"
+                          placeholder="Customer email"
+                          ref={emailDom}
+                          required
+                          value={customer_email}
+                          onChange={emailTracker}
+                          className={classes.formInput}
+                        />
+                      </div>
+                      <div
+                        className={`${classes.formGroup} col-md-12 form-contro`}
+                      >
+                        <label
+                          className={classes.formCheckboxLabel}
+                          htmlFor="completed"
+                        >
+                          Active Customer
+                        </label>
+                        <input
+                          value={active_customer_status}
+                          onChange={activeCustomerStatusTracker}
+                          ref={checkboxDOM}
+                          type="checkbox"
+                          name="completed"
+                          className={classes.formCheckbox}
+                        />
+                      </div>
+                      <div className={`${classes.formGroup} col-md-12`}>
+                        <button
+                          className={classes.themeBtn}
+                          type="submit"
+                          data-loading-text="Please wait..."
+                        >
+                          <span>
+                            {spin ? (
+                              <BeatLoader color="white" size={8} />
+                            ) : (
+                              "Update Customer"
+                            )}
+                          </span>
+                        </button>
+                        {serverMsg && (
+                          <div
+                            className="validation-error"
+                            style={{
+                              color: "green",
+                              fontSize: "100%",
+                              fontWeight: "600",
+                              padding: "25px",
+                            }}
+                            role="alert"
+                          >
+                            {serverMsg}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </form>
+                  {apiError && (
+                    <div className="validation-error" role="alert">
+                      {apiErrorMessage}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
-        </section>
-      ) : (
-        <p>Loading customer details...</p>
-      )}
-    </div>
+        </div>
+      </section>
+    </>
   );
 };
 

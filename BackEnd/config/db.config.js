@@ -75,11 +75,16 @@ const mysql = require('mysql2/promise');
 
 // Prepare the db parameters
 const dbConfig = {
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,  // Use DB_PASSWORD to match .env variable
-    database: process.env.DB_NAME,
-    connectionLimit: 10,
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD, // Use DB_PASSWORD to match .env variable
+  database: process.env.DB_NAME,
+  connectionLimit: 10,
+
+
+
+//   PLEASE DONT DELETE THIS. COMMENT OUT 
+  socketPath: "/Applications/MAMP/tmp/mysql/mysql.sock",
 };
 
 // Create the connection pool

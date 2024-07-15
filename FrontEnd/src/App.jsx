@@ -31,16 +31,23 @@ import Vehicle from "./markup/pages/Admin/Vehicle/Vehicle";
 import EditEmployee from "./markup/pages/Admin/Employee/EditEmployee";
 import Employees from "./markup/pages/Admin/Employee/Employees";
 import AddEmployee from "./markup/pages/Admin/Employee/AddEmployee";
+import EmployeeProfile from "./markup/pages/Admin/Employee/EmployeeProfile";
+
 import CustomerForm from "./markup/pages/Admin/Customers/CustomerForm";
-import EditCustomer from "./markup/components/Admin/CustomerForm/EditCustomer";
+import EditCustomer from "./markup/pages/Admin/Customers/EditCustomer";
 import ServiceList from "./markup/pages/Main/Services/ServiceList";
+
 
 // Import the PrivateAuthRoute component 
 import PrivateAuthRoute from './markup/components/Auth/PrivateAuthRoute';
 import Unauthorized from "./markup/pages/Main/Unauthorized/Unauthorized";
 // import Customers from "./markup/pages/Admin/Customers/Customers";
 import CustomerList from "./markup/components/Admin/CustomerList/CustomerList";
+
+import ErrorComponent from "./markup/pages/Main/404/404";
+
 import Customers from "./markup/pages/Admin/Customers/Customers";
+
 
 function App() {
   return (
@@ -52,6 +59,7 @@ function App() {
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="*" element={<ErrorComponent />} />
         {/* // Add the Orders Route  */}
         <Route
           path="/admin"
@@ -111,6 +119,10 @@ function App() {
             </PrivateAuthRoute>
           }
         />
+        {/* //page for employee profile  */}
+        <Route path="/admin/employee-profile/:id" element={<EmployeeProfile />} />
+
+
         <Route path="/services" element={<Services />} />
         {/* <Route path="order/{orderHash}" element={OrdersDetail} /> */}
         //TODO:-ALALEKEM(MALEK YALEBET) //* routes related to employee
