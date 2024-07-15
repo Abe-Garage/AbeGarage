@@ -63,8 +63,6 @@ function AddCustomerForm() {
     }
 
 
-
-
     if (!valid) {
       return;
     }
@@ -78,7 +76,7 @@ function AddCustomerForm() {
         navigate('/admin/customers');
         setSpinner(false)
       },1000)
-      
+
     } catch (error) {
       console.log(error.response.data.msg)
       setServerError(error?.response?.data?.msg)
@@ -97,11 +95,36 @@ function AddCustomerForm() {
         <div className="form-column col-lg-7">
           <div className="inner-column">
             <div className="contact-form">
+              {serverMsg && (
+                          <div
+                            className="validation-error"
+                            style={{
+                              color: "green",
+                              fontSize: "100%",
+                              fontWeight: "600",
+                              padding: "25px",
+                            }}
+                            role="alert"
+                          >
+                            {serverMsg}
+                          </div>
+                        )}
+
+          
 
             <form onSubmit={handleAddCustomer}>
               <div className="row clearfix">
 
-                 {serverError && <div className="validation-error" role="alert">{serverError}</div>}
+                 {serverError && <div className="validation-error" role="alert"   
+                                    style={{
+                                          color: "red",
+                                          fontSize: "100%",
+                                          fontWeight: "600",
+                                          padding: "25px",
+                                        }}>
+                                      {serverError}
+                                  </div>
+                    }
 
                 <div className="form-group col-md-12">  
                   <input
@@ -176,20 +199,7 @@ function AddCustomerForm() {
                               "ADD CUSTOMER"
                             )}</span>
                       </button>
-                      {serverMsg && (
-                          <div
-                            className="validation-error"
-                            style={{
-                              color: "green",
-                              fontSize: "100%",
-                              fontWeight: "600",
-                              padding: "25px",
-                            }}
-                            role="alert"
-                          >
-                            {serverMsg}
-                          </div>
-                        )}
+                     
                     </div>
                   </div>
                 </form>
