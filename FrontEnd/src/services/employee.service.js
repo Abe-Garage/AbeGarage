@@ -38,18 +38,25 @@ async function updateEmployee(formData, loggedInEmployeeToken) {
   return data;
 }
 
-// a function to get single employee
-async function singleEmployee( loggedInEmployeeToken) {
+
+
+async function singleEmployee(loggedInEmployeeToken, id) {
   const headers = {
     "x-access-token": loggedInEmployeeToken,
   };
-  // console.log(formData);
-  const data = await axios.get("/api/employee/:id", { headers });
 
-  // console.log(data);
-
-  return data;
+  try {
+    const response = await axios.get(`/api/employee/${id}`, { headers });
+    console.log("Response data:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching employee:", error);
+    throw error; // You might want to handle this error in your UI
+  }
 }
+
+
+
 // a function to delete employee
 async function deleteEmployee(loggedInEmployeeToken, id) {
 

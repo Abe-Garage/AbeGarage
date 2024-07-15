@@ -84,7 +84,7 @@ const dbConfig = {
 
 
 //   PLEASE DONT DELETE THIS. COMMENT OUT 
-//   socketPath: "/Applications/MAMP/tmp/mysql/mysql.sock",
+  socketPath: "/Applications/MAMP/tmp/mysql/mysql.sock",
 };
 
 // Create the connection pool
