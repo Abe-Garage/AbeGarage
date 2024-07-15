@@ -1,0 +1,33 @@
+.profile-section {
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+
+.profile-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-header h2 {
+  margin-top: 10px;
+}
+
+.profile-details {
+  margin-bottom: 20px;
+}
+
+.detail-item {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.performance-chart {
+  margin-top: 20px;
+}
