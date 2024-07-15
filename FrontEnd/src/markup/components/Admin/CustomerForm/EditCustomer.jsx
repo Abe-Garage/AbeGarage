@@ -29,12 +29,14 @@ const EditCustomer = () => {
   const emailDom = useRef();
   const checkboxDOM = useRef();
 
+
   // Create a variable to hold the user's token
   let loggedInEmployeeToken = "";
   const { employee } = useAuth();
   if (employee && employee.employee_token) {
     loggedInEmployeeToken = employee.employee_token;
   }
+
 
   // Value trackers
   const firstNameTracker = () => setFirstName(firstNameDom.current.value);

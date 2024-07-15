@@ -1,4 +1,4 @@
-
+import axios from "../utils/axiosConfig";
 const api_url = import.meta.env.VITE_API_URL;
 
 
@@ -15,9 +15,18 @@ async function AddVehicle(formData, Token) {
   }
 
 
+  async function getVehicleInfo (ID) {
+    const  data = await axios.get(`${api_url}/api/vehicles/${ID}`);
+    console.log( data)
+    return  data;
+}
+
+
+
 
   const vehicleService = {
     AddVehicle,
+    getVehicleInfo
  
   };
   

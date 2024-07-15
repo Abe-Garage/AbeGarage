@@ -145,12 +145,20 @@ input::placeholder {
 /* additional-requests h2  */
 .CustomerInfo h2 {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 4px;
 }
 .VehicleInfo h2 {
   display: flex;
   justify-content: space-between;
 }
+
+.CustomerInfo_two{
+  display: flex;
+  justify-content: space-between;
+}
+
+
 .CustomerInfo p,
 .VehicleInfo p {
   margin-bottom: 3px; /* Adjust the value to your desired spacing */

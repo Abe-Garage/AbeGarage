@@ -28,9 +28,17 @@ router.get(
 );
 
 // Create a route to handle the get single customer request in get
+
+// router.get(
+//   "/api/customer/single/:id",
+//   [verifyToken, isAdmin],
+//   customerController.getSingleCustomerController
+// );
+
+
 router.get(
-  "/api/customer/single/:id",
-  [verifyToken, isAdmin],
+  "/api/customer/single/:customer_id",
+  [verifyToken,  isAdmin],
   customerController.getSingleCustomerController
 );
 
