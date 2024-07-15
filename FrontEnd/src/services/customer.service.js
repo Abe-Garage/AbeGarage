@@ -20,7 +20,7 @@ async function getAllCustomers(token,offset) {
   const headers = {
     "x-access-token": token,
   };
-  const data = await axios.get(`${api_url}/api/customers/${offset}`, { headers });
+  const data = await axios.get(`/api/customers/${offset}`, { headers });
 
   return data;
 }
