@@ -1,20 +1,18 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BeatLoader } from "react-spinners";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 import customerService from "../../../../services/customer.service";
 import { useAuth } from "../../../../Context/AuthContext";
 import classes from "./edit.module.css";
 
 const EditCustomer = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { customerId } = useParams();
   const [customer_first_name, setFirstName] = useState("");
   const [customer_last_name, setLastName] = useState("");
-  const [customer_phone, setPhoneNumber] = useState("");
+  const [customer_phone_number, setPhoneNumber] = useState("");
   const [customer_email, setEmail] = useState("");
   const [active_customer_status, setActiveCustomerStatus] = useState(false);
-  const [customer1, setCustomer1] = useState({});
   const [serverMsg, setServerMsg] = useState("");
   const [apiError, setApiError] = useState(false);
   const [apiErrorMessage, setApiErrorMessage] = useState("");
@@ -22,48 +20,35 @@ const EditCustomer = () => {
   // Spinner handler state
   const [spin, setSpinner] = useState(false);
 
-  // Refs
-  const firstNameDom = useRef();
-  const lastNameDom = useRef();
-  const phoneNumberDom = useRef();
-  const emailDom = useRef();
-  const checkboxDOM = useRef();
-
-
   // Create a variable to hold the user's token
-  let loggedInEmployeeToken = "";
   const { employee } = useAuth();
-  if (employee && employee.employee_token) {
-    loggedInEmployeeToken = employee.employee_token;
-  }
-
+  // console.log(employee)
+   const loggedInEmployeeToken = employee?.employee_token;
 
   // Value trackers
-  const firstNameTracker = () => setFirstName(firstNameDom.current.value);
-  const lastNameTracker = () => setLastName(lastNameDom.current.value);
-  const phoneNumberTracker = () => setPhoneNumber(phoneNumberDom.current.value);
-  const emailTracker = () => setEmail(emailDom.current.value);
-  const activeCustomerStatusTracker = () =>
-    setActiveCustomerStatus(checkboxDOM.current.checked);
+  const firstNameTracker = (e) => setFirstName(e.target.value);
+  const lastNameTracker = (e) => setLastName(e.target.value);
+  const phoneNumberTracker = (e) => setPhoneNumber(e.target.value);
+  const emailTracker = (e) => setEmail(e.target.value);
+  const activeCustomerStatusTracker = (e) =>setActiveCustomerStatus(e.target.checked);
 
-  // Fetch customer data using useEffect
-  useEffect(() => {
-    const customerData = location.state?.customer;
-    if (customerData) {
-      setFirstName(customerData.customer_first_name);
-      setLastName(customerData.customer_last_name);
-      setPhoneNumber(customerData.customer_phone);
-      setEmail(customerData.customer_email);
-      setCustomer1(customerData);
-      checkboxDOM.current.checked = customerData.active_customer_status;
-      setActiveCustomerStatus(customerData.active_customer_status);
-    } else {
-      const fetchData = async () => {
-        try {
-          const data = await customerService.singleCustomer(
-            customerId,
-            loggedInEmployeeToken
-          );
+
+  //* fetch the customer data
+  const fetchData = async () => {
+    try {
+      const data = await customerService.singleCustomer(
+        customerId,
+        loggedInEmployeeToken
+      );
+       
+        setFirstName(data.customer.customer_first_name);
+        setLastName(data.customer.customer_last_name);
+        setPhoneNumber(data.customer.customer_phone_number);
+        setEmail(data.customer.customer_email);
+        // checkboxDOM.current.checked = customerData.active_customer_status;
+        setActiveCustomerStatus(data.customer.active_customer_status);
+     
+    } catch (error) {
           if (data.status !== 200) {
             setApiError(true);
             if (data.status === 403) {
@@ -73,40 +58,29 @@ const EditCustomer = () => {
             } else {
               setApiErrorMessage("Please try again later");
             }
-          } else {
-            const customerData = data.data.singleCustomer[0];
-            setFirstName(customerData.customer_first_name);
-            setLastName(customerData.customer_last_name);
-            setPhoneNumber(customerData.customer_phone);
-            setEmail(customerData.customer_email);
-            setCustomer1(customerData);
-            checkboxDOM.current.checked = customerData.active_customer_status;
-            setActiveCustomerStatus(customerData.active_customer_status);
           }
-        } catch (error) {
-          setApiError(true);
           setApiErrorMessage("An error occurred while fetching data.");
-        }
-      };
-      fetchData();
     }
-  }, [customerId, location.state, loggedInEmployeeToken]);
+  };
+
+  // Fetch customer data using useEffect
+  useEffect(() => {
+      fetchData();
+  }, []);
+
+  
 
   async function handleSubmit(e) {
+
     e.preventDefault();
     const formData = {
-      customer_id: customerId,
-      customer_first_name,
-      customer_last_name,
-      customer_phone,
-      customer_email,
-      active_customer_status: active_customer_status ? 1 : 0, // 1 for true, 0 for false
+      customer_id: customerId,customer_first_name,customer_last_name,customer_phone_number,customer_email,
+      active_customer_status: active_customer_status ? 1 : 11, // 1 for true, 0 for false
     };
 
     try {
       setSpinner(true);
       const data = await customerService.updateCustomer(
-        customerId,
         formData,
         loggedInEmployeeToken
       );
@@ -127,10 +101,10 @@ const EditCustomer = () => {
 
   return (
     <>
-      <section className={classes.contactSection}>
+      <section className={`${classes.contactSection} contact-section`}>
         <div className="auto-container">
-          <div className={classes.contactTitle}>
-            <h2>Edit: {customer1.customer_email || ""}</h2>
+          <div className={`${classes.contactTitle} contact-title`}>
+            <h2>Edit: {customer_email || ""}</h2>
           </div>
           <div className="row clearfix">
             <div className="form-column col-lg-7">
@@ -143,7 +117,6 @@ const EditCustomer = () => {
                           type="text"
                           name="customer_first_name"
                           placeholder="Customer first name"
-                          ref={firstNameDom}
                           value={customer_first_name}
                           onChange={firstNameTracker}
                           className={classes.formInput}
@@ -156,7 +129,6 @@ const EditCustomer = () => {
                           name="customer_last_name"
                           placeholder="Customer last name"
                           required
-                          ref={lastNameDom}
                           value={customer_last_name}
                           onChange={lastNameTracker}
                           className={classes.formInput}
@@ -167,9 +139,8 @@ const EditCustomer = () => {
                           type="text"
                           name="customer_phone"
                           placeholder="Customer phone (555-555-5555)"
-                          ref={phoneNumberDom}
                           required
-                          value={customer_phone}
+                          value={customer_phone_number}
                           onChange={phoneNumberTracker}
                           className={classes.formInput}
                         />
@@ -179,7 +150,6 @@ const EditCustomer = () => {
                           type="email"
                           name="customer_email"
                           placeholder="Customer email"
-                          ref={emailDom}
                           required
                           value={customer_email}
                           onChange={emailTracker}
@@ -198,7 +168,7 @@ const EditCustomer = () => {
                         <input
                           value={active_customer_status}
                           onChange={activeCustomerStatusTracker}
-                          ref={checkboxDOM}
+                       
                           type="checkbox"
                           name="completed"
                           className={classes.formCheckbox}

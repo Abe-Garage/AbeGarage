@@ -125,13 +125,10 @@ function App() {
 
         <Route path="/services" element={<Services />} />
         {/* <Route path="order/{orderHash}" element={OrdersDetail} /> */}
-        //TODO:-ALALEKEM(MALEK YALEBET) //* routes related to employee
-        {/* <Route path="admin/employees" element={<Employees />} /> */}
-        {/* <Route path="admin/add-employee" element={<AddEmployee />} /> */}
-        {/* <Route path="admin/employee/edit/:id" element={<EditEmployee />} /> */}
+       
+   
         //* routes related to orders
-        {/* <Route path="/admin" element={<AdminDashBoard />} /> */}
-        {/* <Route path="/admin/orders" element={<AllOrdersPage />} /> */}
+       
         <Route path="/admin/order" element={<NewOrder />} />
         <Route path="/admin/create-order" element={<CreateOrder />} />
         {/* <Route path="admin/order/{orderHash}/edit" element={EditOrder} /> */}
@@ -145,8 +142,7 @@ function App() {
           path="/admin/edit-customer/:customerId"
           element={<EditCustomer />}
         />
-        {/* <Route path="admin/customers" element={Customers} /> */}//TODO
-        {/* <Route path="admin/add-customer" element={Addvehicle} /> //* conditionally render */}
+        
       </Routes>
       <Footer />
     </>

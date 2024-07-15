@@ -28,13 +28,14 @@ async function getAllCustomers(token,offset) {
 
 // afunction to customer update request
 async function updateCustomer(formData, loggedInCustomerToken) {
+  console.log(formData)
   const headers = {
     "x-access-token": loggedInCustomerToken,
   };
 
   const data = await axios.put("/api/customer/update", formData, { headers });
 
-  // console.log(data);
+  console.log(data);
 
   return data;
 }
