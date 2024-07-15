@@ -68,14 +68,15 @@ const EditCustomer = () => {
       fetchData();
   }, []);
 
-  
+  // console.log(customer_first_name, customer_last_name,customer_email)
+  console.log(active_customer_status)
 
   async function handleSubmit(e) {
 
     e.preventDefault();
     const formData = {
       customer_id: customerId,customer_first_name,customer_last_name,customer_phone_number,customer_email,
-      active_customer_status: active_customer_status ? 1 : 11, // 1 for true, 0 for false
+      active_customer_status: active_customer_status ? 1 : 0, // 1 for true, 0 for false
     };
 
     try {
