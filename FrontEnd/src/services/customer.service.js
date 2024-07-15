@@ -11,6 +11,7 @@ async function createCustomer(formData, loggedInCustomerToken) {
   };
 
   const data = await axios.post("/api/customer", formData, { headers });
+  console.log(data)
 
   return data;
 }

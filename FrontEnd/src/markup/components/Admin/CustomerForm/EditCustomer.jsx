@@ -69,7 +69,7 @@ const EditCustomer = () => {
   }, []);
 
   // console.log(customer_first_name, customer_last_name,customer_email)
-  console.log(active_customer_status)
+  // console.log(active_customer_status)
 
   async function handleSubmit(e) {
 
