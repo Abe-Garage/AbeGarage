@@ -113,7 +113,8 @@
   .contact_us textarea::placeholder{
     color: #DDD;
   }
-/* 
-  .table tr{
-    scroll-snap-align: start;
-  } */
+
+
+  .fs{
+    font-size: 12px;
+  }

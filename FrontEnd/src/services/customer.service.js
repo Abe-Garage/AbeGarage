@@ -26,6 +26,17 @@ async function getAllCustomers(token,offset) {
   return data;
 }
 
+// A function to send get request to get all customers
+async function getCustomerOrderbyId(id,token) {
+  const headers = {
+    "x-access-token": token,
+  };
+  const data = await axios.get(`/api/corder/customer/${id}`, { headers });
+
+  return data;
+}
+
+
 
 // afunction to customer update request
 async function updateCustomer(formData, loggedInCustomerToken) {
@@ -108,7 +119,8 @@ const customerService = {
   singleCustomer,
   formatDate,
   totalNofCustomers,
-  searchedCustomers
+  searchedCustomers,
+  getCustomerOrderbyId
 
 };
 

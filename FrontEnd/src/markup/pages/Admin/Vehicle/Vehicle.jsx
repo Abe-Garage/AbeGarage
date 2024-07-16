@@ -7,12 +7,15 @@ import zIndex from '@mui/material/styles/zIndex';
 import { useParams,Link } from 'react-router-dom';
 import customerService from '../../../../services/customer.service';
 import { useAuth } from '../../../../Context/AuthContext';
+import { LiaEdit } from "react-icons/lia";
+import { FiExternalLink } from "react-icons/fi";
 
 
 const Vehicle = () => {
 
     const [customerinfo, setCustomerInfo] = useState({})
     const [addvehicle, setVehicle]=useState(false)
+    const[table ,setTable]=useState([])
     const {employee}=  useAuth()
     // console.log(employee,employee?.employee_token)
     const{id}= useParams()
@@ -45,10 +48,19 @@ const Vehicle = () => {
       }
 
       const singCustomerData =async () =>{
-         const data = await customerService.singleCustomer(id,token)
-        //  console.log(data.customer)
-         setCustomerInfo(data.customer)
+        try {
+              const data = await customerService.singleCustomer(id,token)
+            const response = await customerService.getCustomerOrderbyId(id,token)
+            // console.log(data?.customer)
+            // console.log(response?.data)
+            setCustomerInfo(data.customer)
+            setTable(response?.data)
+            
+        } catch (error) {
+            console.log(error)
+        }
       }
+
 
    
 
@@ -72,74 +84,114 @@ const Vehicle = () => {
                         <div style={lineStyle}></div>
 
 
-                            <div className='pl-5 pt-5 d-flex flex-column'>
+                        <div className='pl-5 pt-5 d-flex flex-column'>
 
-                                <div className='text-center bg-info my-5' style={circleStyle}>
-                                    Info
-                                </div>
+                            <div className='text-center bg-info my-5' style={circleStyle}>
+                                Info
+                            </div>
 
-                                <div className='text-center bg-info my-5' style={circleStyle}>
-                                    Cars
-                                </div>
-
-
-                                <div className='text-center bg-warning my-5' style={circleStyle}>
-                                    Orders
-                                </div>
-
+                            <div className='text-center bg-info my-5' style={circleStyle}>
+                                Cars
                             </div>
 
 
-                            <div className='col-md-9'>
-                                <div className=' contact-section row'>
+                            <div className='text-center bg-warning my-5' style={circleStyle}>
+                                Orders
+                            </div>
 
-                                    <div className='auto-container col-md-10'>
-                                    <div className='customer-vehicle'>
-                                        <h2>Customer : {customerinfo.customer_first_name}  {customerinfo.customer_last_name}</h2>
-                                    </div>
+                        </div>
 
-                                    <div className='v_info'>
-                                            <p><span className='v_title'>Email</span> :<span>{customerinfo.customer_email}</span></p>
-                                            <p><span className='v_title'>phone no</span> :<span>{customerinfo.customer_phone_number}</span></p>
-                                            <p><span className='v_title'> Active Customer</span> :<span>{customerinfo.active_customer_status ? 'Yes': 'No'}</span></p>
-                                            <p><span className='v_title'>Edit Customer info</span> :<span><Link to={`/admin/edit-customer/${id}`}><EditCalendarOutlinedIcon /></Link></span></p>
-                                    </div>
-                                    </div>
-                                
+
+                        <div className='col-md-9'>
+                            <div className=' contact-section row'>
+
+                                <div className='auto-container col-md-10'>
+                                <div className='customer-vehicle'>
+                                    <h2>Customer : {customerinfo.customer_first_name}  {customerinfo.customer_last_name}</h2>
                                 </div>
 
-                                <div className="contact-section row pad">
-                                        <div className='auto-container  col-md-10 '>
-                                        
-                                            <div className="contact-title mrg">
-                                                <h2>Vehicles of {customerinfo.customer_first_name}</h2>
-                                                <div className='contact-form'>
-                                                        <div className='row clearfix'>
-                                                                <div className="form-group col-md-12 search">
-                                                                <input type="text" name="vehicle-model" placeholder="No Vehicle found" required/>
-                                                                </div>
-                                                        </div>
-                                                </div>
+                                <div className='v_info'>
+                                        <p><span className='v_title'>Email</span> :<span>{customerinfo.customer_email}</span></p>
+                                        <p><span className='v_title'>phone no</span> :<span>{customerinfo.customer_phone_number}</span></p>
+                                        <p><span className='v_title'> Active Customer</span> :<span>{customerinfo.active_customer_status ? 'Yes': 'No'}</span></p>
+                                        <p><span className='v_title'>Edit Customer info</span> :<span><Link to={`/admin/edit-customer/${id}`}><EditCalendarOutlinedIcon /></Link></span></p>
+                                </div>
+                                </div>
+                            
+                            </div>
 
-
-                                                 {
-                                                 !addvehicle && 
-                                                  (<div className="form-group col-md-10" style={{paddingLeft:'0'}}>
-                                                     <button className="theme-btn btn-style-one" type="submit" data-loading-text="Please wait..." onClick={()=>setVehicle(!addvehicle)}><span>ADD NEW VEHICLE</span></button>
-                                                  </div>)
-                                                 }
-                                            </div>
+                            <div className="contact-section row pad">
+                                    <div className='auto-container  col-md-10 '>
                                     
+                                        <div className="contact-title mrg">
+                                            <h2>Vehicles of {customerinfo.customer_first_name}</h2>
+                                            <div className='contact-form'>
+                                                    <div className='row clearfix'>
+                                                            <div className="form-group col-md-12 search">
+                                                            <input type="text" name="vehicle-model" placeholder="No Vehicle found" required/>
+                                                            </div>
+                                                    </div>
+                                            </div>
 
+
+                                                {
+                                                !addvehicle && 
+                                                (<div className="form-group col-md-10" style={{paddingLeft:'0'}}>
+                                                    <button className="theme-btn btn-style-one" type="submit" data-loading-text="Please wait..." onClick={()=>setVehicle(!addvehicle)}><span>ADD NEW VEHICLE</span></button>
+                                                </div>)
+                                                }
                                         </div>
-
-                                       
-                                </div>
-
                                 
 
-                                  {addvehicle &&  <Vehicleform id={id} v={{addvehicle,setVehicle}} />}
+                                    </div>
+
+                                    
                             </div>
+
+                            {addvehicle &&  <Vehicleform id={id} v={{addvehicle,setVehicle}} />}
+
+                            <div className="table-responsive rounded-3 fs">
+                                <table className="table table-striped table-bordered table-hover border ">
+
+                                    <thead className="table-info text-white" >
+                                        <tr>
+                                            <th>Order date</th>
+                                            <th>Recieved by</th>
+                                            <th>Vehicle</th>
+                                            <th>ECD</th>
+                                            <th>Order Status /Link</th>
+                                            <th>Total Price</th>
+                                            <th>Service</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {table?.map((customer) => (
+                                        <tr key={customer.customer_id}>
+
+                                           <td className="customer_name">
+                                            {customerService.formatDate(customer?.order_date)}
+                                            </td>
+                                            
+                                            <td className="customer_name">
+                                            {`${customer?.employee_first_name}  ${customer?.employee_last_name}`}
+                                            </td>
+
+                                            <td >{customer?.vehicle_serial || customer?.vehicle_make}</td>
+                                            <td>{customerService.formatDate(customer?.estimated_completion_date)}</td>
+                                            <td>{customer?.order_hash}</td>
+                                            <td>{customer?.order_total_price}</td>
+                                            <td>{customer?.service_name}</td>
+                                        
+                                        </tr>
+                                        ))} 
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+
+
                     </div>
 
                 </div>

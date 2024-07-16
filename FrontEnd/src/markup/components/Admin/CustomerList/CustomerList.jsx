@@ -116,7 +116,7 @@ const CustomerList = () => {
           </div>
         </div>
 
-        <div className="table-responsive ">
+        <div className="table-responsive rounded-3 ">
             <table className="table table-striped table-bordered table-hover border ">
               <thead className="table-dark text-white" >
                 <tr>
