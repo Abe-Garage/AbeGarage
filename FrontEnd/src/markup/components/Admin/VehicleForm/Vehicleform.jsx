@@ -3,6 +3,8 @@ import { IoCloseSharp } from "react-icons/io5";
 import { useAuth } from '../../../../Context/AuthContext';
 import vehicleService from '../../../../services/vehicle.service';
 import { useNavigate } from 'react-router-dom';
+import { BeatLoader } from "react-spinners";
+
 
 const Vehicleform = ({id,v}) => {
 
@@ -20,6 +22,7 @@ const Vehicleform = ({id,v}) => {
     const [vehicle_tag,setVehicleTag]=useState('')
     const [vehicle_serial,setVehicleSerial]=useState('')
     const [vehicle_color,setVehicleColor]=useState('')
+    const [spin, setSpinner] = useState(false);
     const navigate = useNavigate()
     // console.log(employee,employee?.employee_token)
 
@@ -27,6 +30,7 @@ const Vehicleform = ({id,v}) => {
 
     const handleSubmit = async(e)=>{
         e.preventDefault();
+        setSpinner(true)
 
         if(!customer_id || !vehicle_year || !vehicle_make || !vehicle_model || !vehicle_type || !vehicle_mileage || !vehicle_tag || !vehicle_mileage || !vehicle_color){
             return 'fill all required info in the form.'
@@ -41,11 +45,15 @@ const Vehicleform = ({id,v}) => {
 
             const result = await vehicleService.AddVehicle(formData,token)
 
-            console.log(result)
-            navigate('/admin/create-order')
+            // console.log(result)
+            setTimeout(()=>{
+                setSpinner(false)
+                navigate('/admin/create-order')
+            },1000)
             
         } catch (error) {
             console.log(error)
+            setSpinner(false)
         }
 
 
@@ -137,7 +145,7 @@ const Vehicleform = ({id,v}) => {
                           
                                 <div className="form-group col-md-12">
                                     {/* <input id="form_botcheck" name="form_botcheck" className="form-control" type="hidden" value="" /> */}
-                                    <button className="theme-btn btn-style-one" type="submit" data-loading-text="Please wait..."><span>ADD VEHICLE</span></button>
+                                    <button className="theme-btn btn-style-one" type="submit" data-loading-text="Please wait..."><span>ADD VEHICLE { spin && <BeatLoader color="white" size={8} />}</span></button>
                                 </div>
 
 
