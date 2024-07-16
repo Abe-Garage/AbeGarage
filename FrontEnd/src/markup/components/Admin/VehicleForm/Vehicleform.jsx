@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { IoCloseSharp } from "react-icons/io5";
 import { useAuth } from '../../../../Context/AuthContext';
 import vehicleService from '../../../../services/vehicle.service';
+import { useNavigate } from 'react-router-dom';
 
 const Vehicleform = ({id,v}) => {
 
@@ -19,6 +20,7 @@ const Vehicleform = ({id,v}) => {
     const [vehicle_tag,setVehicleTag]=useState('')
     const [vehicle_serial,setVehicleSerial]=useState('')
     const [vehicle_color,setVehicleColor]=useState('')
+    const navigate = useNavigate()
     // console.log(employee,employee?.employee_token)
 
    const token = employee?.employee_token;
@@ -26,9 +28,9 @@ const Vehicleform = ({id,v}) => {
     const handleSubmit = async(e)=>{
         e.preventDefault();
 
-        // if(){
-        //     return 
-        // }
+        if(!customer_id || !vehicle_year || !vehicle_make || !vehicle_model || !vehicle_type || !vehicle_mileage || !vehicle_tag || !vehicle_mileage || !vehicle_color){
+            return 'fill all required info in the form.'
+        }
 
 
         const formData={
@@ -40,6 +42,7 @@ const Vehicleform = ({id,v}) => {
             const result = await vehicleService.AddVehicle(formData,token)
 
             console.log(result)
+            navigate('/admin/create-order')
             
         } catch (error) {
             console.log(error)
@@ -47,6 +50,7 @@ const Vehicleform = ({id,v}) => {
 
 
     }
+    
   return (
     <section className="contact-section row pad">
          
@@ -78,7 +82,7 @@ const Vehicleform = ({id,v}) => {
 
                                 <div className="form-group col-md-12">
                                     <input type="text" name="first-name" 
-                                    value={vehicle_make}
+                                      value={vehicle_make}
                                       onChange={(event) => setVehicleMake(event.target.value)} 
 
                                       placeholder="Vehicle make"/>

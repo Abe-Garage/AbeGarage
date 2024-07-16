@@ -47,6 +47,7 @@ import CustomerList from "./markup/components/Admin/CustomerList/CustomerList";
 import ErrorComponent from "./markup/pages/Main/404/404";
 
 import Customers from "./markup/pages/Admin/Customers/Customers";
+import EditVehicle from "./markup/pages/Admin/Vehicle/EditVehicle";
 
 
 function App() {
@@ -137,6 +138,7 @@ function App() {
         {/* <Route path="/admin/add-service" element={AddServices} />  */}
         {/* //* routes related to customers */}
         <Route path="/admin/customers/:id" element={<Vehicle />} />
+        <Route path="/admin/edit-vehicle/:id" element={<EditVehicle />} />
         {/* <Route path="/admin/add-customer" element={<CustomerForm />} /> */}
         <Route
           path="/admin/edit-customer/:customerId"

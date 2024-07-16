@@ -81,7 +81,7 @@ const Vehicle = () => {
 
                     <div className="col-md-9 admin-right-side d-flex" style={{position:'relative'}}>
 
-                        <div style={lineStyle}></div>
+                        {/* <div style={lineStyle}></div> */}
 
 
                         <div className='pl-5 pt-5 d-flex flex-column'>
@@ -156,11 +156,11 @@ const Vehicle = () => {
                                     <thead className="table-info text-white" >
                                         <tr>
                                             <th>Order date</th>
-                                            <th>Recieved by</th>
+                                            <th>Rec by</th>
                                             <th>Vehicle</th>
                                             <th>ECD</th>
                                             <th>Order Status /Link</th>
-                                            <th>Total Price</th>
+                                            <th>Price</th>
                                             <th>Service</th>
                                         </tr>
                                     </thead>
