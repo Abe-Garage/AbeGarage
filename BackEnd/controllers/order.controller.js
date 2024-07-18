@@ -31,7 +31,7 @@ async function createOrder(req, res) {
         .json({ error: "Field 'order_services' must be a non-empty array" });
     }
 
-    // Pass the validated data to the service
+
     const result = await orderService.createOrders(orderData);
     res.status(201).json(result);
   } catch (error) {
@@ -56,6 +56,10 @@ async function getAllOrders(req, res) {
   }
 }
 
+
+  
+
+
 // Get single order by ID
 async function getOrderById(req, res) {
   try {
@@ -71,6 +75,8 @@ async function getOrderById(req, res) {
       .json({ error: "An error occurred while retrieving the order" });
   }
 }
+
+
 
 // Update an order
 async function updateOrder(req, res) {
