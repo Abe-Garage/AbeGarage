@@ -72,8 +72,8 @@ function CreateOrder() {
         <table className="table table-bordered table-hover">
           <tbody>
             {searchResults.map((customer, index) => (
-              <tr key={customer.customer_id || index}>
-                <td>{customer.customer_id}</td>
+              <tr key={ index}>
+                
                 <td className="customer_name">
                   {customer.customer_first_name}
                 </td>
