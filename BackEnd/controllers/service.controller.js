@@ -28,7 +28,7 @@ async function createService(req, res, next) {
 // update service
 
 async function updateService(req, res) {
-    const { service_id, service_name, service_description } = req.body;
+    const { service_id, service_name, service_description ,price } = req.body;
     // const {service_id}=req.params
    
     // console.log("service_id ===>", service_id);
@@ -40,7 +40,7 @@ async function updateService(req, res) {
     }
 
     try {
-        const result = await serviceService.updateService(service_id, service_name, service_description );
+        const result = await serviceService.updateService(service_id, service_name, service_description, price);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ msg: "Service not found" });
@@ -56,7 +56,7 @@ async function updateService(req, res) {
 // delete service
 
 async function deleteService(req, res) {
-  const { service_name, service_description } = req.body;
+  const { service_name, service_description ,price } = req.body;
   const {service_id}=req.params
  
   // console.log("service_id ===>", service_id);

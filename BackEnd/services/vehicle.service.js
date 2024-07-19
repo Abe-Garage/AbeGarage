@@ -134,6 +134,21 @@ async function vehiclePerCustomer(ID){
     
 }
 
+
+async function deleteVehicle(vehicle_id) {
+    try {
+      const result = await connection.query(
+        "DELETE FROM customer_vehicle_info WHERE vehicle_id = ?",
+        [ vehicle_id]
+      );
+  
+      return result;
+    } catch (error) {
+      throw new Error("Error Deleting service: " + error.message);
+    }
+  }
+  
+
 async function hasServiceOrder(ID){
     try {
         console.log("vehicle_id",ID)
@@ -163,4 +178,5 @@ async function hasServiceOrder(ID){
 
 module.exports={
     singleVehicle,addVehicle,updateVehicleInfo,vehiclePerCustomer,hasServiceOrder
+
 }

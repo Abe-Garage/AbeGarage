@@ -1,42 +1,43 @@
-
-
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import customerService from "../../../../services/customer.service";
-import vehicleService from '../../../../services/vehicle.service';
-import serviceService from '../../../../services/service.service';
-import { useAuth } from '../../../../Context/AuthContext';
-// import CustomerInfo from "./CustomerInfo";
+import vehicleService from "../../../../services/vehicle.service";
+import serviceService from "../../../../services/service.service";
+import { useAuth } from "../../../../Context/AuthContext";
 import "./CreateNewOrder.css";
- import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
+import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 import EditCalendarOutlinedIcon from "@mui/icons-material/EditCalendarOutlined";
 import "./CreateNewOrder.css";
+// import axios from "../../../../utils/axiosConfig";
 
-
+const api_url = import.meta.env.VITE_API_URL;
 function CreateNewOrder() {
- 
   const { employee } = useAuth();
   const token = employee?.employee_token;
-  console.log("token:" , token)
+  const employee_id = employee?.employee_id;
+  // console.log(employee_id)
+  console.log("token:", token);
 
   // const { ID } = useParams();
-  const ID = '1'
+  const ID = "1";
 
   const [services, setServices] = useState([]);
   const [selectedServices, setSelectedServices] = useState([]);
   const [serviceDescription, setServiceDescription] = useState("");
-  const [servicePrice, setServicePrice] = useState("");
+  const [orderDescription, setOrderDescription] = useState("");
+  const [orderTotalPrice, setOrderTotalPrice] = useState("");
+  const [estimatedCompletionDate, setEstimatedCompletionDate] = useState("");
   const [customerInfo, setCustomerInfo] = useState({});
   const [vehicleInfo, setVehicleInfo] = useState(null);
-
+  const navigate = useNavigate();
 
   const getServiceList = async () => {
     try {
       const data = await serviceService.getServiceList();
-      console.log(data.data.data)
+      console.log(data.data.data);
       setServices(data.data.data);
     } catch (error) {
-      console.error('Error fetching services:', error);
+      console.error("Error fetching services:", error);
     }
   };
 
@@ -44,12 +45,9 @@ function CreateNewOrder() {
     getServiceList();
   }, []);
 
-
-
-
   const fetchSingleCustomerData = async () => {
     if (!token) {
-      console.error('Token is not available');
+      console.error("Token is not available");
       return;
     }
 
@@ -57,7 +55,7 @@ function CreateNewOrder() {
       const data = await customerService.singleCustomer(ID, token);
       setCustomerInfo(data.customer);
     } catch (error) {
-      console.error('Error ', error);
+      console.error("Error ", error);
     }
   };
 
@@ -65,14 +63,13 @@ function CreateNewOrder() {
     fetchSingleCustomerData();
   }, [ID, token]);
 
-
   const fetchVehicleInfo = async () => {
     try {
       const response = await vehicleService.getVehicleInfo(ID);
-      console.log(response.data.result)
+      console.log(response.data.result);
       setVehicleInfo(response.data.result);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
@@ -80,144 +77,164 @@ function CreateNewOrder() {
     fetchVehicleInfo();
   }, [ID]);
 
-
-
-  const handleSelectionChange = (service) => {
-    setSelectedServices((prevSelectedServices) => {
-      if (prevSelectedServices.includes(service.service_id)) {
-        return prevSelectedServices.filter((id) => id !== service.service_id);
+  const handleServiceSelection = (service_id) => {
+    setSelectedServices((prevServices) => {
+      if (prevServices.includes(service_id)) {
+        // If service is already selected, remove it
+        return prevServices.filter((id) => id !== service_id);
       } else {
-        return [...prevSelectedServices, service.service_id];
+        // If service is not selected, add it
+        return [...prevServices, service_id];
       }
     });
+    console.log(service_id);
+  };
+  // console.log(service.service_id)
+
+  const handleOrderTotalPriceChange = (e) => {
+    setOrderTotalPrice(e.target.value);
   };
 
-  const handleServiceDescriptionChange = (event) => {
-    setServiceDescription(event.target.value);
+  const handleEstimatedCompletionDateChange = (event) => {
+    setEstimatedCompletionDate(event.target.value);
   };
 
-  const handleServicePriceChange = (event) => {
-    setServicePrice(event.target.value);
+  const calculateOrderDescription = () => {
+    return selectedServices
+      .map((service) => service.service_description)
+      .join(", ");
   };
 
+  // Handle order description change
+  const handleOrderDescriptionChange = (e) => {
+    setOrderDescription(e.target.value);
+  };
 
-  const handleSubmit = () => {
+  useEffect(() => {
+    setOrderDescription(calculateOrderDescription());
+  }, [selectedServices]);
+
+  const handleAdditionalRequest = (e) => {
+    setServiceDescription(e.target.value);
+  };
+
+  const handleSubmit = async () => {
     if (!customerInfo) {
-      console.error('Customer info not loaded');
+      console.error("Customer info not loaded");
       return;
     }
-
     const requestBody = {
-      customer_id: customerInfo.customer_id, // Use the fetched customer ID
-      service_ids: selectedServices,
-      custom_service: {
-        description: serviceDescription,
-        price: servicePrice,
-      },
-      vehicle_info: vehicleInfo, // Include vehicle info if needed
+      employee_id: employee.employee_id, //
+      customer_id: customerInfo.customer_id,
+      vehicle_id: vehicleInfo[0].vehicle_id,
+      active_order: 2, // Always active order
+      order_description: orderDescription,
+      estimated_completion_date: estimatedCompletionDate,
+      completion_date: null,
+      order_completed: 0,
+      order_status: 1,
+      order_total_price: orderTotalPrice,
+      additional_request: serviceDescription,
+      order_services: selectedServices.map((serviceId) => ({
+        service_id: serviceId,
+        service_completed: false,
+      })),
     };
+    console.log(requestBody);
 
+    try {
+      const response = await fetch(`${api_url}/api/order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
 
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
 
-    fetch(`http://localhost:3000/api/order${customer_id}`, {
-      method: 'POST',
-      headers: {
-
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestBody),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log('Order submitted:', data);
-        alert("successfully submmiting the order")
-      })
-      .catch((error) => console.error('Error submitting order:', error));
-  };
-
-
-  const handleServiceSelection = (service) => {
-    if (selectedServices.includes(service)) {
-      setSelectedServices(selectedServices.filter((s) => s !== service));
-    } else {
-      setSelectedServices([...selectedServices, service]);
+      const data = await response.json();
+      console.log("Order submitted:", data);
+      alert("Order successfully submitted");
+    } catch (error) {
+      console.error("Error submitting order:", error);
     }
   };
 
   const handleEditCustomerClick = () => {
-    // Replace with your actual path to the edit customer component
-    const editCustomerPath = "/edit-customer"; // Example path
-    window.location.href = editCustomerPath; // Redirect using window.location
+    const editCustomerPath = `/admin/edit-customer/${ID}`;
+    window.location.href = editCustomerPath;
   };
 
   const handleEditVehicleClick = () => {
-    // Replace with your actual path to the edit vehicle component
-    const editVehiclePath = "/edit-vehicle"; // Example path
-    window.location.href = editVehiclePath; // Redirect using window.location
+    const editVehiclePath = "/edit-vehicle";
+    window.location.href = editVehiclePath;
   };
 
+  const handleRedirectVehicle = () => {
+    navigate("/");
+  };
 
+  const handleRedirectCustomer = () => {
+    navigate("/");
+  };
 
   return (
     <div className="create-order-container">
       <h1>Create a new order</h1>
       {customerInfo ? (
-      <div className="CustomerInfo">
-        <div className="CustomerInfo_two" >
-          <div>
-          <h2> 
-          {customerInfo.customer_first_name } <span>{customerInfo.customer_last_name}</span></h2>
+        <div className="CustomerInfo">
+          <div className="CustomerInfo_two">
+            <div>
+              <h2>
+                {customerInfo.customer_first_name}{" "}
+                <span>{customerInfo.customer_last_name}</span>
+              </h2>
+            </div>
+            <div>
+              <CancelPresentationIcon
+                onClick={handleRedirectCustomer}
+                className="icon"
+              />
+            </div>
           </div>
-          <div>
-          <CancelPresentationIcon className="icon" />
-          </div>
-        
-       
+          <p>
+            <span className="label">Email:</span>{" "}
+            <span className="value">{customerInfo.customer_email}</span>
+          </p>
+          <p>
+            <span className="label">Phone Number:</span>{" "}
+            <span className="value">{customerInfo.customer_phone_number}</span>
+          </p>
+          <p>
+            <span className="label">Active Customer:</span>{" "}
+            <span className="value">
+              {customerInfo.active_customer_status ? "Yes" : "No"}
+            </span>
+          </p>
+          <p>
+            <span className="label">Edit customer info:</span>{" "}
+            <EditCalendarOutlinedIcon
+              className="icon"
+              onClick={handleEditCustomerClick}
+            />
+          </p>
         </div>
-        
-          
-        
+      ) : (
+        <p>Loading customer information...</p>
+      )}
 
-        <p>
-          <span className="label">Email:</span>{" "}
-          <span className="value">{customerInfo.customer_email}</span>
-        </p>
-        <p>
-          <span className="label">Phone Number:</span>{" "}
-          <span className="value">{customerInfo.customer_phone_number}</span>
-        </p>
-        <p>
-          <span className="label">Active Customer:</span>{" "}
-          <span className="value">{customerInfo.active_customer_status ? "Yes" : "No"}</span>
-        </p>
-        <p>
-          <span className="label">Edit customer info:</span>{" "}
-          <EditCalendarOutlinedIcon
-            className="icon"
-            onClick={handleEditCustomerClick}
-          />
-        </p>
-        
-      </div>
-    ) : (
-      <p>Loading customer information...</p>
-    )}
-
-
-
-{vehicleInfo ? (
-  
-  <div className="VehicleInfo">
+      {vehicleInfo ? (
+        <div className="VehicleInfo">
           <h2>
             {vehicleInfo[0].vehicle_make}
-            <CancelPresentationIcon className="icon" />
+            <CancelPresentationIcon
+              onClick={handleRedirectVehicle}
+              className="icon"
+            />
           </h2>
-  
           <p>
             <span className="label">Vehicle color:</span>{" "}
             <span className="value">{vehicleInfo[0].vehicle_color}</span>
@@ -240,66 +257,84 @@ function CreateNewOrder() {
           </p>
           <p>
             <span className="label">Edit Vehicle info:</span>{" "}
-           
             <span className="value">
               <EditCalendarOutlinedIcon
                 className="icon"
                 onClick={handleEditVehicleClick}
               />
             </span>
-            
           </p>
         </div>
-         ) : (
-          <p>Loading customer information...</p>
-        )}
-
+      ) : (
+        <p>Loading customer information...</p>
+      )}
 
       <div className="services-list">
-      <h2>Choose service</h2>
-       {services.length > 0 ? (
-        services.map((service) => (
-          <div key={service.service_id} className="service-item">
-            <div className="service-details">
-              <h3>{service?.service_name}</h3>
-              <p>{service?.service_description}</p>
+        <h2>Choose service</h2>
+        {services.length > 0 ? (
+          services.map((service) => (
+            <div key={service.service_id} className="service-item">
+              <div className="service-details">
+                <h3>{service?.service_name}</h3>
+                <p>{service?.service_description}</p>
 
-              <input
-                type="checkbox"
-                checked={selectedServices.includes(service.service_id)}
-                onChange={() => handleSelectionChange(service)}
-              />
-
+                <input
+                  type="checkbox"
+                  checked={selectedServices.includes(service.service_id)}
+                  onChange={() => handleServiceSelection(service.service_id)}
+                />
+              </div>
             </div>
-          </div>
-        ))
-      ) : (
-        <p>No services available</p>
-      )}
-    </div>
+          ))
+        ) : (
+          <p>No services available</p>
+        )}
+      </div>
 
-    <div className="additional-requests">
+      <div className="additional-requests">
         <h2>Additional requests</h2>
 
         <div className="serviceRequest">
           <input
             type="text"
-            placeholder="service description"
+            placeholder="Service Description"
             value={serviceDescription}
-            style={{paddingLeft:'15px'}}
-            onChange={handleServiceDescriptionChange}
+            style={{ paddingLeft: "15px" }}
+            onChange={handleAdditionalRequest}
           />
         </div>
         <div className="price">
           <input
             type="text"
-            style={{padding:'10px 15px'}}
-            placeholder="price"
-            value={servicePrice}
-            onChange={handleServicePriceChange}
+            style={{ padding: "10px 15px" }}
+            placeholder="Price"
+            value={orderTotalPrice}
+            onChange={handleOrderTotalPriceChange}
           />
         </div>
-        {/* </div> */}
+
+        <div>
+          <div className="price">
+            <input
+              type="text"
+              style={{ padding: "10px 15px" }}
+              placeholder="Order Description"
+              value={orderDescription}
+              onChange={handleOrderDescriptionChange}
+            />
+          </div>
+        </div>
+        <div>
+          <label>
+            Expected Completion Date:
+            <input
+              type="datetime-local"
+              value={estimatedCompletionDate}
+              onChange={handleEstimatedCompletionDateChange}
+            />
+          </label>
+        </div>
+
         <div className="submit">
           <button className="submit-order" onClick={handleSubmit}>
             SUBMIT ORDER
