@@ -94,7 +94,7 @@ input::placeholder {
 }
 
 /* ************************ */
-.service-details{
+.service-d{
   display: flex;
   justify-content: space-between;
 }

@@ -3,8 +3,11 @@ const router = express.Router();
 const orderController = require("../controllers/order.controller");
 const  searchOrder  = require("../controllers/order.controller");
 
+// import the authMiddleware
+const { verifyToken,isAdmin, } = require("../middlewares/auth.middleware");
+
 // Route to create a new order
-router.post("/order", orderController.createOrder);
+router.post("/order",[verifyToken,isAdmin], orderController.createOrder);
 
 // Route to get all orders
 router.get("/orders", orderController.getAllOrders);

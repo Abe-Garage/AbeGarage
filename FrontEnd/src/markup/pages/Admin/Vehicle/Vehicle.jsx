@@ -9,6 +9,8 @@ import customerService from '../../../../services/customer.service';
 import { useAuth } from '../../../../Context/AuthContext';
 import { LiaEdit } from "react-icons/lia";
 import { FiExternalLink } from "react-icons/fi";
+import { FaEdit } from "react-icons/fa";
+
 
 
 const Vehicle = () => {
@@ -114,7 +116,7 @@ const Vehicle = () => {
                                         <p><span className='v_title'>Email</span> :<span>{customerinfo.customer_email}</span></p>
                                         <p><span className='v_title'>phone no</span> :<span>{customerinfo.customer_phone_number}</span></p>
                                         <p><span className='v_title'> Active Customer</span> :<span>{customerinfo.active_customer_status ? 'Yes': 'No'}</span></p>
-                                        <p><span className='v_title'>Edit Customer info</span> :<span><Link to={`/admin/edit-customer/${id}`}><EditCalendarOutlinedIcon /></Link></span></p>
+                                        <p><span className='v_title'>Edit Customer info</span> :<span><Link to={`/admin/edit-customer/${id}`}><FaEdit size={20} /></Link></span></p>
                                 </div>
                                 </div>
                             

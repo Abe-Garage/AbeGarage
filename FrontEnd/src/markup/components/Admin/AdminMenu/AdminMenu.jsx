@@ -33,7 +33,7 @@ const AdminMenu = () => {
         <Link to="/admin/customers" className="list-group-item py-3">
           Customers
         </Link>
-        <Link tof="/admin/services" className="list-group-item py-3">
+        <Link to="/admin/services" className="list-group-item py-3">
           Services
         </Link>
 

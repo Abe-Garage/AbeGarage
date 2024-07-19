@@ -177,6 +177,6 @@ async function hasServiceOrder(ID){
 }
 
 module.exports={
-    singleVehicle,addVehicle,updateVehicleInfo,vehiclePerCustomer,hasServiceOrder
+    singleVehicle,addVehicle,updateVehicleInfo,vehiclePerCustomer,hasServiceOrder,deleteVehicle
 
 }

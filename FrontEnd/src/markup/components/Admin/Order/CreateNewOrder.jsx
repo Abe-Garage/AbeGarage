@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import customerService from "../../../../services/customer.service";
 import vehicleService from "../../../../services/vehicle.service";
 import serviceService from "../../../../services/service.service";
@@ -19,7 +19,8 @@ function CreateNewOrder() {
   // console.log(employee_id)
   console.log("token:", token);
 
-  const { ID} = useParams();
+  const { ID,vID} = useParams();
+  // console.log(ID,vID)
   
 
   const [services, setServices] = useState([]);
@@ -66,7 +67,7 @@ function CreateNewOrder() {
 
   const fetchVehicleInfo = async () => {
     try {
-      const response = await vehicleService.getVehicleInfo(ID);
+      const response = await vehicleService.getVehicleInfo(vID,token);
       console.log(response)
       // console.log(response.data.result);
       setVehicleInfo(response);
@@ -149,6 +150,7 @@ function CreateNewOrder() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-access-token":token
         },
         body: JSON.stringify(requestBody),
       });
@@ -167,7 +169,7 @@ function CreateNewOrder() {
   };
 
   const handleEditCustomerClick = () => {
-    const editCustomerPath = `/admin/edit-customer/${ID}`;
+    const editCustomerPath = `/admin/edit-customer/${customerInfo.customer_id}`;
     window.location.href = editCustomerPath;
   };
 
@@ -177,11 +179,11 @@ function CreateNewOrder() {
   };
 
   const handleRedirectVehicle = () => {
-    navigate("/");
+    navigate(`/admin/order-single/${ID}`);
   };
 
   const handleRedirectCustomer = () => {
-    navigate("/");
+    navigate(`/admin/create-order`);
   };
 
   return (
@@ -226,11 +228,20 @@ function CreateNewOrder() {
           <p>
             <span className="label  customer_label_info">Edit customer info:</span>{" "}
         
-              <FaEdit 
+              {/* <FaEdit 
                 className="icon"
                 onClick={handleEditCustomerClick}
                 size={20}
-                />
+                /> */}
+
+                <Link to={`/admin/edit-customer/${customerInfo.customer_id}`}>
+                      <FaEdit 
+                      className="icon"
+                      size={20}
+                      />
+                   
+                </Link>
+                
           </p>
         </div>
       ) : (
@@ -270,11 +281,19 @@ function CreateNewOrder() {
           <p>
             <span className="label  customer_label_info">Edit Vehicle info:</span>{" "}
             <span className="value">
-            <FaEdit 
+            {/* <FaEdit 
                 className="icon"
                 onClick={handleEditCustomerClick}
                 size={20}
-              />
+              /> */}
+
+               <Link to={`/admin/edit-vehicle/${vehicleInfo.vehicle_id}`}>
+                      <FaEdit 
+                      className="icon"
+                      size={20}
+                      />
+                   
+                </Link>
             </span>
           </p>
         </div>
@@ -288,7 +307,7 @@ function CreateNewOrder() {
           {services.length > 0 ? (
             services.map((service) => (
               <div key={service.service_id} className="service-item">
-                <div className="service-details w-100">
+                <div className="service-d w-100">
                  
                     <div>
                         <h3 className="service_font">{service?.service_name}</h3>

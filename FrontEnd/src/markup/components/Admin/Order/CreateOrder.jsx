@@ -47,9 +47,6 @@ function CreateOrder() {
     window.location.replace("/admin/add-customer");
   };
 
-  const handleButtonClick = (customer) => {
-    console.log("Button clicked for customer:", customer);
-  };
 
   useEffect(()=>{
     handleSearch()
@@ -64,8 +61,6 @@ function CreateOrder() {
           </div>
       </div>
 
-     
-
       <div className=" search_customer">
 
           <input
@@ -78,20 +73,17 @@ function CreateOrder() {
 
           <div className="search_btn">
               <CiSearch size={20} />
-            </div>
+          </div>
             
       </div>
 
- 
-
       {
-      
       searchResults.length > 0 && (
        <div className="table-responsive rounded-3">
 
             <table className="table table-bordered  table-striped table-hover border">
               <tbody>
-                {searchResults.map((customer, index) => (
+                {searchResults?.map((customer, index) => (
                   <tr key={ index}>
                     
                     <td className="customer_name">
@@ -115,23 +107,27 @@ function CreateOrder() {
             
         </div>
       ) 
-      // : (
-      //   searchAttempted && <p>No results found</p>
-      // )
-      
       }
 
-      {searchResults.length === 0 && (
-        // <button className="btn btn-danger mb-3" onClick={handleAddCustomer}>
-        //   ADD NEW CUSTOMER
-        // </button>
-        <div className="form-group col-md-12">
-            <button className="theme-btn btn-style-one" type="submit" onClick={handleAddCustomer} >
-                    ADD CUSTOMER
-            </button>
-      </div>
 
-      )}
+      {
+       ( searchTerm.length > 0 &&  searchResults.length === 0) && (
+           <p>No result found</p>
+        )
+      }
+
+      { 
+      searchResults.length === 0 && (
+    
+        <div className="form-group col-md-12">
+              <button className="theme-btn btn-style-one" type="submit" onClick={handleAddCustomer} >
+                      ADD CUSTOMER
+              </button>
+        </div>
+      )
+      }
+
+
     </div>
   );
 }

@@ -77,10 +77,7 @@ const SingleOrder = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
-  const handleEditCustomerClick = () => {
-    const editCustomerPath = `/admin/edit-customer/${customer_id}`;
-    window.location.href = editCustomerPath; // Redirect using window.location
-  };
+
   const handleRedirectCustomer = () => {
     navigate("/admin/create-order");
   };
@@ -128,12 +125,11 @@ const SingleOrder = () => {
           </p>
           <p>
             <span className="label customer_label_info">Edit customer info: </span>{" "}
-          
-                <FaEdit 
-                className="icon"
-                onClick={handleEditCustomerClick}
-                size={20}
-                />
+                <Link to={`/admin/edit-customer/${customerInfo.customer_id}`}>
+                      <FaEdit 
+                      className="icon"
+                      size={20} />
+                </Link>
           </p>
         </div>
       ) : (
@@ -170,7 +166,7 @@ const SingleOrder = () => {
                   <td>{vehicle.vehicle_mileage}</td>
                   <td>
                     <Link
-                      to={`/admin/order/${vehicle.vehicle_id}`}
+                      to={`/admin/order/${customer_id}/${vehicle.vehicle_id}`}
                       className="chooseButton"
                     >
                       <BsHandIndexThumbFill />

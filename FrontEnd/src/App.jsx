@@ -34,20 +34,19 @@ import EmployeeProfile from "./markup/pages/Admin/Employee/EmployeeProfile";
 
 import CustomerForm from "./markup/pages/Admin/Customers/CustomerForm";
 import EditCustomer from "./markup/pages/Admin/Customers/EditCustomer";
-import ServiceList from "./markup/pages/Main/Services/ServiceList";
 
 
 // Import the PrivateAuthRoute component 
 import PrivateAuthRoute from './markup/components/Auth/PrivateAuthRoute';
 import Unauthorized from "./markup/pages/Main/Unauthorized/Unauthorized";
 // import Customers from "./markup/pages/Admin/Customers/Customers";
-import CustomerList from "./markup/components/Admin/CustomerList/CustomerList";
 
 import ErrorComponent from "./markup/pages/Main/404/404";
 
 import Customers from "./markup/pages/Admin/Customers/Customers";
 import EditVehicle from "./markup/pages/Admin/Vehicle/EditVehicle";
 import SingleOrderPage from "./markup/pages/Admin/Orders/SingleOrderPage";
+import ServicePage from "./markup/pages/Admin/Service/ServicePage";
 
 
 function App() {
@@ -87,15 +86,16 @@ function App() {
             </PrivateAuthRoute>
           }
         />
+
         <Route
           path="/admin/customers"
           element={
-            // <PrivateAuthRoute roles={[2, 3]}>
-              <Customers />
-           
-            
+             <PrivateAuthRoute roles={[2, 3]}>
+                   <Customers />
+              </PrivateAuthRoute> 
           }
-        />{/* </PrivateAuthRoute> */}
+          />
+
         <Route
           path="/admin/add-employee"
           element={
@@ -130,12 +130,14 @@ function App() {
    
         //* routes related to orders
        
-        <Route path="/admin/order/:ID" element={<NewOrder />} />
+        <Route path="/admin/order/:ID/:vID" element={<NewOrder />} />
         <Route path="/admin/order-single/:customer_id" element={<SingleOrderPage />} />
         <Route path="/admin/create-order" element={<CreateOrderPage />} />
+
+
         {/* <Route path="admin/order/{orderHash}/edit" element={EditOrder} /> */}
         //* ALALEKEM(MALEK YALEBET) //? MALEK YALEBET
-        <Route path="/admin/services" element={<ServiceList />} />
+        <Route path="/admin/services" element={<ServicePage />} />
         {/* <Route path="/admin/add-service" element={AddServices} />  */}
         {/* //* routes related to customers */}
         <Route path="/admin/customers/:id" element={<Vehicle />} />
