@@ -76,8 +76,6 @@ async function getOrderById(req, res) {
   }
 }
 
-
-
 // Update an order
 async function updateOrder(req, res) {
   try {
@@ -116,4 +114,4 @@ async function updateOrder(req, res) {
   }
 }
 
-module.exports = { createOrder, getAllOrders, getOrderById, updateOrder };
+module.exports = { createOrder, getAllOrders, getOrderById, updateOrder ,getOrderByCustomerId};

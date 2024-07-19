@@ -141,6 +141,7 @@ async function updateCustomer(customer) {
     const customer_first_name = customer.customer_first_name || null;
     const customer_last_name = customer.customer_last_name || null;
     const active_customer_status = customer.active_customer_status || null;
+    console.log(`active_customer_status`,active_customer_status)
 
     const query1 = `
       UPDATE customer_identifier

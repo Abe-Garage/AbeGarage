@@ -6,12 +6,13 @@ async function singleVehicle(ID){
     try {
 
 
-        const singleVehicleQuery = `SELECT customer_identifier.*, customer_info.* FROM customer_identifier INNER JOIN customer_info 
-                                     ON customer_identifier.customer_id = customer_info.customer_info_id
+        const singleVehicleQuery = `SELECT customer_identifier.*, customer_info.*,customer_vehicle_info.* FROM customer_identifier INNER JOIN customer_info 
+                                     ON customer_identifier.customer_id = customer_info.customer_id
                                      INNER JOIN  customer_vehicle_info 
                                      ON customer_identifier.customer_id = customer_vehicle_info.customer_id
                                      WHERE customer_vehicle_info.vehicle_id = ?`
-console.log(ID)
+
+        console.log(ID)
         const result = await connection.query(singleVehicleQuery, [ID])
         console.log(result)
 
@@ -133,6 +134,33 @@ async function vehiclePerCustomer(ID){
     
 }
 
+async function hasServiceOrder(ID){
+    try {
+        console.log("vehicle_id",ID)
+        let response={}
+        const query = `SELECT * FROM orders WHERE vehicle_id = ?`
+        const result = await connection.query(query,[ID]);
+        // console.log(result,result.length)
+
+        if(result.length == 0){
+            return response;
+        }
+
+        response ={
+            
+            result
+        }
+        // console.log(response)
+
+        return response;
+        
+        
+    } catch (error) {
+        console.error("Error getting Vehicle:", error);
+        throw new Error("Could not get vehicle. Please try again later.");
+    }
+}
+
 async function deleteVehicle(vehicle_id) {
     try {
       const result = await connection.query(
@@ -148,5 +176,5 @@ async function deleteVehicle(vehicle_id) {
   
 
 module.exports={
-    singleVehicle,addVehicle,updateVehicleInfo,vehiclePerCustomer,deleteVehicle
+    singleVehicle,addVehicle,updateVehicleInfo,vehiclePerCustomer
 }
