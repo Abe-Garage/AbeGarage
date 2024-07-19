@@ -5,11 +5,10 @@ const connection = require("../config/db.config");
 async function createService(common_services) {
   try {
     // Prepare the SQL query
-    const sql = `INSERT INTO common_services (service_name, service_description, price) VALUES (?, ?, ?)`;
+    const sql = `INSERT INTO common_services (service_name, service_description) VALUES (?, ?)`;
     const params = [
       common_services.service_name,
-      common_services.service_description,
-      common_services.price
+      common_services.service_description
     ];
 
     // Execute the query
@@ -27,8 +26,8 @@ async function createService(common_services) {
 async function updateService(service_id, service_name, service_description) {
   try {
     const result = await connection.query(
-      "UPDATE common_services SET service_name = ?, service_description = ?, price = ?  WHERE service_id = ?",
-      [service_name, service_description, price, service_id]
+      "UPDATE common_services SET service_name = ?, service_description = ? WHERE service_id = ?",
+      [service_name, service_description, service_id]
     );
 
     return result;
@@ -40,6 +39,7 @@ async function updateService(service_id, service_name, service_description) {
 // delete service
 async function deleteService(service_id) {
   try {
+    console.log("hwg",service_id)
     const result = await connection.query(
       "DELETE FROM common_services WHERE service_id = ?",
       [ service_id]
@@ -47,6 +47,7 @@ async function deleteService(service_id) {
 
     return result;
   } catch (error) {
+    console.log(" hew")
     throw new Error("Error Deleting service: " + error.message);
   }
 }

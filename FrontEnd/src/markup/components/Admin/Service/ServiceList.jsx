@@ -162,12 +162,17 @@ import './ServiceList.css';
 import { MdDelete } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { FaEdit } from "react-icons/fa";
+import {useNavigate} from 'react-router-dom'
+import { Modal,Button } from "react-bootstrap";
 
 const ServiceList = () => {
     const [newService, setNewService] = useState({ service_name: '', service_description: '' });
     const [services, setServices] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [currentServiceId, setCurrentServiceId] = useState(null);
+    const navigate = useNavigate()
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [serviceToDelete, setServiceToDelete] = useState(null);
 
     useEffect(() => {
         fetch('http://localhost:3000/api/services')
@@ -181,10 +186,11 @@ const ServiceList = () => {
         setNewService({ ...newService, [name]: value });
     };
 
-    const handleDelete = (id) => {
-        fetch(`http://localhost:3001/api/deleteservice/${id}`, { method: 'DELETE' })
+    const handleDelete = () => {
+        fetch(`http://localhost:3000/api/deleteservice/${serviceToDelete.service_id}`, { method: 'DELETE' })
             .then(() => setServices(services.filter(service => service.service_id !== id)))
             .catch(error => console.error('Error deleting service:', error));
+            // window.location.reload()
     };
 
     const handleEdit = (id) => {
@@ -195,6 +201,16 @@ const ServiceList = () => {
         });
         setCurrentServiceId(id);
         setIsEditing(true);
+        navigate('/admin/services#update')
+
+       
+        // window.scrollTo({
+        //      top: 0,
+        //       behavior: 'smooth', // This makes the scroll smooth
+        //     });
+   
+  
+        
         // window.location.reload(); 
 
         // setTimeout(()=> { 
@@ -203,26 +219,34 @@ const ServiceList = () => {
         
     };
    
-
     const handleSaveEdit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:3001/api/service/${currentServiceId}`, {
+            const response = await fetch(`http://localhost:3000/api/service-update/${currentServiceId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newService)
             });
 
+            console.log("one")
+
             if (!response.ok) throw new Error('Network response was not ok');
+            console.log("two")
+
 
             const updatedService = await response.json();
+            console.log("three")
+
             setServices(services.map(service => 
                 service.service_id === currentServiceId ? updatedService : service
             ));
+            console.log("four")
+
             setNewService({ service_name: '', service_description: '' });
             setIsEditing(false);
             setCurrentServiceId(null);
             alert("Service updated successfully");
+            window.location.reload()
         } catch (error) {
             alert("Something went wrong");
             console.error('Error updating service:', error);
@@ -232,7 +256,7 @@ const ServiceList = () => {
     const handleAddService = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:3001/api/service", {
+            const response = await fetch("http://localhost:3000/api/service", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newService)
@@ -244,76 +268,48 @@ const ServiceList = () => {
             setServices([...services, service]);
             setNewService({ service_name: '', service_description: '' });
             alert("Service added successfully");
+            window.location.reload()
         } catch (error) {
             alert("Something went wrong");
             console.error('Error adding service:', error);
         }
     };
 
+
+    const handleShowDeleteModal = (service) => {
+        setServiceToDelete(service);
+        setShowDeleteModal(true);
+      };
+
+    const handleCloseDeleteModal = () => {
+        setServiceToDelete(null);
+        setShowDeleteModal(false);
+      };
+// console.log(serviceToDelete)
+   
     return (
-        <div className="service-management">
-          
+        <>
+            <div className="service-management">
+                
 
-            <div className="contact-section pad_1">
-                <div className="contact-title mb-1">
-                    <h2>Services we provide</h2>
+                <div className="contact-section pad_1">
+                    <div className="contact-title mb-1">
+                        <h2 style={{color:'#08194A'}}>Services we provide</h2>
+                    </div>
                 </div>
-            </div>
-            
-            <p className="description">
-                Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward,a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution.
-            </p>
+                
+                <p className="description">
+                    Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward,a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution.
+                </p>
 
-            <div className="services-list">
-                {services?.map((service) => (
-                    <div key={service.service_id} className="service-item">
-                        <div className="service-details">
-                            <h3 className='v_font'>{service.service_name}</h3>
-                            <p>{service.service_description}</p>
-                        </div>
-                        <div className="service-actions">
-                            <button onClick={() => handleEdit(service.service_id)}><FaEdit size={20} /></button>
-                            <button onClick={() => handleDelete(service.service_id)}><MdDelete size={20} /></button>
-                        </div>
-                    </div>
-                ))}
-            </div>
-            {isEditing && (
-                <section className='add-new-service-container'>
-                <div className='add-new-service'>
-                    <h2 className='v_font'>Update service</h2>
-                </div>
-                <div className="add-service-form">
-            
-                    <form onSubmit={handleSaveEdit}>
-                        <input
-                            type="text"
-                            name="service_name"
-                            value={newService.service_name}
-                            onChange={handleInputChange}
-                            placeholder="Service Name"
-                            required
-                        />
-                        <textarea
-                            type="text"
-                            name="service_description"
-                            value={newService.service_description}
-                            onChange={handleInputChange}
-                            placeholder="Service Description"
-                            required
-                        />
-                        <button type="submit">Updated Service</button>
-                    </form>
-                    </div>
-                </section>
-            )}
-                {/* {!isEditing &&
-                <section className='add-new-service-container'>
+                {/* {isEditing && (
+                    <section className='add-new-service-container' id='update'>
                     <div className='add-new-service'>
-                        <h2>Add a new service</h2>
+                        <h2 className='v_font'>Update service</h2>
                     </div>
                     <div className="add-service-form">
-                        <form onSubmit={handleAddService}>
+                    
+                        <form onSubmit={handleSaveEdit}>
                             <input
                                 type="text"
                                 name="service_name"
@@ -330,58 +326,138 @@ const ServiceList = () => {
                                 placeholder="Service Description"
                                 required
                             />
-                            <button type="submit">Add Service</button>
+                            <div className='d-flex gap-5 mt-3'>
+                            <button type="submit">Updated Service</button>
+                            <button style={{background:'#08194A'}} onClick={()=>setIsEditing(false)}>Cancel</button>
+                            </div>
                         </form>
-                    </div>
-                </section>
-                 } */}
+                        </div>
+                    </section>
+                )} */}
 
-<div className="additional-requests" style={{paddingBottom:'40px',marginTop:'20px'}}>
+                <div className="services-list">
+                    {services?.map((service) => (
+                        <div key={service.service_id} className="service-item py-4">
+                            <div className="service-details">
+                                <h3 className='v_font' style={{color:'#08194A'}}>{service.service_name}</h3>
+                                <p>{service.service_description}</p>
+                            </div>
+                            <div className="service-actions">
+                                <button onClick={() => handleEdit(service.service_id)}><a href='#update' style={{color:'#ff6666'}}><FaEdit size={20} /></a></button>
+                                <button onClick={() => handleShowDeleteModal(service)}><MdDelete size={20} /></button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                
+                    {/* {!isEditing &&
+                    <section className='add-new-service-container'>
+                        <div className='add-new-service'>
+                        <h2>Add a new service</h2>
+                        </div>
+                        <div className="add-service-form">
+                            <form onSubmit={handleAddService}>
+                                <input
+                                    type="text"
+                                    name="service_name"
+                                    value={newService.service_name}
+                                    onChange={handleInputChange}
+                                    placeholder="Service Name"
+                                    required
+                                />
+                                <textarea
+                                type="text"
+                                    name="service_description"
+                                    value={newService.service_description}
+                                    onChange={handleInputChange}
+                                    placeholder="Service Description"
+                                    required
+                                    />
+                                <button type="submit">Add Service</button>
+                            </form>
+                        </div>
+                    </section>
+                    } */}
 
-        <div className="contact-section pad_1" style={{background:'#fff'}}>
-            <div className="contact-title mb-1">
-                <h2 style={{fontSize:'32px'}}>Add a new Service</h2>
+        <div className="additional-requests" style={{paddingBottom:'40px',marginTop:'20px'}} id='update'>
+
+            <div className="contact-section pad_1" style={{background:'#fff'}}>
+                <div className="contact-title mb-1">
+                    <h2 style={{fontSize:'32px'}}>{!isEditing ? 'Add a new Service':'Update a Service'}</h2>
+                </div>
             </div>
+
+
+            <form onSubmit={!isEditing? handleAddService :handleSaveEdit} >
+
+                <div className="price">
+                    <input
+                        type="text"
+                        style={{ padding: "10px 15px" }}
+                        placeholder="Service name"
+                        className='w-100'
+                        name="service_name"
+                        value={newService.service_name}
+                        onChange={handleInputChange}
+                        />
+                </div>
+
+                <div className="serviceRequest">
+                    <input
+                        type="text"
+                        style={{ paddingLeft: "15px" }}
+                        className='w-100'
+                        name="service_description"
+                        value={newService.service_description}
+                        onChange={handleInputChange}
+                        placeholder="Service Description"
+                        />
+                </div>
+
+                {isEditing ?   (<div className=' form-group col-md-12 d-flex gap-5 mt-3' >
+                                <button type="submit" className="theme-btn btn-style-one">Updated Service</button>
+                                <button style={{background:'#08194A'}} className="theme-btn btn-style-one" onClick={()=>{setIsEditing(false) ;setNewService({ service_name: '', service_description: '' })}}>Cancel</button>
+                                </div>): 
+                                ( <div className="form-group col-md-12">
+                                    <button className="theme-btn btn-style-one" type="submit" >
+                                            ADD SERVICE 
+                                    </button>
+                                </div>)
+                }
+            </form>
+
+            
         </div>
-
-
-        <form onSubmit={handleAddService}>
-
-            <div className="price">
-                <input
-                    type="text"
-                    style={{ padding: "10px 15px" }}
-                    placeholder="Price"
-                    className='w-100'
-                    name="service_name"
-                    value={newService.service_name}
-                    onChange={handleInputChange}
-                />
+            
             </div>
 
-            <div className="serviceRequest">
-                <input
-                    type="text"
-                    style={{ paddingLeft: "15px" }}
-                    className='w-100'
-                    name="service_description"
-                    value={newService.service_description}
-                    onChange={handleInputChange}
-                    placeholder="Service Description"
-                />
-            </div>
+            <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm Deletion</Modal.Title>
+                </Modal.Header>
 
-            <div className="form-group col-md-12">
-                <button className="theme-btn btn-style-one"type="submit" >
-                        ADD SERVICE 
-                </button>
-            </div>
-        </form>
+                <Modal.Body>
+                    Are you sure you want to delete{" "}
+                    <strong>
+                        {serviceToDelete
+                        ? `${serviceToDelete.service_name} `
+                        : ""}
+                    </strong>
+                ?
+                </Modal.Body>
+                        
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseDeleteModal}>
+                        Cancel
+                    </Button>
+                    <Button variant="danger" onClick={handleDelete}>
+                        Delete
+                    </Button>
+                </Modal.Footer>
+           </Modal>
 
-     
-</div>
-        
-        </div>
+
+        </>
     );
 };
 
