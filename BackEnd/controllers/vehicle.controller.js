@@ -13,7 +13,8 @@ async function singleVehicle(req,res){
                  
            response={
                 status: "fail",
-                message: "vehicle does not exist"
+                message: "vehicle does not exist",
+                data:[]
            }
      
            return res.status(400).json(response)
@@ -137,6 +138,32 @@ async function vehiclePerCustomer(req,res){
     }
 }
 
+async function hasServiceOrder(req,res){
+
+    try {
+
+        const { vehicle_id }=req.params;
+        const ID = vehicle_id
+
+        const result = await vehicleService.hasServiceOrder(ID);
+        // console.log(result)
+
+        if(result){
+
+            res.status(200).json(result)
+        } else{
+
+            res.status(400).json({message:'not found '})
+        }
+
+    
+    } catch (error) {
+        return res.status(500).json({
+            message:'Server Error'
+        })
+    }
+}
+
 
 
 
@@ -165,6 +192,5 @@ module.exports={
     addVehicle,
     updateVehicle,
     vehiclePerCustomer,
-    deleteVehicle
 
 }

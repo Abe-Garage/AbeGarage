@@ -116,53 +116,55 @@ const CustomerList = () => {
           </div>
         </div>
 
-        <table className="table table-striped table-bordered table-hover border">
-          <thead>
-            <tr>
-              <th scope="col" className="border">
-                ID
-              </th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Added Date</th>
-              <th>Active</th>
-              <th>Edit</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(val ? search : customers).map((customer) => (
-              <tr key={customer.customer_id}>
-                <td>{customer.customer_id}</td>
-                <td className="customer_name">
-                  {customer.customer_first_name}
-                </td>
-                <td className="customer_name">{customer.customer_last_name}</td>
-                <td>{customer.customer_email}</td>
-                <td>{customer.customer_phone_number}</td>
-                <td>
-                  {customerService.formatDate(customer.customer_added_date)}
-                </td>
-                <td>{customer.active_customer_status ? "Yes" : "No"}</td>
-                <td>
-                  <Link
-                    to={`/admin/edit-customer/${customer.customer_id}`}
-                    className="editButton"
-                  >
-                    <LiaEdit className="px-1 svg" size={32} />
-                  </Link>
-                  <Link
-                    to={`/admin/customers/${customer.customer_id}`}
-                    className="editButton"
-                  >
-                    <FiExternalLink className="px-1" size={30} />
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="table-responsive rounded-3 ">
+            <table className="table table-striped table-bordered table-hover border ">
+              <thead className="table-dark text-white" >
+                <tr>
+                  <th scope="col" className="border">
+                    ID
+                  </th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Added Date</th>
+                  <th>Active</th>
+                  <th>Edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(val ? search : customers).map((customer) => (
+                  <tr key={customer.customer_id}>
+                    <td>{customer.customer_id}</td>
+                    <td className="customer_name">
+                      {customer.customer_first_name}
+                    </td>
+                    <td className="customer_name">{customer.customer_last_name}</td>
+                    <td>{customer.customer_email}</td>
+                    <td>{customer.customer_phone_number}</td>
+                    <td>
+                      {customerService.formatDate(customer.customer_added_date)}
+                    </td>
+                    <td>{customer.active_customer_status ? "Yes" : "No"}</td>
+                    <td>
+                      <Link
+                        to={`/admin/edit-customer/${customer.customer_id}`}
+                        className="editButton"
+                      >
+                        <LiaEdit className="px-1 svg" size={32} />
+                      </Link>
+                      <Link
+                        to={`/admin/customers/${customer.customer_id}`}
+                        className="editButton"
+                      >
+                        <FiExternalLink className="px-1" size={30} />
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+        </div>
 
         <div className="text-center btns">
           <button onClick={First}>
