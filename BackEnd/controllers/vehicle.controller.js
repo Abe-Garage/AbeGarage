@@ -192,5 +192,6 @@ module.exports={
     addVehicle,
     updateVehicle,
     vehiclePerCustomer,
-
+    hasServiceOrder,
+    deleteVehicle
 }

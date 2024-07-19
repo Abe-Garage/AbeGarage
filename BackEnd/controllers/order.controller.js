@@ -171,7 +171,8 @@ module.exports = {
   getOrderById,
   updateOrder,
   searchOrder,
+  getOrderByCustomerId
 };
 
-module.exports = { createOrder, getAllOrders, getOrderById, updateOrder ,getOrderByCustomerId};
+
 
