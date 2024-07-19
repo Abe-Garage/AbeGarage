@@ -19,10 +19,11 @@ async function AddVehicle(formData, Token) {
        try {
            const  data = await axios.get(`/api/vehicles/${ID}`);
            console.log( data)
+           return data;
        } catch (error) {
           console.log(error)
        }
-    return  data;
+    
 }
 
 
