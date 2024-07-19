@@ -1,5 +1,6 @@
 const conn = require("../config/db.config");
 const crypto = require("crypto");
+const nodemailer = require('nodemailer');
 
 async function checkCustomerExists(customer_id) {
   const query = "SELECT * FROM customer_identifier WHERE customer_id = ?";
@@ -170,6 +171,8 @@ async function createOrders(orderData) {
       throw new Error("Failed to create order status");
     }
 
+    sendEmail(customer_id,order_hash)
+
     return {
       message: "Order and related records created successfully",
       order_id,
@@ -209,7 +212,7 @@ async function getAllOrders({ limit, sortby, completed }) {
 async function getOrderById(id) {
   try {
     // Query to get order details
-    const orderQuery = `SELECT * FROM orders WHERE order_id = ?`;
+    const orderQuery = `SELECT * FROM orders WHERE order_hash = ?`;
     const orderResult = await conn.query(orderQuery, [id]);
     if (orderResult.length === 0) {
       return null; // No order found
@@ -217,12 +220,18 @@ async function getOrderById(id) {
 
     const order = orderResult;
     // Query to get associated services
+    console.log("order",order[0].order_id)
+
+    const OrderID= order[0].order_id;
+
     const servicesQuery = `
       SELECT * FROM order_services
       WHERE order_id = ?
     `;
-    const servicesResult = await conn.query(servicesQuery, [id]);
+    const servicesResult = await conn.query(servicesQuery, [OrderID]);
+    console.log("ser",servicesResult)
     order.order_services = servicesResult || [];
+    console.log("last ",order)
 
     return order;
   } catch (error) {
@@ -330,6 +339,62 @@ async function updateOrder(orderData) {
     throw new Error(error);
   }
 }
+
+
+
+async function sendEmail(customerID,orderHash) {
+ 
+  console.log('CID:', customerID);
+
+  if(!customerID){
+    throw new Error("bado Customer-id");
+  
+  }
+
+  const query = 'SELECT customer_identifier.customer_email,customer_info.customer_first_name ,customer_info.customer_last_name FROM customer_identifier INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id WHERE customer_identifier.customer_id =?';
+
+  try {
+    const [response] = await conn.query(query, [customerID]);
+    console.log(response?.customer_email)
+    console.log(response)
+
+    
+    if (!response?.customer_email) {
+      throw new Error("Email not found or error updating user");
+    }
+
+    const email = response?.customer_email
+
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.AdminEmail,
+        pass: process.env.PASS
+      }
+    });
+
+    const mailOptions = {
+      from: process.env.AdminEmail,
+      to: email,
+      subject: 'Check Your Car Service Status Anytime!',
+      text: `Update on Your Car Service: View Status via This Link:-  http://localhost:5173/order-status/${orderHash}`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+         throw new Error("Error sending email");
+
+      }
+      console.log('Password reset email sent:', info.response);
+    });
+    
+  } catch (error) {
+    console.error('Error in reset function:', error);
+  }
+}
+
 
 module.exports = {
   createOrders,

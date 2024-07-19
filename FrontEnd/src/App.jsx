@@ -47,6 +47,7 @@ import Customers from "./markup/pages/Admin/Customers/Customers";
 import EditVehicle from "./markup/pages/Admin/Vehicle/EditVehicle";
 import SingleOrderPage from "./markup/pages/Admin/Orders/SingleOrderPage";
 import ServicePage from "./markup/pages/Admin/Service/ServicePage";
+import OrderStatus from "./markup/pages/Main/OrderStatus/OrderStatus";
 
 
 function App() {
@@ -136,6 +137,7 @@ function App() {
 
 
         {/* <Route path="admin/order/{orderHash}/edit" element={EditOrder} /> */}
+        <Route path="/order-status/:order_hash" element={<OrderStatus />} />
         //* ALALEKEM(MALEK YALEBET) //? MALEK YALEBET
         <Route path="/admin/services" element={<ServicePage />} />
         {/* <Route path="/admin/add-service" element={AddServices} />  */}

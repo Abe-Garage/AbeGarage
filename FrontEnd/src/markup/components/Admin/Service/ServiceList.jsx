@@ -399,6 +399,7 @@ const ServiceList = () => {
                         name="service_name"
                         value={newService.service_name}
                         onChange={handleInputChange}
+                        required
                         />
                 </div>
 
@@ -411,6 +412,7 @@ const ServiceList = () => {
                         value={newService.service_description}
                         onChange={handleInputChange}
                         placeholder="Service Description"
+                        required
                         />
                 </div>
 

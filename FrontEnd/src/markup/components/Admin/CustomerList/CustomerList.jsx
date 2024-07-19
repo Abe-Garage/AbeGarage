@@ -7,7 +7,7 @@ import {
   HiChevronLeft,
 } from "react-icons/hi2";
 import { Link } from "react-router-dom";
-import { LiaEdit } from "react-icons/lia";
+import { FaEdit } from "react-icons/fa";
 import { FiExternalLink } from "react-icons/fi";
 import { useAuth } from "../../../../Context/AuthContext";
 import customerService from "../../../../services/customer.service";
@@ -151,13 +151,13 @@ const CustomerList = () => {
                         to={`/admin/edit-customer/${customer.customer_id}`}
                         className="editButton"
                       >
-                        <LiaEdit className="px-1 svg" size={32} />
+                        <FaEdit className="px-1 svg" size={28} />
                       </Link>
                       <Link
                         to={`/admin/customers/${customer.customer_id}`}
                         className="editButton"
                       >
-                        <FiExternalLink className="px-1" size={30} />
+                        <FiExternalLink className="px-1" size={28} />
                       </Link>
                     </td>
                   </tr>
