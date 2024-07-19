@@ -1,5 +1,5 @@
 const orderService = require("../services/order.service");
-
+const conn = require("../config/db.config");
 async function createOrder(req, res) {
   try {
     const orderData = req.body;
@@ -128,4 +128,43 @@ async function updateOrder(req, res) {
   }
 }
 
+
+
+async function searchOrder(req, res)  {
+  const { query } = req.query;
+  
+  if (!query) {
+    return res.status(400).json({ error: "Query parameter is required" });
+  }
+
+  try {
+   const searchQuery = `
+  SELECT ci.*, cinfo.customer_first_name, cinfo.customer_last_name
+  FROM customer_identifier ci
+  JOIN customer_info cinfo ON ci.customer_id = cinfo.customer_id
+  WHERE 
+    cinfo.customer_first_name LIKE ? OR 
+    cinfo.customer_last_name LIKE ? OR 
+    ci.customer_email LIKE ? OR 
+    ci.customer_phone_number LIKE ?
+`;
+   const values = [`%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`];
+   const [results] = await conn.query(searchQuery, values);
+
+    
+    res.json(results);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+module.exports = {
+  createOrder,
+  getAllOrders,
+  getOrderById,
+  updateOrder,
+  searchOrder,
+};
+
 module.exports = { createOrder, getAllOrders, getOrderById, updateOrder ,getOrderByCustomerId};
+

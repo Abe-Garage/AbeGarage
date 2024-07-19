@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const orderController = require("../controllers/order.controller");
+const  searchOrder  = require("../controllers/order.controller");
 
 // Route to create a new order
 router.post("/order", orderController.createOrder);
@@ -13,6 +14,8 @@ router.get("/order/:id", orderController.getOrderById);
 
 // Route to update an order
 router.put("/order", orderController.updateOrder);
+// 
+router.get("/search-customers", orderController.searchOrder);
 
 //Route to get order by CUSTOMER ID
 router.get('/corder/customer/:customerid',orderController.getOrderByCustomerId)
