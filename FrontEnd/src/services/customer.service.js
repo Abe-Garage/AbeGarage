@@ -60,7 +60,7 @@ async function singleCustomer(ID, Token) {
   };
   // console.log(formData);
   console.log(ID, Token)
-  const {data }= await axios.get(`${api_url}/api/customer/single/${ID}`, {headers});
+  const {data }= await axios.get(`/api/customer/single/${ID}`, {headers});
 
   console.log(data);
 
