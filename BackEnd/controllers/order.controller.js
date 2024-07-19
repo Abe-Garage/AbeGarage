@@ -1,5 +1,5 @@
 const orderService = require("../services/order.service");
-
+const conn = require("../config/db.config");
 async function createOrder(req, res) {
   try {
     const orderData = req.body;
@@ -76,6 +76,29 @@ async function getOrderById(req, res) {
   }
 }
 
+
+
+
+
+// Get single order by CUSTOMER_ID
+async function getOrderByCustomerId(req, res) {
+  try {
+    const { customerid } = req.params;
+    const order = await orderService.getOrderByCustomerId(customerid);
+    
+    if (!order) {
+      return res.status(404).json({ msg: "Order not found" });
+    }
+    res.status(200).json(order);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "An error occurred while retrieving the order" });
+  }
+}
+
+
+
 // Update an order
 async function updateOrder(req, res) {
   try {
@@ -114,4 +137,44 @@ async function updateOrder(req, res) {
   }
 }
 
-module.exports = { createOrder, getAllOrders, getOrderById, updateOrder ,getOrderByCustomerId};
+
+
+async function searchOrder(req, res)  {
+  const { query } = req.query;
+  
+  if (!query) {
+    return res.status(400).json({ error: "Query parameter is required" });
+  }
+
+  try {
+   const searchQuery = `
+  SELECT ci.*, cinfo.customer_first_name, cinfo.customer_last_name
+  FROM customer_identifier ci
+  JOIN customer_info cinfo ON ci.customer_id = cinfo.customer_id
+  WHERE 
+    cinfo.customer_first_name LIKE ? OR 
+    cinfo.customer_last_name LIKE ? OR 
+    ci.customer_email LIKE ? OR 
+    ci.customer_phone_number LIKE ?
+`;
+   const values = [`%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`];
+   const results = await conn.query(searchQuery, values);
+
+    
+    res.json(results);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+module.exports = {
+  createOrder,
+  getAllOrders,
+  getOrderById,
+  updateOrder,
+  searchOrder,
+  getOrderByCustomerId
+};
+
+
+

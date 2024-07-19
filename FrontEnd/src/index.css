@@ -127,3 +127,32 @@
   .edit_vehicle span{
      color: #EE0D09;
   }
+
+  .customer_label_info{
+    margin-right: 5px;
+  }
+
+  .customer_label_value{
+    color: grey !important;
+  }
+
+  .vehicle_info{
+    margin-bottom: 2rem;
+    padding: 1rem;
+    padding-top: 50px;
+    background-color: #fff;
+    /* border-radius: 4px; */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    text-align: left;
+  }
+
+  .v_font{
+    font-size: 24px !important;
+    font-weight: 700;
+  }
+
+  .service_font{
+    color:#081336 !important;
+    font-weight: 600 !important;
+    font-size: 20px !important;
+  }

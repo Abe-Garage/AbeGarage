@@ -26,7 +26,7 @@ body {
 .services-list {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 5px;
 }
 
 .service-item {
@@ -37,6 +37,11 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.service-details{
+    display: flex;
+    flex-direction: column;
 }
 
 .service-details h3 {

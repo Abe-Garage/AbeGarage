@@ -161,6 +161,7 @@ import React, { useState, useEffect } from 'react';
 import './ServiceList.css';
 import { MdDelete } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
+import { FaEdit } from "react-icons/fa";
 
 const ServiceList = () => {
     const [newService, setNewService] = useState({ service_name: '', service_description: '' });
@@ -169,9 +170,9 @@ const ServiceList = () => {
     const [currentServiceId, setCurrentServiceId] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:3001/api/services')
+        fetch('http://localhost:3000/api/services')
             .then(res => res.json())
-            .then(data => setServices(data.data.rows))
+            .then(data => setServices(data.data))
             .catch(error => console.error('Error fetching services:', error));
     }, []);
 
@@ -251,24 +252,28 @@ const ServiceList = () => {
 
     return (
         <div className="service-management">
-            <div className='service-provide'>
-                <h1>Services we provide</h1>
+          
+
+            <div className="contact-section pad_1">
+                <div className="contact-title mb-1">
+                    <h2>Services we provide</h2>
+                </div>
             </div>
             
             <p className="description">
-                Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward,
-                a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution.
+                Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward,a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution.
             </p>
+
             <div className="services-list">
                 {services?.map((service) => (
                     <div key={service.service_id} className="service-item">
                         <div className="service-details">
-                            <h3>{service.service_name}</h3>
+                            <h3 className='v_font'>{service.service_name}</h3>
                             <p>{service.service_description}</p>
                         </div>
                         <div className="service-actions">
-                            <button onClick={() => handleEdit(service.service_id)}><CiEdit size={28} /></button>
-                            <button onClick={() => handleDelete(service.service_id)}><MdDelete size={28} /></button>
+                            <button onClick={() => handleEdit(service.service_id)}><FaEdit size={20} /></button>
+                            <button onClick={() => handleDelete(service.service_id)}><MdDelete size={20} /></button>
                         </div>
                     </div>
                 ))}
@@ -276,7 +281,7 @@ const ServiceList = () => {
             {isEditing && (
                 <section className='add-new-service-container'>
                 <div className='add-new-service'>
-                    <h2>Update service</h2>
+                    <h2 className='v_font'>Update service</h2>
                 </div>
                 <div className="add-service-form">
             
@@ -302,7 +307,7 @@ const ServiceList = () => {
                     </div>
                 </section>
             )}
-                {!isEditing &&
+                {/* {!isEditing &&
                 <section className='add-new-service-container'>
                     <div className='add-new-service'>
                         <h2>Add a new service</h2>
@@ -329,7 +334,52 @@ const ServiceList = () => {
                         </form>
                     </div>
                 </section>
-                 }
+                 } */}
+
+<div className="additional-requests" style={{paddingBottom:'40px',marginTop:'20px'}}>
+
+        <div className="contact-section pad_1" style={{background:'#fff'}}>
+            <div className="contact-title mb-1">
+                <h2 style={{fontSize:'32px'}}>Add a new Service</h2>
+            </div>
+        </div>
+
+
+        <form onSubmit={handleAddService}>
+
+            <div className="price">
+                <input
+                    type="text"
+                    style={{ padding: "10px 15px" }}
+                    placeholder="Price"
+                    className='w-100'
+                    name="service_name"
+                    value={newService.service_name}
+                    onChange={handleInputChange}
+                />
+            </div>
+
+            <div className="serviceRequest">
+                <input
+                    type="text"
+                    style={{ paddingLeft: "15px" }}
+                    className='w-100'
+                    name="service_description"
+                    value={newService.service_description}
+                    onChange={handleInputChange}
+                    placeholder="Service Description"
+                />
+            </div>
+
+            <div className="form-group col-md-12">
+                <button className="theme-btn btn-style-one"type="submit" >
+                        ADD SERVICE 
+                </button>
+            </div>
+        </form>
+
+     
+</div>
         
         </div>
     );

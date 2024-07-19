@@ -15,14 +15,18 @@ async function AddVehicle(formData, Token) {
   }
 
 
-  async function getVehicleInfoPerCustomer (ID) {
+  async function getVehicleInfoPerCustomer (ID,token) {
        try {
-           const  data = await axios.get(`/api/vehicles/${ID}`);
+            const headers = {
+              "x-access-token": token,
+            };
+           const  data = await axios.get(`/api/vehicles/${ID}`,{headers});
            console.log( data)
+           return data;
        } catch (error) {
           console.log(error)
        }
-    return  data;
+    
 }
 
 
@@ -42,7 +46,6 @@ async function getVehicleInfo (ID,token) {
      console.log(error.response)
      return error?.response
   }
-return  data;
 }
 
 
@@ -75,7 +78,6 @@ async function hasServiceOrder (ID,token) {
   } catch (error) {
      console.log(error)
   }
-return  data;
 }
 
 

@@ -176,5 +176,5 @@ async function deleteVehicle(vehicle_id) {
   
 
 module.exports={
-    singleVehicle,addVehicle,updateVehicleInfo,vehiclePerCustomer
+    singleVehicle,addVehicle,updateVehicleInfo,vehiclePerCustomer, deleteVehicle,hasServiceOrder
 }

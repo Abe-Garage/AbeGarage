@@ -1,89 +1,137 @@
-import React, {useState} from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Customers from '../../../pages/Admin/Customers/Customers'
 
+import React, { useEffect, useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "../../../../axios/axiosConfig";
+import { FaHandPointer } from "react-icons/fa";
+import { Link } from "react-router-dom"; 
+import { CiSearch } from "react-icons/ci";
 
 function CreateOrder() {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchAttempted, setSearchAttempted] = useState(false);
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSearch = async () => {
+    try {
+      const token = localStorage.getItem("employeeToken"); 
+      const response = await axios.get(
+        `/search-customers?query=${searchTerm}`,
+        {
+          headers: { "x-access-token": token },
+        }
+      );
+      // console.log("API Response:", response.data); 
+
+      if (Array.isArray(response.data)) {
+        setSearchResults(response.data);
+      } else if (response.data && typeof response.data === "object") {
+        setSearchResults([response.data]);
+      } else {
+        console.error("Unexpected response format:", response.data);
+        setSearchResults([]);
+      }
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+      setSearchResults([]);
+    } finally {
+      setSearchAttempted(true);
+    }
+  };
+
+  const handleAddCustomer = () => {
+    console.log("Add new customer clicked");
+    window.location.replace("/admin/add-customer");
+  };
 
 
+  useEffect(()=>{
+    handleSearch()
+  },[searchTerm])
 
-    const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
-    };
+  return (
+    <div className="container mt-4" style={{ display: "block" }}>
 
-    const handleSearch = () => {
-        // Mock search function, replace with actual search logic
-        const mockResults = [
-        { firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com', phoneNumber: '123-456-7890' },
-        { firstName: 'Jane', lastName: 'Smith', email: 'jane.smith@example.com', phoneNumber: '098-765-4321' },
-        { firstName: 'Jasmine', lastName: 'Albesir', email: 'jasmine@gmail.com', phoneNumber: '240835487' }
-        ];
-        setSearchResults(mockResults.filter(customer => 
-        customer.firstName.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        customer.lastName.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        customer.email.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        customer.phoneNumber.includes(searchTerm)
-        ));
-    };
+      <div className="contact-section pad_1">
+          <div className="contact-title mb-1">
+            <h2>Create a new order</h2>
+          </div>
+      </div>
 
-    const handleAddCustomer = () => {
-        // Add new customer logic here
-        console.log('Add new customer clicked');
-        window.location.replace('/admin/customers');
-    };
+      <div className=" search_customer">
 
-    const handleButtonClick = (customer) => {
-        // Handle button click logic here
-        console.log('Button clicked for customer:', customer);
-    };
-    return (
-    <div className="container mt-4 " style={{display:'block'}}>
-        <h1 className="mb-4">Create a new order</h1>
-        <div className="input-group mb-3">
+          <input
+            type="text"
+            className="w-100 form-control p-4"
+            placeholder="Search for a customer using first name, last name, email address or phone number"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
 
-            <input
-                type="text"
-                className="form-control"
-                placeholder="Search for a customer using first name, last name, email address or phone number"
-                value={searchTerm}
-                onChange={handleSearchChange}
-            />
+          <div className="search_btn">
+              <CiSearch size={20} />
+          </div>
+            
+      </div>
 
-            <div className="input-group-append">
-                <button className="btn btn-outline-secondary" onClick={handleSearch}>
-                Search
-                </button>
-            </div>
+      {
+      searchResults.length > 0 && (
+       <div className="table-responsive rounded-3">
 
+            <table className="table table-bordered  table-striped table-hover border">
+              <tbody>
+                {searchResults?.map((customer, index) => (
+                  <tr key={ index}>
+                    
+                    <td className="customer_name">
+                      {customer.customer_first_name}
+                    </td>
+                    <td className="customer_name">{customer.customer_last_name}</td>
+                    <td>{customer.customer_email}</td>
+                    <td>{customer.customer_phone_number}</td>
+                    <td>
+                      <Link
+                        to={`/admin/order-single/${customer.customer_id}`}
+                        className="editButton"
+                      >
+                        <FaHandPointer />
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            
         </div>
+      ) 
+      }
 
-        <button className="btn btn-danger mb-3" onClick={handleAddCustomer}>
-        ADD NEW CUSTOMER
-        </button>
 
-        
-        {searchResults.length > 0 && (
-        <table className="table table-bordered table-hover">
-            <thead className="thead-light">
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {searchResults.map((customer, index) => (
-                <Customers key={index} customer={customer} onButtonClick={handleButtonClick} />
-            ))}
-            </tbody>
-        </table>
-        )}
+      {
+       ( searchTerm.length > 0 &&  searchResults.length === 0) && (
+           <p>No result found</p>
+        )
+      }
+
+      { 
+      searchResults.length === 0 && (
+    
+        <div className="form-group col-md-12">
+              <button className="theme-btn btn-style-one" type="submit" onClick={handleAddCustomer} >
+                      ADD CUSTOMER
+              </button>
+        </div>
+      )
+      }
+
+
     </div>
-)
+  );
 }
 
-export default CreateOrder
+export default CreateOrder;
+
+
