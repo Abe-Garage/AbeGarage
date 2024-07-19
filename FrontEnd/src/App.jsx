@@ -89,11 +89,11 @@ function App() {
           }
         />
         <Route
-          path="/admin/customer-list"
+          path="/admin/customers"
           element={
             // <PrivateAuthRoute roles={[2, 3]}>
-              // <Customers />
-             <CustomerList /> 
+              <Customers />
+           
             
           }
         />{/* </PrivateAuthRoute> */}
@@ -131,7 +131,7 @@ function App() {
    
         //* routes related to orders
        
-        <Route path="/admin/order" element={<NewOrder />} />
+        <Route path="/admin/order/:ID" element={<NewOrder />} />
         <Route path="/admin/order-single/:customer_id" element={<SingleOrder />} />
         <Route path="/admin/create-order" element={<CreateOrder />} />
         {/* <Route path="admin/order/{orderHash}/edit" element={EditOrder} /> */}

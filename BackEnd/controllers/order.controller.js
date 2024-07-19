@@ -156,7 +156,7 @@ async function searchOrder(req, res)  {
     ci.customer_phone_number LIKE ?
 `;
    const values = [`%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`];
-   const [results] = await conn.query(searchQuery, values);
+   const results = await conn.query(searchQuery, values);
 
     
     res.json(results);

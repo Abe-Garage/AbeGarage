@@ -43,7 +43,7 @@ function CreateOrder() {
 
   const handleAddCustomer = () => {
     console.log("Add new customer clicked");
-    window.location.replace("/admin/create-order");
+    window.location.replace("/admin/add-customer");
   };
 
   const handleButtonClick = (customer) => {
@@ -82,7 +82,7 @@ function CreateOrder() {
                 <td>{customer.customer_phone_number}</td>
                 <td>
                   <Link
-                    to={`/admin/edit-customer/${customer.customer_id}`}
+                    to={`/admin/order-single/${customer.customer_id}`}
                     className="editButton"
                   >
                     <FaHandPointer />

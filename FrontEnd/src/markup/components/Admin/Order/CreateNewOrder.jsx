@@ -18,8 +18,8 @@ function CreateNewOrder() {
   // console.log(employee_id)
   console.log("token:", token);
 
-  // const { ID } = useParams();
-  const ID = "1";
+  const { ID} = useParams();
+  
 
   const [services, setServices] = useState([]);
   const [selectedServices, setSelectedServices] = useState([]);
@@ -66,8 +66,9 @@ function CreateNewOrder() {
   const fetchVehicleInfo = async () => {
     try {
       const response = await vehicleService.getVehicleInfo(ID);
-      console.log(response.data.result);
-      setVehicleInfo(response.data.result);
+      console.log(response)
+      // console.log(response.data.result);
+      setVehicleInfo(response);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -126,7 +127,7 @@ function CreateNewOrder() {
     const requestBody = {
       employee_id: employee.employee_id, //
       customer_id: customerInfo.customer_id,
-      vehicle_id: vehicleInfo[0].vehicle_id,
+      vehicle_id: vehicleInfo.vehicle_id,
       active_order: 2, // Always active order
       order_description: orderDescription,
       estimated_completion_date: estimatedCompletionDate,
@@ -158,6 +159,7 @@ function CreateNewOrder() {
       const data = await response.json();
       console.log("Order submitted:", data);
       alert("Order successfully submitted");
+      navigate('/admin/orders')
     } catch (error) {
       console.error("Error submitting order:", error);
     }
@@ -229,7 +231,7 @@ function CreateNewOrder() {
       {vehicleInfo ? (
         <div className="VehicleInfo">
           <h2>
-            {vehicleInfo[0].vehicle_make}
+            {vehicleInfo.vehicle_make}
             <CancelPresentationIcon
               onClick={handleRedirectVehicle}
               className="icon"
@@ -237,23 +239,23 @@ function CreateNewOrder() {
           </h2>
           <p>
             <span className="label">Vehicle color:</span>{" "}
-            <span className="value">{vehicleInfo[0].vehicle_color}</span>
+            <span className="value">{vehicleInfo.vehicle_color}</span>
           </p>
           <p>
             <span className="label">Vehicle tag:</span>{" "}
-            <span className="value">{vehicleInfo[0].vehicle_tag}</span>
+            <span className="value">{vehicleInfo.vehicle_tag}</span>
           </p>
           <p>
             <span className="label">Vehicle Year:</span>{" "}
-            <span className="value">{vehicleInfo[0].vehicle_year}</span>
+            <span className="value">{vehicleInfo.vehicle_year}</span>
           </p>
           <p>
             <span className="label">Vehicle Mileage:</span>{" "}
-            <span className="value">{vehicleInfo[0].vehicle_mileage}</span>
+            <span className="value">{vehicleInfo.vehicle_mileage}</span>
           </p>
           <p>
             <span className="label">Vehicle serial:</span>{" "}
-            <span className="value">{vehicleInfo[0].vehicle_serial}</span>
+            <span className="value">{vehicleInfo.vehicle_serial}</span>
           </p>
           <p>
             <span className="label">Edit Vehicle info:</span>{" "}

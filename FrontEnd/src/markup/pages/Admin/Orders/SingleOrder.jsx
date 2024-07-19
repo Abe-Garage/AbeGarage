@@ -147,7 +147,7 @@ const SingleOrder = () => {
               </tr>
             </thead>
             <tbody>
-              {vehiclePerCustomer.map((vehicle) => (
+              {vehiclePerCustomer?.map((vehicle) => (
                 <tr key={vehicle.customer_id}>
                   <td>{vehicle.vehicle_year}</td>
                   <td>{vehicle.vehicle_make}</td>
