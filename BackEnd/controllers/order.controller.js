@@ -72,6 +72,24 @@ async function getOrderById(req, res) {
   }
 }
 
+
+// Get single order by CUSTOMER_ID
+async function getOrderByCustomerId(req, res) {
+  try {
+    const { customerid } = req.params;
+    const order = await orderService.getOrderByCustomerId(customerid);
+    
+    if (!order) {
+      return res.status(404).json({ msg: "Order not found" });
+    }
+    res.status(200).json(order);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "An error occurred while retrieving the order" });
+  }
+}
+
 // Update an order
 async function updateOrder(req, res) {
   try {
@@ -111,6 +129,7 @@ async function updateOrder(req, res) {
 }
 
 
+
 async function searchOrder(req, res)  {
   const { query } = req.query;
   
@@ -146,3 +165,6 @@ module.exports = {
   updateOrder,
   searchOrder,
 };
+
+module.exports = { createOrder, getAllOrders, getOrderById, updateOrder ,getOrderByCustomerId};
+

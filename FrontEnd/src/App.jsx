@@ -47,6 +47,7 @@ import CustomerList from "./markup/components/Admin/CustomerList/CustomerList";
 import ErrorComponent from "./markup/pages/Main/404/404";
 
 import Customers from "./markup/pages/Admin/Customers/Customers";
+import EditVehicle from "./markup/pages/Admin/Vehicle/EditVehicle";
 
 
 function App() {
@@ -125,13 +126,10 @@ function App() {
 
         <Route path="/services" element={<Services />} />
         {/* <Route path="order/{orderHash}" element={OrdersDetail} /> */}
-        //TODO:-ALALEKEM(MALEK YALEBET) //* routes related to employee
-        {/* <Route path="admin/employees" element={<Employees />} /> */}
-        {/* <Route path="admin/add-employee" element={<AddEmployee />} /> */}
-        {/* <Route path="admin/employee/edit/:id" element={<EditEmployee />} /> */}
+       
+   
         //* routes related to orders
-        {/* <Route path="/admin" element={<AdminDashBoard />} /> */}
-        {/* <Route path="/admin/orders" element={<AllOrdersPage />} /> */}
+       
         <Route path="/admin/order" element={<NewOrder />} />
         <Route path="/admin/create-order" element={<CreateOrder />} />
         {/* <Route path="admin/order/{orderHash}/edit" element={EditOrder} /> */}
@@ -140,13 +138,13 @@ function App() {
         {/* <Route path="/admin/add-service" element={AddServices} />  */}
         {/* //* routes related to customers */}
         <Route path="/admin/customers/:id" element={<Vehicle />} />
+        <Route path="/admin/edit-vehicle/:id" element={<EditVehicle />} />
         {/* <Route path="/admin/add-customer" element={<CustomerForm />} /> */}
         <Route
           path="/admin/edit-customer/:customerId"
           element={<EditCustomer />}
         />
-        {/* <Route path="admin/customers" element={Customers} /> */}//TODO
-        {/* <Route path="admin/add-customer" element={Addvehicle} /> //* conditionally render */}
+        
       </Routes>
       <Footer />
     </>

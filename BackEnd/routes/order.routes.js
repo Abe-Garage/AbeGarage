@@ -17,4 +17,7 @@ router.put("/order", orderController.updateOrder);
 // 
 router.get("/search-customers", orderController.searchOrder);
 
+//Route to get order by CUSTOMER ID
+router.get('/corder/customer/:customerid',orderController.getOrderByCustomerId)
+
 module.exports = router;

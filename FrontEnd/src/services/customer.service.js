@@ -11,6 +11,7 @@ async function createCustomer(formData, loggedInCustomerToken) {
   };
 
   const data = await axios.post("/api/customer", formData, { headers });
+  console.log(data)
 
   return data;
 }
@@ -20,21 +21,33 @@ async function getAllCustomers(token,offset) {
   const headers = {
     "x-access-token": token,
   };
-  const data = await axios.get(`${api_url}/api/customers/${offset}`, { headers });
+  const data = await axios.get(`/api/customers/${offset}`, { headers });
+
+  return data;
+}
+
+// A function to send get request to get all customers
+async function getCustomerOrderbyId(id,token) {
+  const headers = {
+    "x-access-token": token,
+  };
+  const data = await axios.get(`/api/corder/customer/${id}`, { headers });
 
   return data;
 }
 
 
+
 // afunction to customer update request
 async function updateCustomer(formData, loggedInCustomerToken) {
+  console.log(formData)
   const headers = {
     "x-access-token": loggedInCustomerToken,
   };
 
   const data = await axios.put("/api/customer/update", formData, { headers });
 
-  // console.log(data);
+  console.log(data);
 
   return data;
 }
@@ -106,7 +119,8 @@ const customerService = {
   singleCustomer,
   formatDate,
   totalNofCustomers,
-  searchedCustomers
+  searchedCustomers,
+  getCustomerOrderbyId
 
 };
 

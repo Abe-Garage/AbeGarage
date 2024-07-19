@@ -231,6 +231,45 @@ async function getOrderById(id) {
   }
 }
 
+
+async function getOrderByCustomerId(id) {
+  try {
+    // Query to get order details
+    const orderQuery = `SELECT 
+    orders.order_date, 
+    orders.order_hash, 
+    orders.active_order, 
+    order_info.order_total_price, 
+    order_info.estimated_completion_date, 
+    employee_info.employee_first_name, 
+    employee_info.employee_last_name, 
+    customer_vehicle_info.vehicle_make, 
+    customer_vehicle_info.vehicle_serial, 
+    common_services.service_name,
+    common_services.service_description
+FROM 
+    orders
+INNER JOIN 
+    order_info ON orders.order_id = order_info.order_id
+INNER JOIN 
+    employee_info ON orders.employee_id = employee_info.employee_id
+INNER JOIN 
+    customer_vehicle_info ON orders.customer_id = customer_vehicle_info.customer_id
+INNER JOIN 
+    order_services ON orders.order_id = order_services.order_id
+INNER JOIN 
+    common_services ON order_services.service_id = common_services.service_id
+WHERE 
+    orders.customer_id = ?;
+`;
+    const orderResult = await conn.query(orderQuery, [id]);
+
+    return orderResult;
+  } catch (error) {
+    console.error(`Error fetching order with ID ${id}:`, error);
+    throw new Error("An error occurred while retrieving the order");
+  }
+}
 // updating createOrder function
 
 async function updateOrder(orderData) {
@@ -301,4 +340,5 @@ module.exports = {
   getAllOrders,
   getOrderById,
   updateOrder,
+  getOrderByCustomerId
 };

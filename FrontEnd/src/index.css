@@ -113,3 +113,17 @@
   .contact_us textarea::placeholder{
     color: #DDD;
   }
+
+
+  .fs{
+    font-size: 12px;
+  }
+
+
+  .edit_vehicle {
+    overflow-x: hidden;
+  }
+
+  .edit_vehicle span{
+     color: #EE0D09;
+  }
