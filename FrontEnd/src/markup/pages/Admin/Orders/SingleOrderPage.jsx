@@ -1,8 +1,9 @@
 import React from "react";
 import AdminMenu from "../../../components/Admin/AdminMenu/AdminMenu";
 import CreateNewOrder from "../../../components/Admin/Order/CreateNewOrder";
+import SingleOrder from "../../../components/Admin/Order/SingleOrder";
 
-function NewOrder() {
+function SingleOrderPage() {
   return (
     <div>
       <div>
@@ -11,8 +12,8 @@ function NewOrder() {
             <div className="col-md-3 admin-left-side">
               <AdminMenu />
             </div>
-            <div className="col-md-9 admin-right-side ">
-              <CreateNewOrder />
+            <div className="col-md-9 admin-right-side px-5">
+              <SingleOrder />
             </div>
           </div>
         </div>
@@ -21,4 +22,4 @@ function NewOrder() {
   );
 }
 
-export default NewOrder;
+export default SingleOrderPage;

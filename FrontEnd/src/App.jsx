@@ -7,7 +7,6 @@ import AllOrdersPage from "./markup/pages/Admin/Orders/AllOrdersPage";
 import Home from "./markup/pages/Home/Home";
 import About from "./markup/pages/Main/About/About";
 import AdminDashBoard from "./markup/pages/Admin/AdminDashBoard/AdminDashBoard";
-import CreateOrder from "./markup/components/Admin/Order/CreateOrder";
 
 
 // ` Import css from the template
@@ -48,7 +47,7 @@ import ErrorComponent from "./markup/pages/Main/404/404";
 
 import Customers from "./markup/pages/Admin/Customers/Customers";
 import EditVehicle from "./markup/pages/Admin/Vehicle/EditVehicle";
-import SingleOrder from "./markup/pages/Admin/Orders/SingleOrder";
+import SingleOrderPage from "./markup/pages/Admin/Orders/SingleOrderPage";
 
 
 function App() {
@@ -132,8 +131,8 @@ function App() {
         //* routes related to orders
        
         <Route path="/admin/order/:ID" element={<NewOrder />} />
-        <Route path="/admin/order-single/:customer_id" element={<SingleOrder />} />
-        <Route path="/admin/create-order" element={<CreateOrder />} />
+        <Route path="/admin/order-single/:customer_id" element={<SingleOrderPage />} />
+        <Route path="/admin/create-order" element={<CreateOrderPage />} />
         {/* <Route path="admin/order/{orderHash}/edit" element={EditOrder} /> */}
         //* ALALEKEM(MALEK YALEBET) //? MALEK YALEBET
         <Route path="/admin/services" element={<ServiceList />} />

@@ -8,6 +8,7 @@ import "./CreateNewOrder.css";
 import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 import EditCalendarOutlinedIcon from "@mui/icons-material/EditCalendarOutlined";
 import "./CreateNewOrder.css";
+import { FaEdit } from "react-icons/fa";
 // import axios from "../../../../utils/axiosConfig";
 
 const api_url = import.meta.env.VITE_API_URL;
@@ -137,8 +138,8 @@ function CreateNewOrder() {
       order_total_price: orderTotalPrice,
       additional_request: serviceDescription,
       order_services: selectedServices.map((serviceId) => ({
-        service_id: serviceId,
-        service_completed: false,
+      service_id: serviceId,
+      service_completed: false,
       })),
     };
     console.log(requestBody);
@@ -171,7 +172,7 @@ function CreateNewOrder() {
   };
 
   const handleEditVehicleClick = () => {
-    const editVehiclePath = "/edit-vehicle";
+    const editVehiclePath =`/edit-vehicle/${ID}`;
     window.location.href = editVehiclePath;
   };
 
@@ -185,12 +186,18 @@ function CreateNewOrder() {
 
   return (
     <div className="create-order-container">
-      <h1>Create a new order</h1>
+
+         <div className="contact-section pad_1">
+          <div className="contact-title mb-1">
+            <h2>Create a new order</h2>
+          </div>
+        </div>
+     
       {customerInfo ? (
         <div className="CustomerInfo">
           <div className="CustomerInfo_two">
             <div>
-              <h2>
+              <h2 className="customer_name">
                 {customerInfo.customer_first_name}{" "}
                 <span>{customerInfo.customer_last_name}</span>
               </h2>
@@ -203,25 +210,27 @@ function CreateNewOrder() {
             </div>
           </div>
           <p>
-            <span className="label">Email:</span>{" "}
-            <span className="value">{customerInfo.customer_email}</span>
+            <span className="label customer_label_info">Email:</span>{" "}
+            <span className="value customer_label_value">{customerInfo.customer_email}</span>
           </p>
           <p>
-            <span className="label">Phone Number:</span>{" "}
-            <span className="value">{customerInfo.customer_phone_number}</span>
+            <span className="label customer_label_info">Phone Number:</span>{" "}
+            <span className="value customer_label_value">{customerInfo.customer_phone_number}</span>
           </p>
           <p>
-            <span className="label">Active Customer:</span>{" "}
-            <span className="value">
+            <span className="label customer_label_info">Active Customer:</span>{" "}
+            <span className="value  customer_label_value">
               {customerInfo.active_customer_status ? "Yes" : "No"}
             </span>
           </p>
           <p>
-            <span className="label">Edit customer info:</span>{" "}
-            <EditCalendarOutlinedIcon
-              className="icon"
-              onClick={handleEditCustomerClick}
-            />
+            <span className="label  customer_label_info">Edit customer info:</span>{" "}
+        
+              <FaEdit 
+                className="icon"
+                onClick={handleEditCustomerClick}
+                size={20}
+                />
           </p>
         </div>
       ) : (
@@ -230,39 +239,41 @@ function CreateNewOrder() {
 
       {vehicleInfo ? (
         <div className="VehicleInfo">
-          <h2>
+          <h2 className="customer_name">
             {vehicleInfo.vehicle_make}
             <CancelPresentationIcon
               onClick={handleRedirectVehicle}
               className="icon"
             />
+            
           </h2>
           <p>
-            <span className="label">Vehicle color:</span>{" "}
-            <span className="value">{vehicleInfo.vehicle_color}</span>
+            <span className="label  customer_label_info">Vehicle color:</span>{" "}
+            <span className="value  customer_label_value">{vehicleInfo.vehicle_color}</span>
           </p>
           <p>
-            <span className="label">Vehicle tag:</span>{" "}
-            <span className="value">{vehicleInfo.vehicle_tag}</span>
+            <span className="label  customer_label_info">Vehicle tag:</span>{" "}
+            <span className="value  customer_label_value">{vehicleInfo.vehicle_tag}</span>
           </p>
           <p>
-            <span className="label">Vehicle Year:</span>{" "}
-            <span className="value">{vehicleInfo.vehicle_year}</span>
+            <span className="label  customer_label_info">Vehicle Year:</span>{" "}
+            <span className="value  customer_label_value">{vehicleInfo.vehicle_year}</span>
           </p>
           <p>
-            <span className="label">Vehicle Mileage:</span>{" "}
-            <span className="value">{vehicleInfo.vehicle_mileage}</span>
+            <span className="label  customer_label_info">Vehicle Mileage:</span>{" "}
+            <span className="value  customer_label_value">{vehicleInfo.vehicle_mileage}</span>
           </p>
           <p>
-            <span className="label">Vehicle serial:</span>{" "}
-            <span className="value">{vehicleInfo.vehicle_serial}</span>
+            <span className="label  customer_label_info">Vehicle serial:</span>{" "}
+            <span className="value  customer_label_value">{vehicleInfo.vehicle_serial}</span>
           </p>
           <p>
-            <span className="label">Edit Vehicle info:</span>{" "}
+            <span className="label  customer_label_info">Edit Vehicle info:</span>{" "}
             <span className="value">
-              <EditCalendarOutlinedIcon
+            <FaEdit 
                 className="icon"
-                onClick={handleEditVehicleClick}
+                onClick={handleEditCustomerClick}
+                size={20}
               />
             </span>
           </p>
@@ -271,40 +282,55 @@ function CreateNewOrder() {
         <p>Loading customer information...</p>
       )}
 
-      <div className="services-list">
-        <h2>Choose service</h2>
-        {services.length > 0 ? (
-          services.map((service) => (
-            <div key={service.service_id} className="service-item">
-              <div className="service-details">
-                <h3>{service?.service_name}</h3>
-                <p>{service?.service_description}</p>
+   <div className="service_list_container">
+        <div className="services-list" >
+          <h2 className="customer_name v_font">Choose service</h2>
+          {services.length > 0 ? (
+            services.map((service) => (
+              <div key={service.service_id} className="service-item">
+                <div className="service-details w-100">
+                 
+                    <div>
+                        <h3 className="service_font">{service?.service_name}</h3>
+                        <p>{service?.service_description}</p>
+                    </div>
 
-                <input
-                  type="checkbox"
-                  checked={selectedServices.includes(service.service_id)}
-                  onChange={() => handleServiceSelection(service.service_id)}
-                />
+                    <div>
+                        <input
+                        type="checkbox"
+                        checked={selectedServices.includes(service.service_id)}
+                        onChange={() => handleServiceSelection(service.service_id)}
+                      />
+                    </div>
+
+                </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <p>No services available</p>
-        )}
-      </div>
+            ))
+          ) : (
+            <p>No services available</p>
+          )}
+        </div>
+   </div>
 
       <div className="additional-requests">
-        <h2>Additional requests</h2>
+        {/* <h2>Additional requests</h2> */}
+        <div className="contact-section pad_1" style={{background:'#fff'}}>
+          <div className="contact-title mb-1">
+            <h2 style={{fontSize:'32px'}}>Additional requests</h2>
+          </div>
+        </div>
 
         <div className="serviceRequest">
           <input
             type="text"
+            style={{ paddingLeft: "15px" }}
             placeholder="Service Description"
             value={serviceDescription}
-            style={{ paddingLeft: "15px" }}
             onChange={handleAdditionalRequest}
           />
         </div>
+
+
         <div className="price">
           <input
             type="text"
@@ -324,11 +350,13 @@ function CreateNewOrder() {
               value={orderDescription}
               onChange={handleOrderDescriptionChange}
             />
+           
           </div>
         </div>
-        <div>
-          <label>
-            Expected Completion Date:
+
+        <div className="py-2 px-3">
+          <label >
+            <span className="v_font">Expected Completion Date:</span>
             <input
               type="datetime-local"
               value={estimatedCompletionDate}
@@ -337,7 +365,7 @@ function CreateNewOrder() {
           </label>
         </div>
 
-        <div className="submit">
+        <div className="submit mt-3 mb-5">
           <button className="submit-order" onClick={handleSubmit}>
             SUBMIT ORDER
           </button>

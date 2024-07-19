@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
-import EditCalendarOutlinedIcon from "@mui/icons-material/EditCalendarOutlined";
 import { useAuth } from "../../../../Context/AuthContext";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import customerService from "../../../../services/customer.service"; // Import customerService
 import vehicleService from "../../../../services/vehicle.service"; // Import vehicleService
 import { BsHandIndexThumbFill } from "react-icons/bs";
+import { FaEdit } from "react-icons/fa";
 
 const SingleOrder = () => {
   const { employee } = useAuth();
@@ -86,17 +86,25 @@ const SingleOrder = () => {
   };
 
   return (
-    <div className="create-order-container">
-      <h1>Create a new order</h1>
+    <div className=" ">
+      
+
+        <div className="contact-section pad_1">
+          <div className="contact-title mb-1">
+            <h2>Create a new order</h2>
+          </div>
+        </div>
+
       {customerInfo ? (
-        <div className="CustomerInfo">
+        <div className="CustomerInfo px-3 ">
           <div className="CustomerInfo_two">
             <div>
-              <h2>
+              <h2 className="customer_name">
                 {customerInfo.customer_first_name}{" "}
                 <span>{customerInfo.customer_last_name}</span>
               </h2>
             </div>
+           
             <div>
               <CancelPresentationIcon 
               onClick={handleRedirectCustomer}
@@ -105,36 +113,40 @@ const SingleOrder = () => {
           </div>
 
           <p>
-            <span className="label">Email:</span>{" "}
-            <span className="value">{customerInfo.customer_email}</span>
+            <span className="label customer_label_info">Email: </span>{""}
+            <span className="value customer_label_value">{customerInfo.customer_email}</span>
           </p>
           <p>
-            <span className="label">Phone Number:</span>{" "}
-            <span className="value">{customerInfo.customer_phone_number}</span>
+            <span className="label customer_label_info">Phone Number: </span>{" "}
+            <span className="value customer_label_value">{customerInfo.customer_phone_number}</span>
           </p>
           <p>
-            <span className="label">Active Customer:</span>{" "}
-            <span className="value">
+            <span className="label customer_label_info">Active Customer: </span>{" "}
+            <span className="value customer_label_value">
               {customerInfo.active_customer_status ? "Yes" : "No"}
             </span>
           </p>
           <p>
-            <span className="label">Edit customer info:</span>{" "}
-            <EditCalendarOutlinedIcon
-              className="icon"
-              onClick={handleEditCustomerClick}
-            />
+            <span className="label customer_label_info">Edit customer info: </span>{" "}
+          
+                <FaEdit 
+                className="icon"
+                onClick={handleEditCustomerClick}
+                size={20}
+                />
           </p>
         </div>
       ) : (
         <p>Loading customer information...</p>
       )}
 
-      <div className="auto-container customer_list">
-        <h2>Choose a vehicle</h2>
+      <div className=" vehicle_info">
+
+         <h2 className="customer_name v_font">Choose a vehicle</h2>
+        
         <div className="table-responsive rounded-3 ">
-          <table className="table table-striped table-bordered table-hover border ">
-            <thead className="table-dark text-white">
+          <table className="table table-striped   table-hover border ">
+            <thead className="">
               <tr>
                 <th>Year</th>
                 <th>Make</th>
@@ -158,7 +170,7 @@ const SingleOrder = () => {
                   <td>{vehicle.vehicle_mileage}</td>
                   <td>
                     <Link
-                      to={`/admin/order/${vehicle.customer_id}`}
+                      to={`/admin/order/${vehicle.vehicle_id}`}
                       className="chooseButton"
                     >
                       <BsHandIndexThumbFill />

@@ -102,10 +102,10 @@ const CustomerList = () => {
           </div>
         </div>
 
-        <div className="search_customer">
+        <div className="search_customer ">
           <input
             type="text"
-            className="w-100 py-3 pl-3"
+            className="w-100  form-control p-4"
             placeholder="Search for a customers using first name , last name, email address or phone number"
             onChange={(e) => {
               setValue(e.target.value);
@@ -118,7 +118,7 @@ const CustomerList = () => {
 
         <div className="table-responsive rounded-3 ">
             <table className="table table-striped table-bordered table-hover border ">
-              <thead className="table-dark text-white" >
+              <thead className="table-dark " >
                 <tr>
                   <th scope="col" className="border">
                     ID

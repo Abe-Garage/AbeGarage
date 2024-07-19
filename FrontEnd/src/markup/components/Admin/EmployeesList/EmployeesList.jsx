@@ -133,7 +133,7 @@ const EmployeesList = () => {
                 onChange={handleSearch}
               />
             </div>
-            <Table responsive striped bordered hover className="modern-table">
+            <Table responsive striped bordered hover className="modern-table border">
               <thead>
                 <tr>
                   <th>Active</th>

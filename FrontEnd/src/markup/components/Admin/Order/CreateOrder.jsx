@@ -1,9 +1,10 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "../../../../axios/axiosConfig";
 import { FaHandPointer } from "react-icons/fa";
 import { Link } from "react-router-dom"; 
+import { CiSearch } from "react-icons/ci";
 
 function CreateOrder() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,7 +24,7 @@ function CreateOrder() {
           headers: { "x-access-token": token },
         }
       );
-      console.log("API Response:", response.data); 
+      // console.log("API Response:", response.data); 
 
       if (Array.isArray(response.data)) {
         setSearchResults(response.data);
@@ -50,56 +51,86 @@ function CreateOrder() {
     console.log("Button clicked for customer:", customer);
   };
 
+  useEffect(()=>{
+    handleSearch()
+  },[searchTerm])
+
   return (
     <div className="container mt-4" style={{ display: "block" }}>
-      <h1 className="mb-4">Create a new order</h1>
-      <div className="input-group mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search for a customer using first name, last name, email address or phone number"
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-        <div className="input-group-append">
-          <button className="btn btn-outline-secondary" onClick={handleSearch}>
-            Search
-          </button>
-        </div>
+
+      <div className="contact-section pad_1">
+          <div className="contact-title mb-1">
+            <h2>Create a new order</h2>
+          </div>
       </div>
 
-      {searchResults.length > 0 ? (
-        <table className="table table-bordered table-hover">
-          <tbody>
-            {searchResults.map((customer, index) => (
-              <tr key={ index}>
-                
-                <td className="customer_name">
-                  {customer.customer_first_name}
-                </td>
-                <td className="customer_name">{customer.customer_last_name}</td>
-                <td>{customer.customer_email}</td>
-                <td>{customer.customer_phone_number}</td>
-                <td>
-                  <Link
-                    to={`/admin/order-single/${customer.customer_id}`}
-                    className="editButton"
-                  >
-                    <FaHandPointer />
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        searchAttempted && <p>No results found</p>
-      )}
+     
+
+      <div className=" search_customer">
+
+          <input
+            type="text"
+            className="w-100 form-control p-4"
+            placeholder="Search for a customer using first name, last name, email address or phone number"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+
+          <div className="search_btn">
+              <CiSearch size={20} />
+            </div>
+            
+      </div>
+
+ 
+
+      {
+      
+      searchResults.length > 0 && (
+       <div className="table-responsive rounded-3">
+
+            <table className="table table-bordered  table-striped table-hover border">
+              <tbody>
+                {searchResults.map((customer, index) => (
+                  <tr key={ index}>
+                    
+                    <td className="customer_name">
+                      {customer.customer_first_name}
+                    </td>
+                    <td className="customer_name">{customer.customer_last_name}</td>
+                    <td>{customer.customer_email}</td>
+                    <td>{customer.customer_phone_number}</td>
+                    <td>
+                      <Link
+                        to={`/admin/order-single/${customer.customer_id}`}
+                        className="editButton"
+                      >
+                        <FaHandPointer />
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            
+        </div>
+      ) 
+      // : (
+      //   searchAttempted && <p>No results found</p>
+      // )
+      
+      }
 
       {searchResults.length === 0 && (
-        <button className="btn btn-danger mb-3" onClick={handleAddCustomer}>
-          ADD NEW CUSTOMER
-        </button>
+        // <button className="btn btn-danger mb-3" onClick={handleAddCustomer}>
+        //   ADD NEW CUSTOMER
+        // </button>
+        <div className="form-group col-md-12">
+            <button className="theme-btn btn-style-one" type="submit" onClick={handleAddCustomer} >
+                    ADD CUSTOMER
+            </button>
+      </div>
+
       )}
     </div>
   );
