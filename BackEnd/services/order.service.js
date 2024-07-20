@@ -187,7 +187,27 @@ async function createOrders(orderData) {
 async function getAllOrders({ limit, sortby, completed }) {
   try {
     let query = `
-      SELECT customer_identifier.customer_email,customer_identifier.customer_phone_number  , customer_info.customer_first_name ,customer_info.customer_last_name ,customer_vehicle_info.vehicle_year ,customer_vehicle_info.vehicle_make, customer_vehicle_info.vehicle_model,customer_vehicle_info.vehicle_tag ,employee_info.employee_first_name,employee_info.employee_last_name, orders.order_date,orders.order_hash, order_status.* FROM customer_identifier INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id INNER JOIN customer_vehicle_info ON customer_info.customer_id = customer_vehicle_info.customer_id INNER JOIN orders ON orders.customer_id =  customer_vehicle_info.customer_id INNER JOIN order_status ON orders.order_id = order_status.order_id INNER JOIN employee_info ON orders.employee_id = employee_info.employee_id
+      SELECT 
+      customer_identifier.customer_email,
+      customer_identifier.customer_phone_number, 
+      customer_info.customer_first_name,
+      customer_info.customer_last_name ,
+      customer_vehicle_info.vehicle_year,
+      customer_vehicle_info.vehicle_make, 
+      customer_vehicle_info.vehicle_model,
+      customer_vehicle_info.vehicle_tag,
+      employee_info.employee_first_name,
+      employee_info.employee_last_name, 
+      orders.order_date,
+      orders.order_hash, 
+      order_status.* 
+      FROM customer_identifier 
+      INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id 
+      INNER JOIN customer_vehicle_info ON customer_info.customer_id = customer_vehicle_info.customer_id 
+      INNER JOIN orders ON orders.customer_id =  customer_vehicle_info.customer_id 
+      INNER JOIN order_status ON orders.order_id = order_status.order_id 
+      INNER JOIN employee_info ON orders.employee_id = employee_info.employee_id
+      ORDER BY orders.order_id DESC
     `;
     let queryParams = [];
 
