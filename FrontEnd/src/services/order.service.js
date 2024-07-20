@@ -1,39 +1,22 @@
-// import axios from "../utils/axiosConfig";
 
-// const api_url = import.meta.env.VITE_API_URL;
+import axios from "../utils/axiosConfig";
 
-// async function CreateOrder () {
-    
-   
-//     const requestBody = {
-//         employee_id: employee.employee_id, // 
-//         customer_id: customerInfo.customer_id,
-//         vehicle_id: vehicleInfo[0].vehicle_id,
-//         active_order: 2, // Always active order
-//         order_description: orderDescription,
-//         estimated_completion_date: estimatedCompletionDate,
-//         completion_date: null,
-//         order_completed: 0,
-//         order_status: 1,
-//         order_total_price: orderTotalPrice,
-//         additional_request:serviceDescription,
-//         order_services: selectedServices.map((serviceId) => ({
-//           service_id: serviceId, 
-//           service_completed: false,
-//         })),
-//       };
-//       console.log(requestBody)
-//       const  response = await axios.post('${api_url}/api/order', headers= {
-//         'Content-Type': 'application/json',
-//       },
-//       body= JSON.stringify(requestBody),
-//     );
- 
-// }
+const api_url = import.meta.env.VITE_API_URL;
 
-// const orderService = {
-//     CreateOrder 
- 
-//   };
-  
-//   export default  orderService;
+const ordersService = {
+  getAllOrders: async (token) => {
+    try {
+      const response = await axios.get(`${api_url}/api/orders`, {
+        headers: {
+          "x-access-token": token,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      throw error;
+    }
+  },
+};
+
+export default ordersService;
