@@ -87,16 +87,6 @@ async function createEmploye(employee) {
       employee.company_role_id,
     ]);
 
-    // insert the employee hash id table data
-    // const queryEmployeeHashId =
-    //   "INSERT INTO employee_hash_id (employee_id, employee_hash) VALUES (?,?)";
-
-    // const rows5 = await connection.query(queryEmployeeHashId, [
-    //   employee_id,
-    //   hash_id,
-    // ]);
-
-    // construct to the employee object to return
     createdEmployee = {
       employee_id: employee_id,
     };

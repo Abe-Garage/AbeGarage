@@ -56,100 +56,119 @@ function App() {
     <>
       <Header />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/unauthorized" element={<Unauthorized />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="*" element={<ErrorComponent />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<ErrorComponent />} />
+            <Route path="/services" element={<Services />} />
+
+
+
         {/* // Add the Orders Route  */}
-        <Route
-          path="/admin"
-          element={
-            <PrivateAuthRoute roles={[1, 2, 3]}>
-              <AdminDashBoard />
-            </PrivateAuthRoute>
-          }
-        />
-        <Route
-          path="/admin/orders"
-          element={
-            <PrivateAuthRoute roles={[3]}>
-              <AllOrdersPage />
-            </PrivateAuthRoute>
-          }
-        />
+            <Route
+              path="/admin"
+              element={
+                <PrivateAuthRoute roles={[1, 2, 3]}>
+                  <AdminDashBoard />
+                </PrivateAuthRoute>
+              }
+            />
+
+            <Route
+              path="/admin/orders"
+              element={
+                <PrivateAuthRoute roles={[1,2,3]}>
+                  <AllOrdersPage />
+                </PrivateAuthRoute>
+              }
+            />
+
+          {/* <Route path="order/{orderHash}" element={OrdersDetail} /> */}
+          {/* <Route path="admin/order/{orderHash}/edit" element={EditOrder} /> */}
+        
+        
+            <Route path="/admin/order/:ID/:vID" element={<NewOrder />} />
+            <Route path="/admin/order-single/:customer_id" element={<SingleOrderPage />} />
+            <Route path="/admin/create-order" element={<CreateOrderPage />} />
+            <Route path="/order-status/:order_hash" element={<OrderStatus />} />
+            <Route path="admin/order/:orderId" element={<UpdateOrderPage/>} />
+
+
+
         {/* // Add the Customers Route  */}
-        <Route
-          path="/admin/add-customer"
-          element={
-            <PrivateAuthRoute roles={[2, 3]}>
-              <CustomerForm />
-            </PrivateAuthRoute>
-          }
-        />
+            <Route
+              path="/admin/add-customer"
+              element={
+                <PrivateAuthRoute roles={[1, 2, 3]}>
+                  <CustomerForm />
+                </PrivateAuthRoute>
+              }
+            />
 
-        <Route
-          path="/admin/customers"
-          element={
-             <PrivateAuthRoute roles={[2, 3]}>
-                   <Customers />
-              </PrivateAuthRoute> 
-          }
-          />
+            <Route
+              path="/admin/customers"
+              element={
+                <PrivateAuthRoute roles={[1, 2, 3]}>
+                      <Customers />
+                  </PrivateAuthRoute> 
+              }
+              />
 
-        <Route
-          path="/admin/add-employee"
-          element={
-            <PrivateAuthRoute roles={[3]}>
-              <AddEmployee />
-            </PrivateAuthRoute>
-          }
-        />
-        <Route
-          path="admin/employees"
-          element={
-            <PrivateAuthRoute roles={[3]}>
-              <Employees />
-            </PrivateAuthRoute>
-          }
-        />
-        <Route
-          path="admin/employee/edit/:id"
-          element={
-            <PrivateAuthRoute roles={[3]}>
-              <EditEmployee />
-            </PrivateAuthRoute>
-          }
-        />
-        {/* //page for employee profile  */}
-        <Route path="/admin/employee-profile/:id" element={<EmployeeProfile />} />
+            <Route path="/admin/customers/:id" element={<Vehicle />} />
+
+            <Route
+              path="/admin/edit-customer/:customerId"
+              element={<EditCustomer />}
+            />
+
+            <Route path="/admin/edit-vehicle/:id" element={<EditVehicle />} />
+        
 
 
-        <Route path="/services" element={<Services />} />
-        {/* <Route path="order/{orderHash}" element={OrdersDetail} /> */}
+        {/* // Add the Employee Route  */}
+            <Route
+              path="/admin/add-employee"
+              element={
+                <PrivateAuthRoute roles={[3]}>
+                  <AddEmployee />
+                </PrivateAuthRoute>
+              }
+            />
+
+            <Route
+              path="admin/employees"
+              element={
+                <PrivateAuthRoute roles={[3]}>
+                  <Employees />
+                </PrivateAuthRoute>
+              }
+            />
+
+            <Route
+              path="admin/employee/edit/:id"
+              element={
+                <PrivateAuthRoute roles={[3]}>
+                  <EditEmployee />
+                </PrivateAuthRoute>
+              }
+            />
        
-   
-        //* routes related to orders
-       
-        <Route path="/admin/order/:ID/:vID" element={<NewOrder />} />
-        <Route path="/admin/order-single/:customer_id" element={<SingleOrderPage />} />
-        <Route path="/admin/create-order" element={<CreateOrderPage />} />
+           <Route path="/admin/employee-profile/:id" element={<EmployeeProfile />} />
+
+        {/* // Add the Service Route  */}       
+            <Route path="/admin/services" element={
+              <PrivateAuthRoute roles={[3]}>
+                    <ServicePage />
+              </PrivateAuthRoute>
+            }
+            />
 
 
-        <Route path="admin/order/:orderId" element={<UpdateOrderPage/>} />
-        <Route path="/order-status/:order_hash" element={<OrderStatus />} />
-        //* ALALEKEM(MALEK YALEBET) //? MALEK YALEBET
-        <Route path="/admin/services" element={<ServicePage />} />
-        {/* <Route path="/admin/add-service" element={AddServices} />  */}
-        {/* //* routes related to customers */}
-        <Route path="/admin/customers/:id" element={<Vehicle />} />
-        <Route path="/admin/edit-vehicle/:id" element={<EditVehicle />} />
-        {/* <Route path="/admin/add-customer" element={<CustomerForm />} /> */}
-        <Route
-          path="/admin/edit-customer/:customerId"
-          element={<EditCustomer />}
-        />
+
+      
+
         
       </Routes>
       <Footer />

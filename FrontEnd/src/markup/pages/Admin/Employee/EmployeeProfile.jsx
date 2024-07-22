@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../../../Context/AuthContext";
 import Avatar from "react-avatar";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Bar } from "react-chartjs-2";
 import employeeService from "../../../../services/employee.service";
 import "./EmployeeProfile.css";
@@ -26,14 +26,16 @@ ChartJS.register(
 
 function EmployeeProfile() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { employee } = useAuth();
+
   const [employeeDetails, setEmployeeDetails] = useState({});
   const [performanceData, setPerformanceData] = useState({
     labels: ["Q1", "Q2", "Q3", "Q4"],
     datasets: [
       {
         label: "Performance",
-        backgroundColor: "rgba(75,192,192,1)",
+        backgroundColor: "#FBA617",
         borderColor: "rgba(0,0,0,1)",
         borderWidth: 2,
         data: [65, 59, 80, 81],
@@ -61,9 +63,16 @@ function EmployeeProfile() {
     };
 
     if (id && employee && employee.employee_token) {
-      fetchEmployeeDetails();
+      if (
+        employee.employee_id === parseInt(id) ||
+        employee.company_role_id === 3
+      ) {
+        fetchEmployeeDetails();
+      } else {
+        navigate("/not-authorized"); // Redirect to a not authorized page
+      }
     }
-  }, [employee, id]);
+  }, [employee, id, navigate]);
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };

@@ -204,7 +204,7 @@ async function getAllOrders({ limit, sortby, completed }) {
       FROM customer_identifier 
       INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id 
       INNER JOIN customer_vehicle_info ON customer_info.customer_id = customer_vehicle_info.customer_id 
-      INNER JOIN orders ON orders.customer_id =  customer_vehicle_info.customer_id 
+      INNER JOIN orders ON orders.vehicle_id =  customer_vehicle_info.vehicle_id 
       INNER JOIN order_status ON orders.order_id = order_status.order_id 
       INNER JOIN employee_info ON orders.employee_id = employee_info.employee_id
       ORDER BY orders.order_id DESC

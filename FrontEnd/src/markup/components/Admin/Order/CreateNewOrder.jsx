@@ -36,8 +36,10 @@ function CreateNewOrder() {
   const getServiceList = async () => {
     try {
       const data = await serviceService.getServiceList();
-      console.log(data.data);
-      setServices(data.data);
+
+      console.log("create order", data);
+      setServices(data.data.data);
+
     } catch (error) {
       console.error("Error fetching services:", error);
     }
