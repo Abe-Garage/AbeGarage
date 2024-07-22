@@ -100,7 +100,7 @@ async function getOrderByCustomerId(req, res) {
 // Update an order
 async function updateOrder(req, res) {
   try {
-    // const { id } = req.params;
+    const { order_id } = req.params; // Ensure order_id is obtained from params
     const orderData = req.body;
 
     const requiredFields = [
@@ -124,9 +124,12 @@ async function updateOrder(req, res) {
         .status(400)
         .json({ error: "Field 'order_services' must be a non-empty array" });
     }
-
-    const result = await orderService.updateOrder(orderData);
+    console.log("orderData:", orderData);
+    console.log("order_id:", order_id);
+    
+    const result = await orderService.updateOrder(orderData,order_id );
     res.status(200).json(result);
+    
   } catch (error) {
     console.error(error);
     res

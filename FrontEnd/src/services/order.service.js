@@ -17,6 +17,42 @@ const ordersService = {
       throw error;
     }
   },
-};
+  // A function to update orders
+  updateOrder: async ( orderData, token) => {
+  try{
+    const getresponse = await axios.put(`${api_url}/api/order/${orderData.order_id}`,  orderData,{
+      headers: {
+        "x-access-token": token,
+      },
+    });
+    console.log(orderData)
+    return getresponse.data;
+  }
+  catch (error) {
+    console.error("Error fetching orders:", error);
+    throw error;
+  }
+},
+
+getOrderById: async (token, id) => {
+  try {
+    const response = await axios.get(`${api_url}/api/order/${id}`, {
+      headers: {
+        "x-access-token": token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    throw error;
+  }
+},
+
+  // console.log(data);
+
+
+}
+
+
 
 export default ordersService;
