@@ -18,24 +18,7 @@ const CustomerList = () => {
   const [search, setSearch] = useState([]);
   const [val, setValue] = useState("");
   const [customers, setCustomers] = useState([
-    {
-      customer_id: 1,
-      customer_email: "john.doe@example.com",
-      customer_first_name: "John",
-      customer_last_name: "Doe",
-      customer_phone_number: "555-555-5555",
-      active_customer_status: true,
-      customer_added_date: "2024-07-04",
-    },
-    {
-      customer_id: 2,
-      customer_email: "jane.doe@example.com",
-      customer_first_name: "Jane",
-      customer_last_name: "Doe",
-      customer_phone_number: "555-555-5556",
-      active_customer_status: false,
-      customer_added_date: "2024-07-04",
-    },
+  
   ]);
 
   const { employee } = useAuth();
@@ -87,11 +70,15 @@ const CustomerList = () => {
   };
 
   useEffect(() => {
-    customersData();
+   
     if (val) {
       handleSearchCustomer();
     }
-  }, [,offset, val]);
+  }, [offset, val]);
+
+  useEffect(()=>{
+    customersData();
+  },[employee])
 
   return (
     <div>
