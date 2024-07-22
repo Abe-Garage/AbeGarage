@@ -311,15 +311,21 @@ WHERE
 }
 // updating createOrder function
 
-async function updateOrder(orderData) {
+async function updateOrder(orderData, order_id) {
   try {
+    
     const {
-      order_id,
+     
       order_description,
       estimated_completion_date,
       completion_date,
       order_services,
     } = orderData;
+
+     // Validate required fields
+     if (!order_id || !order_description) {
+      throw new Error("Order ID and description are required");
+    }
 
     const query = `
       UPDATE orders
@@ -327,6 +333,7 @@ async function updateOrder(orderData) {
       WHERE order_id = ?
     `;
     const result = await conn.query(query, [order_description, order_id]);
+ console.log("result:",result)
 
     if (result.affectedRows === 0) {
       throw new Error(`Order with ID ${id} not found`);
@@ -338,12 +345,12 @@ async function updateOrder(orderData) {
           completion_date = ?
           WHERE order_id = ?
     `;
-    await conn.query(orderInfoQuery, [
-      estimated_completion_date,
-      completion_date,
+    const resultTwo = await conn.query(orderInfoQuery, [
+      estimated_completion_date || null, // Replace undefined with null
+      completion_date || null,            // Replace undefined with null
       order_id,
     ]);
-
+    console.log("resultTwo:",resultTwo)
     const deleteOrderServicesQuery = `
       DELETE FROM order_services WHERE order_id = ?
     `;

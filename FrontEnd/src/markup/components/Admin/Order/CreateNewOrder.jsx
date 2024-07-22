@@ -36,8 +36,10 @@ function CreateNewOrder() {
   const getServiceList = async () => {
     try {
       const data = await serviceService.getServiceList();
+
       console.log("create order", data);
       setServices(data.data.data);
+
     } catch (error) {
       console.error("Error fetching services:", error);
     }
@@ -135,7 +137,7 @@ function CreateNewOrder() {
       estimated_completion_date: estimatedCompletionDate,
       completion_date: null,
       order_completed: 0,
-      order_status: 1,
+      order_status: 3,
       order_total_price: orderTotalPrice,
       additional_request: serviceDescription,
       order_services: selectedServices.map((serviceId) => ({
@@ -304,7 +306,7 @@ function CreateNewOrder() {
    <div className="service_list_container">
         <div className="services-list" >
           <h2 className="customer_name v_font">Choose service</h2>
-          {services.length > 0 ? (
+          {services?.length > 0 ? (
             services.map((service) => (
               <div key={service.service_id} className="service-item">
                 <div className="service-d w-100">

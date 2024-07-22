@@ -48,6 +48,7 @@ import EditVehicle from "./markup/pages/Admin/Vehicle/EditVehicle";
 import SingleOrderPage from "./markup/pages/Admin/Orders/SingleOrderPage";
 import ServicePage from "./markup/pages/Admin/Service/ServicePage";
 import OrderStatus from "./markup/pages/Main/OrderStatus/OrderStatus";
+import UpdateOrderPage from "./markup/pages/Admin/Orders/UpdateOrderPage";
 
 
 function App() {
@@ -92,7 +93,7 @@ function App() {
             <Route path="/admin/order-single/:customer_id" element={<SingleOrderPage />} />
             <Route path="/admin/create-order" element={<CreateOrderPage />} />
             <Route path="/order-status/:order_hash" element={<OrderStatus />} />
-
+            <Route path="admin/order/:orderId" element={<UpdateOrderPage/>} />
 
 
 
@@ -163,7 +164,11 @@ function App() {
               </PrivateAuthRoute>
             }
             />
-       
+
+
+
+      
+
         
       </Routes>
       <Footer />

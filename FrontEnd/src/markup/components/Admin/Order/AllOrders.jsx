@@ -69,7 +69,7 @@ function AllOrders() {
                 Order Status
               </th>
               <th scope="col" className="border">
-                View/Edit
+                Edit/View
               </th>
             </tr>
           </thead>
@@ -122,7 +122,7 @@ function AllOrders() {
                   )}
                 </td>
                 <td className="border">
-                  <Link to="/admin/all-orders/order-update">
+                  <Link to={`/admin/order/${order.order_id}`}>
                     <FaEdit
                       className="mx-2 scale-on-hover cursor-pointer"
                       onClick={() => handleClick(order)}
