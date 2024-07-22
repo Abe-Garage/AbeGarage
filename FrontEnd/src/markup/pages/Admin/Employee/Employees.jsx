@@ -14,6 +14,10 @@ import EmployeesList from "../../../components/Admin/EmployeesList/EmployeesList
 // import EmployeesList from "../../components/Admin/EmployeesList/EmployeesList";
 import { Link } from "react-router-dom";
 
+import Unauthorized from "../../Main/Unauthorized/Unauthorized";
+
+
+
 function Employees() {
   const { isLogged, isAdmin_manager, isAdmin } = useAuth();
 
@@ -41,16 +45,7 @@ function Employees() {
     } else {
       // User is logged in but does not have admin permissions
       return (
-        <div className="not-found-container">
-          <div className="not-found-content">
-            <h2>
-              You don't have the Permission to access the page you request!
-            </h2>
-            <Link className="back-home-link" to="/">
-              <span>Back to Home</span>
-            </Link>
-          </div>
-        </div>
+       <Unauthorized />
       );
     }
   } else {

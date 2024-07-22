@@ -22,6 +22,7 @@ const EmployeesList = () => {
     try {
       const res = await employeeService.getAllEmployees(employee.employee_token);
       if (res.status === 200) {
+        
         setEmployees(res.data.employees);
       } else {
         setApiError(true);

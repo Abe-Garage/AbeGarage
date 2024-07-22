@@ -1,38 +1,24 @@
 import React from "react";
-// Import the Link component from react-router-dom
-import { Link } from "react-router-dom";
-// Import the logo image
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../assets/images/logo.png";
-// Import the login service to access the logout function
 import loginService from "../../../services/login.service";
-// Import the custom context hook
 import { useAuth } from "../../../Context/AuthContext";
-
-// Import the useNavigate hook from react-router-dom
-import { useNavigate } from "react-router-dom";
-
-//import css
+import Avatar from "react-avatar";
 import "./Header.css";
 
 function Header(props) {
-  // Use the custom hook to access the data in the context
   const { isLogged, setIsLogged, employee } = useAuth();
-  console.log(useAuth());
+  const navigate = useNavigate();
 
   // Log out event handler function
   const logOut = () => {
     if (window.confirm("Are you sure you want to logout?")) {
-      // Call the logout function from the login service
       loginService.logOut();
-      // Set the isLogged state to false
       setIsLogged(false);
+      navigate("/login");
     }
   };
 
-  // console.log(isLogged);
-
-  //navigate
-  const navigate = useNavigate();
   const handleAdminClick = (event) => {
     event.preventDefault();
     navigate("/admin");
@@ -40,16 +26,12 @@ function Header(props) {
 
   const handleProfileClick = (event) => {
     event.preventDefault();
-    navigate("/profile");
+    navigate(`/admin/employee-profile/${employee?.employee_id}`);
   };
 
-  console.log(employee);
-  let admin = employee?.employee_role === 3 ? true : false;
-  let manager = employee?.employee_role === 2 ? true : false;
-  let regular_employee = employee?.employee_role === 1 ? true : false;
+  const isAdmin = employee?.employee_role === 3;
+  console.log("is user admin", isAdmin);
 
-  console.log("is admin >>>>", admin);
-  // console.log(manager);
 
   return (
     <div>
@@ -66,16 +48,27 @@ function Header(props) {
               <div className="right-column">
                 {isLogged ? (
                   <div className="link-btn">
-                    <button
-                      onClick={admin ? handleAdminClick : handleProfileClick}
-                      className="account-btn"
-                    >
+                    <button onClick={handleAdminClick} className="account-btn">
                       <strong>Welcome {employee?.employee_first_name}!</strong>
                     </button>
                   </div>
                 ) : (
                   <div className="phone-number">
-                    Schedule Appointment: <strong>1800 456 7890</strong>{" "}
+                    Schedule Appointment: <strong>1800 456 7890</strong>
+                  </div>
+                )}
+                {isLogged && (
+                  <div className="employee_profile">
+                    <Avatar
+                      name={`${employee?.employee_first_name} ${employee?.employee_last_name}`}
+                      size="50"
+                      textSizeRatio={2}
+                      color="#EE100E"
+                      round={true}
+                      style={{ cursor: "pointer" }}
+                      onClick={handleProfileClick}
+                      className="avatar" // Apply CSS class for styling
+                    />
                   </div>
                 )}
               </div>
@@ -157,7 +150,6 @@ function Header(props) {
                     <div className="mobile-nav-toggler">
                       <img src="assets/images/icons/icon-bar.png" alt="" />
                     </div>
-
                     <nav className="main-menu navbar-expand-md navbar-light"></nav>
                   </div>
                   <div className="search-btn"></div>
@@ -176,7 +168,6 @@ function Header(props) {
           <div className="close-btn">
             <span className="icon flaticon-remove"></span>
           </div>
-
           <nav className="menu-box">
             <div className="nav-logo">
               <Link to="index.html">
@@ -186,7 +177,6 @@ function Header(props) {
             <div className="menu-outer"></div>
           </nav>
         </div>
-
         <div className="nav-overlay">
           <div className="cursor"></div>
           <div className="cursor-follower"></div>
