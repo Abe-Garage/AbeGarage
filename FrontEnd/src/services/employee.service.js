@@ -51,7 +51,7 @@ async function singleEmployee(loggedInEmployeeToken, id) {
     return response.data;
   } catch (error) {
     console.error("Error fetching employee:", error);
-    throw error; // You might want to handle this error in your UI
+    throw error; 
   }
 }
 

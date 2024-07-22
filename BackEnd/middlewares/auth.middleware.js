@@ -47,10 +47,24 @@ const isAdmin = async (req, res, next) => {
     });
   }
 };
+// A function to check if the employee is accessing their own profile
+const selfProfile = async (req, res, next) => {
+  const employeeId = req.params.id; // Assuming the employee ID is in the URL params
+  if (parseInt(employeeId) === req.employee_id) {
+    next();
+  } else {
+    return res.status(403).send({
+      status: "fail",
+      message: "You can only access your own profile!",
+    });
+  }
+};
+
 
 const authMiddleware = {
   verifyToken,
   isAdmin,
+  selfProfile,
 };
 
 
