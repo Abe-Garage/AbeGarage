@@ -19,6 +19,7 @@
     "bootstrap": "^5.3.3",
     "char": "^1.0.2",
     "date-fns": "^3.6.0",
+    "nodemailer": "^6.9.14",
     "react": "^18.3.1",
     "react-avatar": "^5.0.3",
     "react-bootstrap": "^2.10.4",
