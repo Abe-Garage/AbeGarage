@@ -28,7 +28,7 @@ function Address() {
                 <i className="flaticon-pin"></i>
                 </div>
                 <div>
-                <h5>Address:</h5> 54B, Tailstoi Town 5238 MT, La city, IA
+                <h5>Address:</h5> 54B Tailstoi Town 5238 MT, La city, IA
                 5224
                 </div>
                 </div>

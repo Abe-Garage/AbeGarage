@@ -2,54 +2,37 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { PiArrowSquareOutBold } from "react-icons/pi";
+import ordersService from '../../../../services/order.service';
+import { useAuth } from '../../../../Context/AuthContext'; 
+
 
 function AllOrders() {
 
   // States
   const [orders, setOrders] = useState([]);
+  const { employee } = useAuth();
+  const token = employee?.employee_token;
 
   // useEffect
   useEffect(() => {
-    // Mock data fetching
-    const mockOrders = [
-      {
-        order_id: 1,
-        customer_first_name: "John",
-        customer_last_name: "Doe",
-        customer_email: "john.doe@gmail.com",
-        customer_phone_number: "123-456-7890",
-        vehicle_make: "Toyota",
-        vehicle_model: "Corolla",
-        vehicle_year: "2020",
-        vehicle_tag: "ABC123",
-        order_date: "2023-06-01",
-        employee_first_name: "Jane",
-        employee_last_name: "Smith",
-        order_status: 0,
-      },
+    const fetchOrders = async () => {
+      if (!token) {
+        console.error("Token is not available");
+        return;
+      }
+      try {
+        const fetchedOrders = await ordersService.getAllOrders(token);
+        console.log(fetchedOrders)
+        setOrders(fetchedOrders);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
 
-      {
-        order_id: 2,
-        customer_first_name: "Jane",
-        customer_last_name: "Doe",
-        customer_email: "jane.doe@gmail.com",
-        customer_phone_number: "123-456-7890",
-        vehicle_make: "Honda",
-        vehicle_model: "Civic",
-        vehicle_year: "2021",
-        vehicle_tag: "DEF456",
-        order_date: "2023-06-02",
-        employee_first_name: "John",
-        employee_last_name: "Doe",
-        order_status: 1,
-      },
-
-    ];
-    setOrders(mockOrders);
-  }, []);
-
-  // Functions
-  const formatCustomerAddedDate = (date) => {
+    fetchOrders();
+  }, [token]);
+   // Functions
+   const formatCustomerAddedDate = (date) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(date).toLocaleDateString(undefined, options);
   };
@@ -57,7 +40,7 @@ function AllOrders() {
   const handleClick = (order) => {
     console.log("Order clicked:", order);
   };
-
+  
   return (
     <section className="contact-section">
       <div className="mx-4">
@@ -86,7 +69,7 @@ function AllOrders() {
                 Order Status
               </th>
               <th scope="col" className="border">
-                View/Edit
+                Edit/View
               </th>
             </tr>
           </thead>
@@ -103,10 +86,10 @@ function AllOrders() {
                     {order.customer_first_name} {order.customer_last_name}
                   </h5>
                   <h6 className="py-1 my-0 text-muted">
-                    {order.customer_email.split("@")[0] + "@..."}
+                  {order.customer_email ? order.customer_email.split("@")[0] + "@..." : "N/A"}
                   </h6>
                   <h6 className="py-0 my-0 text-muted">
-                    {order.customer_phone_number}
+                  {order.customer_phone_number || "N/A"}
                   </h6>
                 </td>
                 <td className="border">
@@ -117,11 +100,11 @@ function AllOrders() {
                   <h6 className="py-0 my-0 text-muted">{order.vehicle_tag}</h6>
                 </td>
                 <td className="border">
-                  {formatCustomerAddedDate(order.order_date)}
+                {order.order_date ? formatCustomerAddedDate(order.order_date) : "N/A"}
                 </td>
                 <td className="border">
                   {order.employee_first_name}{" "}
-                  {order.employee_last_name.charAt(0)}
+                  {order.employee_last_name ? order.employee_last_name.charAt(0) : ""}
                 </td>
                 <td className="border py-4">
                   {order.order_status === 0 ? (
@@ -139,7 +122,7 @@ function AllOrders() {
                   )}
                 </td>
                 <td className="border">
-                  <Link to="/admin/all-orders/order-update">
+                  <Link to={`/admin/order/${order.order_id}`}>
                     <FaEdit
                       className="mx-2 scale-on-hover cursor-pointer"
                       onClick={() => handleClick(order)}

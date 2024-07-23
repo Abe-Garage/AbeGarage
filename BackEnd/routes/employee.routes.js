@@ -8,6 +8,7 @@ const router = express.Router();
 const {
   verifyToken,
   isAdmin,
+  selfProfile
 } = require("../middlewares/auth.middleware");
 
 // import the employee controller
@@ -32,7 +33,7 @@ router.get(
 // create a route to handle the get single employee request in get
 router.get(
   "/api/employee/:id",
-  [verifyToken, isAdmin],
+  [verifyToken],
   employeeController.getSingleEmployee
 );
 

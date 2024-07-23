@@ -43,7 +43,7 @@ const AdminDashBoard = () => {
                 <div className="inner-box hvr-float-shadow">
                   <h5>OPEN FOR LEADS</h5>
                   <h2>New Orders</h2>
-                  <Link to="/admin/order" className="read-more">
+                  <Link to="/admin/create-order" className="read-more">
                     ADD ORDER +
                   </Link>
                   <div className="icon">

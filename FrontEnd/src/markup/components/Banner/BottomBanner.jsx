@@ -9,7 +9,7 @@ const BottomBanner = () => {
         <h2>We are leader <br /> in Car Mechanical Work</h2>
         <div className="video-box">
           <div className="video-btn">
-            <a href="https://youtu.be/PUkAIAIzA0I?si=ugtpBZ2RHYXcn037" className="overlay-link lightbox-image video-fancybox ripple">
+            <a href="https://youtu.be/PUkAIAIzA0I?si=ugtpBZ2RHYXcn037" className="overlay-link lightbox-image video-fancybox ripple" target= "_blank">
               <i className="flaticon-play"></i>
             </a>
           </div>

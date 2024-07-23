@@ -95,6 +95,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `order_date` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `active_order` int(11) NOT NULL,
   `order_hash` varchar(255) NOT NULL,
+  `order_description` varchar(255),
   PRIMARY KEY (order_id),
   FOREIGN KEY (employee_id) REFERENCES employee(employee_id), 
   FOREIGN KEY (customer_id) REFERENCES customer_identifier(customer_id),

@@ -7,7 +7,7 @@ import {
   HiChevronLeft,
 } from "react-icons/hi2";
 import { Link } from "react-router-dom";
-import { LiaEdit } from "react-icons/lia";
+import { FaEdit } from "react-icons/fa";
 import { FiExternalLink } from "react-icons/fi";
 import { useAuth } from "../../../../Context/AuthContext";
 import customerService from "../../../../services/customer.service";
@@ -18,24 +18,7 @@ const CustomerList = () => {
   const [search, setSearch] = useState([]);
   const [val, setValue] = useState("");
   const [customers, setCustomers] = useState([
-    {
-      customer_id: 1,
-      customer_email: "john.doe@example.com",
-      customer_first_name: "John",
-      customer_last_name: "Doe",
-      customer_phone_number: "555-555-5555",
-      active_customer_status: true,
-      customer_added_date: "2024-07-04",
-    },
-    {
-      customer_id: 2,
-      customer_email: "jane.doe@example.com",
-      customer_first_name: "Jane",
-      customer_last_name: "Doe",
-      customer_phone_number: "555-555-5556",
-      active_customer_status: false,
-      customer_added_date: "2024-07-04",
-    },
+  
   ]);
 
   const { employee } = useAuth();
@@ -87,11 +70,15 @@ const CustomerList = () => {
   };
 
   useEffect(() => {
-    customersData();
+   
     if (val) {
       handleSearchCustomer();
     }
-  }, [,offset, val]);
+  }, [offset, val]);
+
+  useEffect(()=>{
+    customersData();
+  },[employee])
 
   return (
     <div>
@@ -151,13 +138,13 @@ const CustomerList = () => {
                         to={`/admin/edit-customer/${customer.customer_id}`}
                         className="editButton"
                       >
-                        <LiaEdit className="px-1 svg" size={32} />
+                        <FaEdit className="px-1 svg" size={28} />
                       </Link>
                       <Link
                         to={`/admin/customers/${customer.customer_id}`}
                         className="editButton"
                       >
-                        <FiExternalLink className="px-1" size={30} />
+                        <FiExternalLink className="px-1" size={28} />
                       </Link>
                     </td>
                   </tr>

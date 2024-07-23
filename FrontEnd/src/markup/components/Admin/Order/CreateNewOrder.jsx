@@ -37,8 +37,10 @@ function CreateNewOrder() {
   const getServiceList = async () => {
     try {
       const data = await serviceService.getServiceList();
-      console.log(data.data.data);
-      setServices(data.data.data);
+
+      console.log("create order", data);
+      setServices(data.data);
+
     } catch (error) {
       console.error("Error fetching services:", error);
     }
@@ -136,7 +138,7 @@ function CreateNewOrder() {
       estimated_completion_date: estimatedCompletionDate,
       completion_date: null,
       order_completed: 0,
-      order_status: 1,
+      order_status: 3,
       order_total_price: orderTotalPrice,
       additional_request: serviceDescription,
       order_services: selectedServices.map((serviceId) => ({
@@ -196,16 +198,21 @@ function CreateNewOrder() {
       console.log("Notification cleared");
     }
   };
+  const handleNotificationButtonClick = () => {
+    setNotification(""); // Hide notification
+    navigate('/admin/orders'); // Navigate to the orders page
+  };
 
   return (
     <div className="create-order-container">
 
-
 {notification && (
-  <div onClick={ handleClickOut} className='notification_main'>
-      <div className='notification'>{notification}</div>
-  </div>
-      
+        <div onClick={handleClickOut} className="notification_main">
+          <div className="notification">
+            {notification} <br />
+            <button onClick={handleNotificationButtonClick}>Ok</button>
+          </div>
+        </div>
       )}
 
          <div className="contact-section pad_1">
@@ -323,7 +330,7 @@ function CreateNewOrder() {
    <div className="service_list_container">
         <div className="services-list" >
           <h2 className="customer_name v_font">Choose service</h2>
-          {services.length > 0 ? (
+          {services?.length > 0 ? (
             services.map((service) => (
               <div key={service.service_id} className="service-item">
                 <div className="service-d w-100">

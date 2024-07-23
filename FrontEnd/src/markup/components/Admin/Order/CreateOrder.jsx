@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import axios from "../../../../axios/axiosConfig";
+import axios from "../../../../utils/axiosConfig";
 import { FaHandPointer } from "react-icons/fa";
 import { Link } from "react-router-dom"; 
 import { CiSearch } from "react-icons/ci";
@@ -19,7 +19,7 @@ function CreateOrder() {
     try {
       const token = localStorage.getItem("employeeToken"); 
       const response = await axios.get(
-        `/search-customers?query=${searchTerm}`,
+        `/api/search-customers?query=${searchTerm}`,
         {
           headers: { "x-access-token": token },
         }
