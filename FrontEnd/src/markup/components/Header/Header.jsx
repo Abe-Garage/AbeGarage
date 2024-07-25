@@ -105,7 +105,7 @@ function Header(props) {
                 <div className="nav-outer">
                   {isMobile && (
                     <div className="hamburger-container">
-                      {showMenu && (
+                    
                         <div className="">
                           <DropdownButton
                             className="dropdown-button"
@@ -133,7 +133,7 @@ function Header(props) {
                             </Dropdown.Item>
                           </DropdownButton>
                         </div>
-                      )}
+            
                     </div>
                   )}
                   {!isMobile && (
