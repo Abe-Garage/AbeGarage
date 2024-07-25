@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import employeeService from "../../../../services/employee.service";
 import { useAuth } from "../../../../Context/AuthContext";
+import Loading from "../../../../assets/Loading/Loading";
 
 function AddEmployeeForm(props) {
   const [employee_email, setEmail] = useState("");
@@ -15,7 +16,8 @@ function AddEmployeeForm(props) {
   const [passwordError, setPasswordError] = useState("");
   const [success, setSuccess] = useState(false);
   const [serverError, setServerError] = useState("");
-  const [serverSuccess, setServerSuccess] = useState("")
+  const [serverSuccess, setServerSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   let loggedInEmployeeToken = "";
   const { employee } = useAuth();
@@ -23,79 +25,79 @@ function AddEmployeeForm(props) {
     loggedInEmployeeToken = employee.employee_token;
   }
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  let valid = true;
-  if (!employee_first_name) {
-    setFirstNameRequired("First name is required");
-    valid = false;
-  } else {
-    setFirstNameRequired("");
-  }
-  if (!employee_email) {
-    setEmailError("Email is required");
-    valid = false;
-  } else if (!employee_email.includes("@")) {
-    setEmailError("Invalid email format");
-  } else {
-    const regex = /^\S+@\S+\.\S+$/;
-    if (!regex.test(employee_email)) {
+  const validateForm = () => {
+    let valid = true;
+    if (!employee_first_name) {
+      setFirstNameRequired("First name is required");
+      valid = false;
+    } else {
+      setFirstNameRequired("");
+    }
+    if (!employee_email) {
+      setEmailError("Email is required");
+      valid = false;
+    } else if (!employee_email.includes("@")) {
       setEmailError("Invalid email format");
       valid = false;
     } else {
-      setEmailError("");
+      const regex = /^\S+@\S+\.\S+$/;
+      if (!regex.test(employee_email)) {
+        setEmailError("Invalid email format");
+        valid = false;
+      } else {
+        setEmailError("");
+      }
     }
-  }
-  if (!employee_password || employee_password.length < 6) {
-    setPasswordError("Password must be at least 6 characters long");
-    valid = false;
-  } else {
-    setPasswordError("");
-  }
-  if (!valid) {
-    return;
-  }
-
-  const formData = {
-    employee_email,
-    employee_first_name,
-    employee_last_name,
-    employee_phone,
-    employee_password,
-    active_employee,
-    company_role_id,
+    if (!employee_password || employee_password.length < 6) {
+      setPasswordError("Password must be at least 6 characters long");
+      valid = false;
+    } else {
+      setPasswordError("");
+    }
+    return valid;
   };
 
-  try {
-    const data = await employeeService.createEmployee(
-      formData,
-      loggedInEmployeeToken
-    );
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
 
-    // console.log("API response:", data);
+    const formData = {
+      employee_email,
+      employee_first_name,
+      employee_last_name,
+      employee_phone,
+      employee_password,
+      active_employee,
+      company_role_id,
+    };
 
-    if (
-      data.status === 200 
-    ) {
-      setSuccess(true);
-      setServerError(""); // Clear any previous errors
-      setServerSuccess(data.data);
-      setTimeout(() => {
-        window.location.href = "/admin/employees"; // Redirect after success
-      }, 2000);
-    } else {
-      setServerError(data.data.msg || "Failed to add the employee!");
+    setLoading(true);
+    try {
+      const data = await employeeService.createEmployee(
+        formData,
+        loggedInEmployeeToken
+      );
+
+      if (data.status === 200) {
+        setSuccess(true);
+        setServerError("");
+        setServerSuccess(data.data);
+        setTimeout(() => {
+          window.location.href = "/admin/employees";
+        }, 2000);
+      } else {
+        setServerError(data.data.msg || "Failed to add the employee!");
+      }
+    } catch (error) {
+      const resMessage =
+        (error.response && error.response.data && error.response.data.msg) ||
+        error.message ||
+        error.toString();
+      setServerError(resMessage);
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    const resMessage =
-      (error.response && error.response.data && error.response.data.msg) ||
-      error.message ||
-      error.toString();
-    setServerError(resMessage);
-  }
-};
-
+  };
 
   return (
     <section className="contact-section">
@@ -112,7 +114,7 @@ const handleSubmit = async (e) => {
                     <div className="form-group col-md-12">
                       {serverError && (
                         <div className="validation-error" role="alert">
-                          {serverError} 
+                          {serverError}
                         </div>
                       )}
                       <input
@@ -200,10 +202,17 @@ const handleSubmit = async (e) => {
                         className="theme-btn btn-style-one"
                         type="submit"
                         data-loading-text="Please wait..."
+                        disabled={loading}
                       >
-                        <span>Add employee</span>
+                        {loading ? <Loading /> : <span>Add employee</span>}
                       </button>
                     </div>
+
+                    {serverSuccess && (
+                      <div className="success-message" role="alert">
+                        {serverSuccess}
+                      </div>
+                    )}
                   </div>
                 </form>
               </div>

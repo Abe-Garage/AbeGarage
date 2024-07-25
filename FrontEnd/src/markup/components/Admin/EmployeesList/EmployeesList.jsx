@@ -20,9 +20,10 @@ const EmployeesList = () => {
 
   const getAllEmployees = async () => {
     try {
-      const res = await employeeService.getAllEmployees(employee.employee_token);
+      const res = await employeeService.getAllEmployees(
+        employee.employee_token
+      );
       if (res.status === 200) {
-        
         setEmployees(res.data.employees);
       } else {
         setApiError(true);
@@ -40,8 +41,6 @@ const EmployeesList = () => {
       setApiErrorMessage("An error occurred while fetching the employees");
     }
   };
-
-  
 
   useEffect(() => {
     getAllEmployees();
@@ -118,115 +117,127 @@ const EmployeesList = () => {
         </section>
       ) : (
         <section className="contact-section">
-          <div className="auto-container">
-            <div className="contact-title">
-              <h2>Employees</h2>
-            </div>
-            <div className="d-flex justify-content-between mb-3">
-              <button onClick={handleToggle} className="btn btn-danger">
-                {showActiveEmployees ? "Show Inactive" : "Show Active"}
-              </button>
-              <input
-                type="search"
-                className="form-control w-25"
-                placeholder="Search"
-                value={searchTerm}
-                onChange={handleSearch}
-              />
-            </div>
-            <Table responsive striped bordered hover className="modern-table border">
-              <thead>
-                <tr>
-                  <th>Active</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>Added Date</th>
-                  <th>Role</th>
-                  <th>Edit/Delete/View</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentEmployees.map((employee) => (
-                  <tr key={employee.employee_id}>
-                    <td
-                      className={`border ${
-                        employee.active_employee
-                          ? "text-success"
-                          : "text-danger"
-                      }`}
-                    >
-                      <h6 className="py-0 my-0 mx-3 font-weight-bold">
-                        {employee.active_employee ? "Yes" : "No"}
-                      </h6>
-                    </td>
-                    <td>{employee.employee_first_name}</td>
-                    <td>{employee.employee_last_name}</td>
-                    <td>{employee.employee_email}</td>
-                    <td>{employee.employee_phone}</td>
-                    <td>
-                      {format(
-                        new Date(employee.added_date),
-                        "MM-dd-yyyy | HH:mm"
-                      )}
-                    </td>
-                    <td>{employee.company_role_name}</td>
-                    <td>
-                      <div className="action-icons">
-                        <Link
-                          to={`/admin/employee/edit/${employee.employee_id}`}
-                          state={{ employee }}
+          <div className="container">
+            <div className="row">
+              <div className="col-12">
+                <div className="contact-title">
+                  <h2>Employees</h2>
+                </div>
+                <div className="d-flex justify-content-between mb-3">
+                  <button onClick={handleToggle} className="btn btn-danger">
+                    {showActiveEmployees ? "Show Inactive" : "Show Active"}
+                  </button>
+                  <input
+                    type="search"
+                    className="form-control w-50 w-md-25"
+                    placeholder="Search"
+                    value={searchTerm}
+                    onChange={handleSearch}
+                  />
+                </div>
+                <Table
+                  responsive
+                  striped
+                  bordered
+                  hover
+                  className="modern-table border"
+                >
+                  <thead>
+                    <tr>
+                      <th>Active</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Added Date</th>
+                      <th>Role</th>
+                      <th>Edit/Delete/View</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentEmployees.map((employee) => (
+                      <tr key={employee.employee_id}>
+                        <td
+                          className={`border ${
+                            employee.active_employee
+                              ? "text-success"
+                              : "text-danger"
+                          }`}
                         >
-                          <i className="fas fa-edit" title="Edit"></i>
-                        </Link>
-                        <Link
-                          to={`/admin/employee-profile/${employee.employee_id}`}
-                          state={{ employee }}
-                        >
-                          <i className="fas fa-eye" title="View"></i>
-                        </Link>
-                        <Link onClick={() => handleShowDeleteModal(employee)}>
-                          <i
-                            className="fas fa-trash-alt danger"
-                            title="Delete"
-                          ></i>
-                        </Link>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-            <Pagination className="justify-content-center custom-pagination">
-              <Pagination.Prev
-                onClick={() => paginate(currentPage - 1)}
-                disabled={currentPage === 1}
-              />
-              {Array.from(
-                {
-                  length: Math.ceil(
-                    filteredEmployees.length / employeesPerPage
-                  ),
-                },
-                (_, index) => (
-                  <Pagination.Item
-                    key={index + 1}
-                    active={index + 1 === currentPage}
-                    onClick={() => paginate(index + 1)}
-                  >
-                    {index + 1}
-                  </Pagination.Item>
-                )
-              )}
-              <Pagination.Next
-                onClick={() => paginate(currentPage + 1)}
-                disabled={
-                  currentPage ===
-                  Math.ceil(filteredEmployees.length / employeesPerPage)
-                }
-              />
-            </Pagination>
+                          <h6 className="py-0 my-0 mx-3 font-weight-bold">
+                            {employee.active_employee ? "Yes" : "No"}
+                          </h6>
+                        </td>
+                        <td>{employee.employee_first_name}</td>
+                        <td>{employee.employee_last_name}</td>
+                        <td>{employee.employee_email}</td>
+                        <td>{employee.employee_phone}</td>
+                        <td>
+                          {format(
+                            new Date(employee.added_date),
+                            "MM-dd-yyyy | HH:mm"
+                          )}
+                        </td>
+                        <td>{employee.company_role_name}</td>
+                        <td>
+                          <div className="action-icons">
+                            <Link
+                              to={`/admin/employee/edit/${employee.employee_id}`}
+                              state={{ employee }}
+                            >
+                              <i className="fas fa-edit" title="Edit"></i>
+                            </Link>
+                            <Link
+                              to={`/admin/employee-profile/${employee.employee_id}`}
+                              state={{ employee }}
+                            >
+                              <i className="fas fa-eye" title="View"></i>
+                            </Link>
+                            <Link
+                              onClick={() => handleShowDeleteModal(employee)}
+                            >
+                              <i
+                                className="fas fa-trash-alt danger"
+                                title="Delete"
+                              ></i>
+                            </Link>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+                <Pagination className="justify-content-center custom-pagination">
+                  <Pagination.Prev
+                    onClick={() => paginate(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  />
+                  {Array.from(
+                    {
+                      length: Math.ceil(
+                        filteredEmployees.length / employeesPerPage
+                      ),
+                    },
+                    (_, index) => (
+                      <Pagination.Item
+                        key={index + 1}
+                        active={index + 1 === currentPage}
+                        onClick={() => paginate(index + 1)}
+                      >
+                        {index + 1}
+                      </Pagination.Item>
+                    )
+                  )}
+                  <Pagination.Next
+                    onClick={() => paginate(currentPage + 1)}
+                    disabled={
+                      currentPage ===
+                      Math.ceil(filteredEmployees.length / employeesPerPage)
+                    }
+                  />
+                </Pagination>
+              </div>
+            </div>
           </div>
         </section>
       )}
