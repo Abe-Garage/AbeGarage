@@ -28,6 +28,7 @@ function EmployeeProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { employee } = useAuth();
+  console.log(employee);
 
   const [employeeDetails, setEmployeeDetails] = useState({});
   const [performanceData, setPerformanceData] = useState({
@@ -65,7 +66,7 @@ function EmployeeProfile() {
     if (id && employee && employee.employee_token) {
       if (
         employee.employee_id === parseInt(id) ||
-        employee.company_role_id === 3
+        employee.employee_role === 3
       ) {
         fetchEmployeeDetails();
       } else {
@@ -161,3 +162,4 @@ function EmployeeProfile() {
 }
 
 export default EmployeeProfile;
+
