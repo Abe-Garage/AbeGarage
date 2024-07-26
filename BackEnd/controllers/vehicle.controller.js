@@ -5,7 +5,6 @@ async function singleVehicle(req,res){
 
     try {
         const {id}= req.params;
-
         const result = await vehicleService.singleVehicle(id)
         let response = {}
      
@@ -138,6 +137,7 @@ async function vehiclePerCustomer(req,res){
     }
 }
 
+
 async function hasServiceOrder(req,res){
 
     try {
@@ -194,4 +194,5 @@ module.exports={
     vehiclePerCustomer,
     hasServiceOrder,
     deleteVehicle
+
 }

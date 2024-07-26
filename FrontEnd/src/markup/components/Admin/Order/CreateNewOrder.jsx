@@ -32,6 +32,7 @@ function CreateNewOrder() {
   const [customerInfo, setCustomerInfo] = useState({});
   const [vehicleInfo, setVehicleInfo] = useState(null);
   const navigate = useNavigate();
+  const [notification, setNotification] = useState("");
 
   const getServiceList = async () => {
     try {
@@ -163,8 +164,8 @@ function CreateNewOrder() {
 
       const data = await response.json();
       console.log("Order submitted:", data);
-      alert("Order successfully submitted");
-      navigate('/admin/orders')
+      setNotification("Order successfully submitted");
+      console.log("Notification set to:", "Order successfully submitted");
     } catch (error) {
       console.error("Error submitting order:", error);
     }
@@ -188,8 +189,31 @@ function CreateNewOrder() {
     navigate(`/admin/create-order`);
   };
 
+
+
+  const handleClickOut = (event) => {
+    if (event.target.classList.contains('notification_main')) {
+      setNotification("");
+      navigate('/admin/orders')
+      console.log("Notification cleared");
+    }
+  };
+  const handleNotificationButtonClick = () => {
+    setNotification(""); // Hide notification
+    navigate('/admin/orders'); // Navigate to the orders page
+  };
+
   return (
     <div className="create-order-container">
+
+{notification && (
+        <div onClick={handleClickOut} className="notification_main">
+          <div className="notification">
+            {notification} <br />
+            <button onClick={handleNotificationButtonClick}>Ok</button>
+          </div>
+        </div>
+      )}
 
          <div className="contact-section pad_1">
           <div className="contact-title mb-1">
