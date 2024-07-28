@@ -166,13 +166,12 @@ function CreateNewOrder() {
       }
 
       const data = await response.json();
-      console.log("Order submitted:", data);
 
-      setModalMessage("Order successfully submitted");
-      setShowModal(true);
+      
       setTimeout(() => {
         navigate("/admin/orders");
       }, 2000); 
+      setNotification("Order successfully submitted");
 
     } catch (error) {
        setErrorMessage("Error submitting order: " + error.message);
@@ -219,22 +218,15 @@ function CreateNewOrder() {
   return (
     <div className="create-order-container">
 
-      {showModal && (
-        <div className="modal-backdrop">
-          <div className="modal-box">
-            <p>{modalMessage}</p>
-            <button onClick={handleCloseModal}>OK</button>
+    {notification && (
+            <div onClick={handleClickOut} className="notification_main">
+              <div className="notification">
+                {notification} <br />
+                <button onClick={handleNotificationButtonClick}>Ok</button>
+              </div>
+            </div>
+          )}
 
-
-
-
-         <div className="contact-section pad_1">
-          <div className="contact-title mb-1">
-            <h2>Create a new order</h2>
-
-          </div>
-        </div>
-      )}
       <div className="contact-section pad_1">
         <div className="contact-title mb-1">
           <h2>Create a new order</h2>
