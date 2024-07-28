@@ -31,6 +31,9 @@ function CreateNewOrder() {
   const [estimatedCompletionDate, setEstimatedCompletionDate] = useState("");
   const [customerInfo, setCustomerInfo] = useState({});
   const [vehicleInfo, setVehicleInfo] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const [notification, setNotification] = useState("");
 
@@ -164,12 +167,22 @@ function CreateNewOrder() {
 
       const data = await response.json();
       console.log("Order submitted:", data);
-      setNotification("Order successfully submitted");
-      console.log("Notification set to:", "Order successfully submitted");
+
+      setModalMessage("Order successfully submitted");
+      setShowModal(true);
+      setTimeout(() => {
+        navigate("/admin/orders");
+      }, 2000); 
+
     } catch (error) {
+       setErrorMessage("Error submitting order: " + error.message);
       console.error("Error submitting order:", error);
     }
   };
+   const handleCloseModal = () => {
+     setShowModal(false);
+     navigate("/admin/orders");
+   };
 
   const handleEditCustomerClick = () => {
     const editCustomerPath = `/admin/edit-customer/${customerInfo.customer_id}`;
@@ -206,21 +219,33 @@ function CreateNewOrder() {
   return (
     <div className="create-order-container">
 
-{notification && (
-        <div onClick={handleClickOut} className="notification_main">
-          <div className="notification">
-            {notification} <br />
-            <button onClick={handleNotificationButtonClick}>Ok</button>
-          </div>
-        </div>
-      )}
+      {showModal && (
+        <div className="modal-backdrop">
+          <div className="modal-box">
+            <p>{modalMessage}</p>
+            <button onClick={handleCloseModal}>OK</button>
+
+
+
 
          <div className="contact-section pad_1">
           <div className="contact-title mb-1">
             <h2>Create a new order</h2>
+
           </div>
         </div>
-     
+      )}
+      <div className="contact-section pad_1">
+        <div className="contact-title mb-1">
+          <h2>Create a new order</h2>
+        </div>
+      </div>
+      {errorMessage && (
+        <div className="error-message">
+          <p>{errorMessage}</p>
+        </div>
+      )}
+
       {customerInfo ? (
         <div className="CustomerInfo">
           <div className="CustomerInfo_two">
@@ -239,11 +264,15 @@ function CreateNewOrder() {
           </div>
           <p>
             <span className="label customer_label_info">Email:</span>{" "}
-            <span className="value customer_label_value">{customerInfo.customer_email}</span>
+            <span className="value customer_label_value">
+              {customerInfo.customer_email}
+            </span>
           </p>
           <p>
             <span className="label customer_label_info">Phone Number:</span>{" "}
-            <span className="value customer_label_value">{customerInfo.customer_phone_number}</span>
+            <span className="value customer_label_value">
+              {customerInfo.customer_phone_number}
+            </span>
           </p>
           <p>
             <span className="label customer_label_info">Active Customer:</span>{" "}
@@ -252,22 +281,17 @@ function CreateNewOrder() {
             </span>
           </p>
           <p>
-            <span className="label  customer_label_info">Edit customer info:</span>{" "}
-        
-              {/* <FaEdit 
+            <span className="label  customer_label_info">
+              Edit customer info:
+            </span>{" "}
+            {/* <FaEdit 
                 className="icon"
                 onClick={handleEditCustomerClick}
                 size={20}
                 /> */}
-
-                <Link to={`/admin/edit-customer/${customerInfo.customer_id}`}>
-                      <FaEdit 
-                      className="icon"
-                      size={20}
-                      />
-                   
-                </Link>
-                
+            <Link to={`/admin/edit-customer/${customerInfo.customer_id}`}>
+              <FaEdit className="icon" size={20} />
+            </Link>
           </p>
         </div>
       ) : (
@@ -282,44 +306,51 @@ function CreateNewOrder() {
               onClick={handleRedirectVehicle}
               className="icon"
             />
-            
           </h2>
           <p>
             <span className="label  customer_label_info">Vehicle color:</span>{" "}
-            <span className="value  customer_label_value">{vehicleInfo.vehicle_color}</span>
+            <span className="value  customer_label_value">
+              {vehicleInfo.vehicle_color}
+            </span>
           </p>
           <p>
             <span className="label  customer_label_info">Vehicle tag:</span>{" "}
-            <span className="value  customer_label_value">{vehicleInfo.vehicle_tag}</span>
+            <span className="value  customer_label_value">
+              {vehicleInfo.vehicle_tag}
+            </span>
           </p>
           <p>
             <span className="label  customer_label_info">Vehicle Year:</span>{" "}
-            <span className="value  customer_label_value">{vehicleInfo.vehicle_year}</span>
+            <span className="value  customer_label_value">
+              {vehicleInfo.vehicle_year}
+            </span>
           </p>
           <p>
             <span className="label  customer_label_info">Vehicle Mileage:</span>{" "}
-            <span className="value  customer_label_value">{vehicleInfo.vehicle_mileage}</span>
+            <span className="value  customer_label_value">
+              {vehicleInfo.vehicle_mileage}
+            </span>
           </p>
           <p>
             <span className="label  customer_label_info">Vehicle serial:</span>{" "}
-            <span className="value  customer_label_value">{vehicleInfo.vehicle_serial}</span>
+            <span className="value  customer_label_value">
+              {vehicleInfo.vehicle_serial}
+            </span>
           </p>
           <p>
-            <span className="label  customer_label_info">Edit Vehicle info:</span>{" "}
+            <span className="label  customer_label_info">
+              Edit Vehicle info:
+            </span>{" "}
             <span className="value">
-            {/* <FaEdit 
+              {/* <FaEdit 
                 className="icon"
                 onClick={handleEditCustomerClick}
                 size={20}
               /> */}
 
-               <Link to={`/admin/edit-vehicle/${vehicleInfo.vehicle_id}`}>
-                      <FaEdit 
-                      className="icon"
-                      size={20}
-                      />
-                   
-                </Link>
+              <Link to={`/admin/edit-vehicle/${vehicleInfo.vehicle_id}`}>
+                <FaEdit className="icon" size={20} />
+              </Link>
             </span>
           </p>
         </div>
@@ -327,28 +358,28 @@ function CreateNewOrder() {
         <p>Loading customer information...</p>
       )}
 
-   <div className="service_list_container">
-        <div className="services-list" >
+      <div className="service_list_container">
+        <div className="services-list">
           <h2 className="customer_name v_font">Choose service</h2>
 
           {services?.length > 0 ? (
             services.map((service) => (
               <div key={service.service_id} className="service-item">
                 <div className="service-d w-100">
-                 
-                    <div>
-                        <h3 className="service_font">{service?.service_name}</h3>
-                        <p>{service?.service_description}</p>
-                    </div>
+                  <div>
+                    <h3 className="service_font">{service?.service_name}</h3>
+                    <p>{service?.service_description}</p>
+                  </div>
 
-                    <div>
-                        <input
-                        type="checkbox"
-                        checked={selectedServices.includes(service.service_id)}
-                        onChange={() => handleServiceSelection(service.service_id)}
-                      />
-                    </div>
-
+                  <div>
+                    <input
+                      type="checkbox"
+                      checked={selectedServices.includes(service.service_id)}
+                      onChange={() =>
+                        handleServiceSelection(service.service_id)
+                      }
+                    />
+                  </div>
                 </div>
               </div>
             ))
@@ -356,13 +387,13 @@ function CreateNewOrder() {
             <p>No services available</p>
           )}
         </div>
-   </div>
+      </div>
 
       <div className="additional-requests">
         {/* <h2>Additional requests</h2> */}
-        <div className="contact-section pad_1" style={{background:'#fff'}}>
+        <div className="contact-section pad_1" style={{ background: "#fff" }}>
           <div className="contact-title mb-1">
-            <h2 style={{fontSize:'32px'}}>Additional requests</h2>
+            <h2 style={{ fontSize: "32px" }}>Additional requests</h2>
           </div>
         </div>
 
@@ -375,7 +406,6 @@ function CreateNewOrder() {
             onChange={handleAdditionalRequest}
           />
         </div>
-
 
         <div className="price">
           <input
@@ -396,12 +426,11 @@ function CreateNewOrder() {
               value={orderDescription}
               onChange={handleOrderDescriptionChange}
             />
-           
           </div>
         </div>
 
         <div className="py-2 px-3">
-          <label >
+          <label>
             <span className="v_font">Expected Completion Date:</span>
             <input
               type="datetime-local"
