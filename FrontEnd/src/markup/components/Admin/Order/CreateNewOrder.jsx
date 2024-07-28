@@ -31,10 +31,11 @@ function CreateNewOrder() {
   const [estimatedCompletionDate, setEstimatedCompletionDate] = useState("");
   const [customerInfo, setCustomerInfo] = useState({});
   const [vehicleInfo, setVehicleInfo] = useState(null);
-    const [showModal, setShowModal] = useState(false);
-    const [modalMessage, setModalMessage] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const [notification, setNotification] = useState("");
 
   const getServiceList = async () => {
     try {
@@ -166,11 +167,13 @@ function CreateNewOrder() {
 
       const data = await response.json();
       console.log("Order submitted:", data);
+
       setModalMessage("Order successfully submitted");
       setShowModal(true);
       setTimeout(() => {
         navigate("/admin/orders");
       }, 2000); 
+
     } catch (error) {
        setErrorMessage("Error submitting order: " + error.message);
       console.error("Error submitting order:", error);
@@ -199,13 +202,36 @@ function CreateNewOrder() {
     navigate(`/admin/create-order`);
   };
 
+
+
+  const handleClickOut = (event) => {
+    if (event.target.classList.contains('notification_main')) {
+      setNotification("");
+      navigate('/admin/orders')
+      console.log("Notification cleared");
+    }
+  };
+  const handleNotificationButtonClick = () => {
+    setNotification(""); // Hide notification
+    navigate('/admin/orders'); // Navigate to the orders page
+  };
+
   return (
     <div className="create-order-container">
+
       {showModal && (
         <div className="modal-backdrop">
           <div className="modal-box">
             <p>{modalMessage}</p>
             <button onClick={handleCloseModal}>OK</button>
+
+
+
+
+         <div className="contact-section pad_1">
+          <div className="contact-title mb-1">
+            <h2>Create a new order</h2>
+
           </div>
         </div>
       )}
@@ -335,6 +361,7 @@ function CreateNewOrder() {
       <div className="service_list_container">
         <div className="services-list">
           <h2 className="customer_name v_font">Choose service</h2>
+
           {services?.length > 0 ? (
             services.map((service) => (
               <div key={service.service_id} className="service-item">

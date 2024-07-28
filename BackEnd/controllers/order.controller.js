@@ -79,6 +79,7 @@ async function getOrderById(req, res) {
 
 
 
+
 // Get single order by CUSTOMER_ID
 async function getOrderByCustomerId(req, res) {
   try {
@@ -95,6 +96,7 @@ async function getOrderByCustomerId(req, res) {
       .json({ error: "An error occurred while retrieving the order" });
   }
 }
+
 
 
 // Update an order
