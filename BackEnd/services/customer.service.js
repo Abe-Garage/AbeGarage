@@ -162,8 +162,8 @@ async function updateCustomer(customer) {
     ]);
 
     const result2 = await connection.query(query2, [
-      customer_last_name,
       customer_first_name,
+      customer_last_name,      
       active_customer_status,
       customer_id,
     ]);
