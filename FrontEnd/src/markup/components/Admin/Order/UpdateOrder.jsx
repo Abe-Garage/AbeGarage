@@ -1,14 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import orderService from '../../../../services/order.service';
+import React, { useRef, useState, useEffect } from "react";
+import { BeatLoader } from "react-spinners";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import ordersService from "../../../../services/order.service";
 import serviceService from "../../../../services/service.service";
-import { useAuth } from '../../../../Context/AuthContext';
+import "./CreateNewOrder.css";
+import { useAuth } from "../../../../Context/AuthContext";
+
+const formatDateForInput = (dateString) => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
 
 function UpdateOrder() {
-  const { orderId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { orderId } = useParams();
   const { employee } = useAuth();
   const token = employee?.employee_token;
+
+  
 
   const [orderData, setOrderData] = useState({
     order_id: orderId,
@@ -16,50 +29,89 @@ function UpdateOrder() {
     estimated_completion_date: '',
     completion_date: '',
     order_status: '',
-    order_services: []
+    order_services: [],
   });
-// console.log(orderId)
+  console.log(orderData)
   const [availableServices, setAvailableServices] = useState([]);
+  const [serverMsg, setServerMsg] = useState("");
+  const [apiError, setApiError] = useState(false);
+  const [apiErrorMessage, setApiErrorMessage] = useState("");
+  const [spin, setSpinner] = useState(false);
+
+  const descriptionDom = useRef();
+  const estimatedDateDom = useRef();
+  const completionDateDom = useRef();
+  const statusDom = useRef();
+
+  const descriptionTracker = () => setOrderData((prev) => ({ ...prev, order_description: descriptionDom.current.value }));
+  const estimatedDateTracker = () => setOrderData((prev) => ({ ...prev, estimated_completion_date: estimatedDateDom.current.value }));
+  const completionDateTracker = () => setOrderData((prev) => ({ ...prev, completion_date: completionDateDom.current.value }));
+  const statusTracker = () => setOrderData((prev) => ({ ...prev, order_status: statusDom.current.value }));
 
   useEffect(() => {
-    const fetchOrder = async () => {
-      try {
-        const fetchedOrder = await orderService.getOrderById(token, orderId);
-        setOrderData({
-          ...fetchedOrder,
-          order_services: fetchedOrder.order_services || []
-        });
-      } catch (error) {
-        console.error("Error fetching order:", error);
-      }
-    };
+    console.log(location.state);
+    // If data is passed through location.state
+    if (!location.state?.order) {
+      // Format the date for input fields if data is passed via state
+      const formattedOrder = {
+        ...location.state.order,
+        estimated_completion_date: formatDateForInput(location.state.order.estimated_completion_date),
+        completion_date: formatDateForInput(location.state.order.completion_date),
+        // Initialize order_services with a single service ID if necessary
+        order_services: [{ service_id: location.state.order.service_id, service_completed: location.state.order.service_completed }] || [],
+      };
+      setOrderData(formattedOrder);
+      
+    } else {
+      // Fetch data based on URL parameter
+      const fetchData = async () => {
+        try {
+          const [fetchedOrder] = await ordersService.getOrderById(token, orderId);
+          console.log('Fetched Order:', fetchedOrder);
+          const formattedOrder = {
+            ...fetchedOrder,
+            estimated_completion_date: formatDateForInput(fetchedOrder.estimated_completion_date),
+            completion_date: formatDateForInput(fetchedOrder.completion_date),
+          } // Debugging line
+          console.log(formattedOrder)
+      //     setOrderData({
+      //       ...fetchedOrder,
+      //       estimated_completion_date: formatDateForInput(fetchedOrder.estimated_completion_date),
+      //       completion_date: formatDateForInput(fetchedOrder.completion_date),
+            
+      // order_services: [{ service_id: fetchedOrder.order_service_id, service_completed: fetchedOrder.service_completed }] || [],
+      //     });
+          
+      setOrderData(formattedOrder);
+        } catch (error) {
+          setApiError(true);
+          setApiErrorMessage("An error occurred while fetching order data.");
+        }
+      };
+      fetchData();
+    }
 
+    // Fetch available services
     const fetchServices = async () => {
       try {
         const fetchedServices = await serviceService.getServiceList(token);
-        console.log(fetchedServices.data)
+        // console.log(fetchedServices.data)
         setAvailableServices(fetchedServices.data);
       } catch (error) {
-        console.error("Error fetching services:", error);
+        setApiError(true);
+        setApiErrorMessage("An error occurred while fetching services.");
       }
     };
 
-    fetchOrder();
     fetchServices();
-  }, [orderId, token]);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setOrderData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  }, [orderId, location.state, token]);
 
   const handleServiceChange = (serviceId, checked) => {
     setOrderData((prevState) => {
+      const existingService = prevState.order_services.find((service) => service.service_id === serviceId);
+      console.log(existingService)
       const updatedServices = checked
-        ? [...prevState.order_services, { service_id: serviceId, service_completed: false }]
+        ? existingService ? prevState.order_services : [...prevState.order_services, { service_id: serviceId, service_completed: false }]
         : prevState.order_services.filter((service) => service.service_id !== serviceId);
       return {
         ...prevState,
@@ -71,101 +123,112 @@ function UpdateOrder() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await orderService.updateOrder(orderData, token);
-      alert("Order Update page successfuly!")
-      navigate("/admin/orders");
+      setSpinner(true);
+      await ordersService.updateOrder(orderData, token);
+      setServerMsg("Order updated successfully. Redirecting...");
+      setTimeout(() => {
+        setSpinner(false);
+        setServerMsg("");
+        navigate("/admin/orders", { state: { updated: true } }); // Navigate back with a state
+      }, 2000);
     } catch (error) {
-      console.error("Error updating order:", error);
+      setSpinner(false);
+      setApiError(true);
+      setApiErrorMessage("An error occurred while updating the order.");
     }
   };
+  console.log(orderData)
+  console.log('Available Services:', availableServices);
+console.log('Order Services:', orderData.order_service_id);
 
   return (
     <section className="update-order-section">
       <div className="mx-4">
-        <div className="update-order-title mb-4">
-          <h2>Update Order</h2>
+      {/* <div className="container"> */}
+      <div className="contact-title mb-1 sec-title style-two">
+          <h2>Update Orders</h2>
         </div>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="order_description">Order Description</label>
-            <input
+        {spin && <BeatLoader color="#36d7b7" />}
+        {!spin && (
+          <form onSubmit={handleSubmit}>
+            {apiError && <p className="error-message">{apiErrorMessage}</p>}
+            <div className="form-group">
+              <label htmlFor="order_description">Order Description:</label>
+              <br />
+              <input   
+              className="form-control"
               type="text"
-              id="order_description"
-              name="order_description"
-              value={orderData.order_description}
-              onChange={handleInputChange}
-              className="form-control"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="estimated_completion_date">Estimated Completion Date</label>
-            <input
-              type="date"
-              id="estimated_completion_date"
-              name="estimated_completion_date"
-              value={orderData.estimated_completion_date}
-              onChange={handleInputChange}
-              className="form-control"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="completion_date">Completion Date</label>
-            <input
-              type="date"
-              id="completion_date"
-              name="completion_date"
-              value={orderData.completion_date}
-              onChange={handleInputChange}
-              className="form-control"
-            />
-          </div>
-          <div className="form-group">
-            <label>Order Services</label>
-            {availableServices.map((service) => (
-              <div key={service.service_id} className="form-check">
-                <input
-                  type="checkbox"
-                  id={`service-${service.service_id}`}
-                  className="form-check-input"
-                  checked={orderData.order_services.some(
-                    (os) => os.service_id === service.service_id
-                  )}
-                  onChange={(e) =>
-                    handleServiceChange(service.service_id, e.target.checked)
-                  }
-                />
-                <label
-                  htmlFor={`service-${service.service_id}`}
-                  className="form-check-label"
-                >
-                  {service.service_name}
-                </label>
-              </div>
-            ))}
-          </div>
-          <div className="form-group">
-            <label htmlFor="order_status">Order Status</label>
-            <select
-              id="order_status"
-              name="order_status"
-              value={orderData.order_status}
-              onChange={handleInputChange}
-              className="form-control"
-              required
-            >
-              <option value="">Select Status</option>
-              <option value="Pending">Pending</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Completed">Completed</option>
-              <option value="Cancelled">Cancelled</option>
-            </select>
-          </div>
-          <button type="submit" className="btn btn-primary">
-            Update Order
-          </button>
-        </form>
+                id="order_description"
+                ref={descriptionDom}
+                value={orderData.order_description}
+                onChange={descriptionTracker}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="estimated_completion_date">Estimated Completion Date:</label>
+              <input
+                className="form-control"
+                type="date"
+                id="estimated_completion_date"
+                ref={estimatedDateDom}
+                value={orderData.estimated_completion_date}
+                onChange={estimatedDateTracker}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="completion_date">Completion Date:</label>
+              <input
+                className="form-control"
+                type="date"
+                id="completion_date"
+                ref={completionDateDom}
+                value={orderData.completion_date}
+                onChange={completionDateTracker}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="order_status">Status:</label>
+              <select  className="form-control" id="order_status" ref={statusDom} value={orderData.order_status} onChange={statusTracker} required>
+                <option value="">Select status</option>
+                <option value="0">In Progress</option>
+                <option value="1">Completed</option>
+                <option value="3">Received</option>
+              </select>
+            </div>
+            <div className="service_list_container">
+            <div className="services-list" >
+              <label className="customer_name v_font">Order Services:</label>
+              {availableServices && availableServices?.length > 0 && availableServices.map((service) => (
+                <div className="service-item" key={service.service_id}>
+                  <div className="service-d w-100">
+                 
+                  <div>
+              <h3 className="service_font">{service?.service_name}</h3>
+              <p>{service?.service_description}</p>
+            </div> 
+                    
+                  <input
+                    type="checkbox"
+                    id={`service_${service.service_id}`}
+                   
+                    checked={orderData.order_services?.some((os) => os.service_id === service.service_id)}
+                    onChange={(e) => handleServiceChange(service.service_id, e.target.checked)}
+                  />
+                  
+                </div>
+                </div>
+              ))}
+              
+            </div>
+            </div>
+            
+            <button type="submit" className="submit-order">Update Order</button>
+            {serverMsg && <p>{serverMsg}</p>}
+          </form>
+        )}
+      {/* </div> */}
       </div>
     </section>
   );

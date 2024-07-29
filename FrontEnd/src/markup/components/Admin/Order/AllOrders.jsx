@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { PiArrowSquareOutBold } from "react-icons/pi";
 import ordersService from '../../../../services/order.service';
@@ -12,6 +12,7 @@ function AllOrders() {
   const [orders, setOrders] = useState([]);
   const { employee } = useAuth();
   const token = employee?.employee_token;
+  const location = useLocation(); 
 
   // useEffect
   useEffect(() => {
@@ -30,7 +31,18 @@ function AllOrders() {
     };
 
     fetchOrders();
-  }, [token]);
+  }, [token, location.state]);
+
+   // Filter to remove duplicate orders based on order_id
+   const uniqueOrders = orders.reduce((acc, current) => {
+    const x = acc.find(item => item.order_id === current.order_id);
+    if (!x) {
+      return acc.concat([current]);
+    } else {
+      return acc;
+    }
+  }, []);
+
    // Functions
    const formatCustomerAddedDate = (date) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -74,7 +86,7 @@ function AllOrders() {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
+            {uniqueOrders.map((order) => (
               <tr key={order.order_id}>
                 <td className="border">
                   <h6 className="py-0 my-0 mx-3 font-weight-bold">
@@ -122,7 +134,7 @@ function AllOrders() {
                   )}
                 </td>
                 <td className="border">
-                  <Link to={`/admin/order/${order.order_id}`}>
+                  <Link to={`/admin/order/${order.order_hash}`}  state={{ order }}>
                     <FaEdit
                       className="mx-2 scale-on-hover cursor-pointer"
                       onClick={() => handleClick(order)}

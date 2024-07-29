@@ -198,8 +198,9 @@ async function getAllOrders({ limit, sortby, completed }) {
       customer_vehicle_info.vehicle_tag,
       employee_info.employee_first_name,
       employee_info.employee_last_name, 
-      orders.order_date,
-      orders.order_hash, 
+      orders.*,
+      order_info.*,
+      order_services.*,
       order_status.* 
       FROM customer_identifier 
       INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id 
@@ -207,6 +208,8 @@ async function getAllOrders({ limit, sortby, completed }) {
       INNER JOIN orders ON orders.vehicle_id =  customer_vehicle_info.vehicle_id 
       INNER JOIN order_status ON orders.order_id = order_status.order_id 
       INNER JOIN employee_info ON orders.employee_id = employee_info.employee_id
+      INNER JOIN order_info ON orders.order_id = order_info.order_id
+      INNER JOIN order_services ON orders.order_id = order_services.order_id
       ORDER BY orders.order_id DESC
     `;
     let queryParams = [];
@@ -238,7 +241,6 @@ module.exports = {
 };
 
 
-
 async function getOrderById(id) {
   try {
     // Query to get order details
@@ -260,8 +262,27 @@ async function getOrderById(id) {
     `;
     const servicesResult = await conn.query(servicesQuery, [OrderID]);
     console.log("ser",servicesResult)
-    order.order_services = servicesResult || [];
+    order[0].order_services = servicesResult || [];
     console.log("last ",order)
+
+    const orderInfoQuery = `
+    SELECT estimated_completion_date, completion_date FROM order_info
+    WHERE order_id = ?
+  `;
+  const orderInfoResult = await conn.query(orderInfoQuery, [OrderID]);
+  // console.log("ser",servicesResult)
+  order[0].estimated_completion_date = orderInfoResult[0].estimated_completion_date || "";
+  order[0].completion_date = orderInfoResult[0].completion_date || "";
+  // order.push(servicesResult)
+  console.log("info_result ",orderInfoResult)
+
+  const orderStatusQuery = `
+  SELECT order_status FROM order_status
+  WHERE order_id = ?
+`;
+const orderStatusResult = await conn.query(orderStatusQuery, [OrderID]);
+console.log("orderstatus",orderStatusResult)  
+order[0].order_status = orderStatusResult[0].order_status;
 
     return order;
   } catch (error) {
@@ -320,6 +341,7 @@ async function updateOrder(orderData, order_id) {
       estimated_completion_date,
       completion_date,
       order_services,
+      order_status,
     } = orderData;
 
      // Validate required fields
@@ -327,13 +349,19 @@ async function updateOrder(orderData, order_id) {
       throw new Error("Order ID and description are required");
     }
 
-    const query = `
+     // Validate order_services
+     if (!Array.isArray(order_services) || order_services.length === 0) {
+      throw new Error("Order services must be a non-empty array");
+    }
+
+    const updateOrderQuery = `
       UPDATE orders
       SET order_description = ?
       WHERE order_id = ?
     `;
-    const result = await conn.query(query, [order_description, order_id]);
- console.log("result:",result)
+    const result = await conn.query(updateOrderQuery, [order_description, order_id]);
+ console.log("result for the first order service:",result)
+   
 
     if (result.affectedRows === 0) {
       throw new Error(`Order with ID ${id} not found`);
@@ -350,27 +378,74 @@ async function updateOrder(orderData, order_id) {
       completion_date || null,            // Replace undefined with null
       order_id,
     ]);
-    console.log("resultTwo:",resultTwo)
+    // console.log("resultTwo:",resultTwo)
+
     const deleteOrderServicesQuery = `
       DELETE FROM order_services WHERE order_id = ?
     `;
     await conn.query(deleteOrderServicesQuery, [order_id]);
-
-    const orderServiceQuery = `
-      INSERT INTO order_services (order_id, service_id, service_completed)
-      VALUES (?, ?, ?)
-    `;
+    console.log("deleteOrderServicesQuery:",deleteOrderServicesQuery)
     for (const service of order_services) {
+      // Verify that service_id exists in common_services
+      const serviceCheckQuery = `
+          SELECT service_id FROM common_services WHERE service_id = ?
+          
+        `;
+        const serviceCheckResult = await conn.query(serviceCheckQuery, [service.service_id]);
+        
+        if (!Array.isArray(serviceCheckResult) || serviceCheckResult.length === 0) {
+          throw new Error(`Service with ID ${service.service_id} does not exist in common_services`);
+        } 
+        
       const serviceCompletedValue = service.service_completed ? 1 : 0;
+       // Insert or update order_service
+      const orderServiceQuery = `
+      INSERT INTO order_services (order_id, service_id, service_completed)
+        VALUES (?, ?, ?)
+        ON DUPLICATE KEY UPDATE
+          service_completed = VALUES(service_completed)
+    `;
       const orderServiceResult = await conn.query(orderServiceQuery, [
         order_id,
         service.service_id,
         serviceCompletedValue,
       ]);
-      if (!orderServiceResult.affectedRows) {
-        throw new Error("Failed to create order service");
+
+      console.log("OrderServiceResult:",orderServiceResult)
+      if (orderServiceResult.affectedRows === 0) {
+        throw new Error("Failed to create or update order service");
       }
     }
+
+    // Update or insert order status
+    const statusExistsQuery = `
+      SELECT order_status_id FROM order_status WHERE order_id = ?
+    `;
+    const statusExistsResult = await conn.query(statusExistsQuery, [order_id]);
+
+    if (statusExistsResult.length > 0) {
+      // If status exists, update it
+      const updateStatusQuery = `
+        UPDATE order_status
+        SET order_status = ?
+        WHERE order_id = ?
+      `;
+      const updateStatusResult = await conn.query(updateStatusQuery, [order_status, order_id]);
+      if (updateStatusResult.affectedRows === 0) {
+        throw new Error("Failed to update order status");
+      }
+    } else {
+      // If status does not exist, insert it
+      const insertStatusQuery = `
+        INSERT INTO order_status (order_id, order_status)
+        VALUES (?, ?)
+      `;
+      const insertStatusResult = await conn.query(insertStatusQuery, [order_id, order_status]);
+      if (insertStatusResult.affectedRows === 0) {
+        throw new Error("Failed to insert order status");
+      }
+    }
+
     return { message: "Order updated successfully" };
   } catch (error) {
     throw new Error(error);

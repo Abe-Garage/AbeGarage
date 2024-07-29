@@ -111,7 +111,7 @@ function CreateNewOrder() {
   const calculateOrderDescription = () => {
     return selectedServices
       .map((service) => service.service_description)
-      .join(", ");
+      .join(" ");
   };
 
   // Handle order description change
@@ -391,6 +391,7 @@ function CreateNewOrder() {
 
         <div className="serviceRequest">
           <input
+            className="w-100"
             type="text"
             style={{ paddingLeft: "15px" }}
             placeholder="Service Description"
@@ -400,7 +401,7 @@ function CreateNewOrder() {
         </div>
 
         <div className="price">
-          <input
+          <input className="w-100"
             type="text"
             style={{ padding: "10px 15px" }}
             placeholder="Price"
@@ -412,6 +413,7 @@ function CreateNewOrder() {
         <div>
           <div className="price">
             <input
+              className="w-100"
               type="text"
               style={{ padding: "10px 15px" }}
               placeholder="Order Description"
