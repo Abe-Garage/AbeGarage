@@ -173,8 +173,45 @@ async function deleteVehicle(vehicle_id) {
       throw new Error("Error Deleting service: " + error.message);
     }
   }
-  
+;
 
-module.exports={
-    singleVehicle,addVehicle,updateVehicleInfo,vehiclePerCustomer, deleteVehicle,hasServiceOrder
+async function searchVehicle(customer_id, query) {
+  try {
+    // Clean the input to remove any newline characters
+    const cleanQuery = query.replace(/\n/g, "").trim();
+
+    const sql = `
+      SELECT * FROM customer_vehicle_info 
+      WHERE customer_id = ? AND (
+        vehicle_make LIKE ? OR 
+        vehicle_model LIKE ? OR 
+        vehicle_serial LIKE ?
+      )
+    `;
+    const values = [
+      customer_id,
+      `%${cleanQuery}%`,
+      `%${cleanQuery}%`,
+      `%${cleanQuery}%`,
+    ];
+
+    console.log("SQL Query:", sql); // Log the SQL query
+    console.log("Values:", values);
+    const result = await connection.query(sql, values);
+    console.log()
+    return result;
+  } catch (error) {
+    console.error("Error searching vehicles:", error.message);
+    throw new Error("Database Error");
+  }
 }
+
+module.exports = {
+  singleVehicle,
+  addVehicle,
+  updateVehicleInfo,
+  vehiclePerCustomer,
+  deleteVehicle,
+  hasServiceOrder,
+  searchVehicle,
+};
