@@ -37,9 +37,9 @@ const OrderStatus = () => {
 
   // Determine progress percentage from orderStatus
   const progress = orderDetails
-    ? orderDetails.orderStatus === 1
+    ? orderDetails.orderStatus === 3
       ? 33
-      : orderDetails.orderStatus === 2
+      : orderDetails.orderStatus === 0
       ? 66
       : 100
     : 0;
@@ -58,7 +58,6 @@ const OrderStatus = () => {
       </div>
 
       <div className="order-details-card">
-
         <div className="order-content">
           <div className="details-info">
             <h3>Services</h3>
@@ -107,10 +106,14 @@ const OrderStatus = () => {
                 <strong>Additional Requests:</strong>{" "}
                 {orderDetails.additionalRequest}
               </p>
-              <p>
+              {/* for order detail page */}
+              {/* <p>
                 <strong>Notes for Internal Use:</strong>{" "}
                 {orderDetails.notesForInternalUse || "N/A"}
-              </p>
+              </p> */}
+              {/* <p>
+                <strong>Order Hash:</strong> {order_hash}
+              </p> */}
               <p>
                 <strong>Notes for Customer:</strong>{" "}
                 {orderDetails.notesForCustomer || "N/A"}
