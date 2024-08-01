@@ -1,51 +1,130 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
-import img from '../../../../assets/images/side.jpg'
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import "./OrderStatus.css";
+import orderService from "../../../../services/order.service";
+import Loading from "../../../../assets/Loading/Loading";
+import img from "../../../../assets/images/side.jpg";
 
 const OrderStatus = () => {
+  const { order_hash } = useParams();
+  const [orderDetails, setOrderDetails] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    const style={
-        backGround:'white',
-        boxShadow:'0 0 10px rgba(0, 0, 0, 0.1)',
-        padding:'20px',
-        borderRadius:'6px'
+  useEffect(() => {
+    const fetchOrderDetails = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const data = await orderService.getOrderAllDetail(token, order_hash);
+        setOrderDetails(data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    }
+    fetchOrderDetails();
+  }, [order_hash]);
 
-    const {order_hash} =useParams()
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <div>Error fetching order details: {error.message}</div>;
+  }
+
+  // Determine progress percentage from orderStatus
+  const progress = orderDetails
+    ? orderDetails.orderStatus === 1
+      ? 33
+      : orderDetails.orderStatus === 2
+      ? 66
+      : 100
+    : 0;
+
   return (
-    <div className='' >
-
-          <div className='w-75 m-auto my-5' style={style}>
-                <div className="contact-section pad_1">
-                    <div className="contact-title mb-1">
-                        <h2 className='v_font'>Check Your Car Service Status Anytime!</h2>
-                    </div>
-                </div>
-
-               <div className='d-flex m-auto'>
-                    
-                    <div className='w-' style={{width:'60%'}}>
-                         Services
-                    </div>
-
-                    <div className='w-2' style={{width:'30%'}} >
-                        <img src={img} alt="" />
-                    </div>
-               </div>
-
-
-               <div className="contact-section pad_1 mt-5">
-                    <div className="contact-title mb-1">
-                        <h2 className='v_font'>status</h2>
-                    </div>
-                </div>
-
-
-
+    <div className="order-status-page">
+      <div className="progress-overlay">
+        <div className="progress-card">
+          <h1>Order Progress</h1>
+          <div className="progress-bar-container">
+            <div className="progress-bar" style={{ width: `${progress}%` }}>
+              {progress}%
+            </div>
           </div>
-    </div>
-  )
-}
+        </div>
+      </div>
 
-export default OrderStatus
+      <div className="order-details-card">
+
+        <div className="order-content">
+          <div className="details-info">
+            <h3>Services</h3>
+            {orderDetails && orderDetails.orderDescription && (
+              <p>{orderDetails.orderDescription}</p>
+            )}
+          </div>
+        </div>
+        <div className="details-list">
+          <h3>Order Details</h3>
+          {orderDetails && (
+            <div>
+              <p>
+                <strong>Order ID:</strong> {orderDetails.orderId}
+              </p>
+              <p>
+                <strong>Customer:</strong> {orderDetails.customerId}
+              </p>
+              <p>
+                <strong>Employee:</strong> {orderDetails.employeeFirstName}{" "}
+                {orderDetails.employeeLastName}
+              </p>
+              <p>
+                <strong>Vehicle:</strong> {orderDetails.vehicleMake} (Serial:{" "}
+                {orderDetails.vehicleSerial})
+              </p>
+              <p>
+                <strong>Order Date:</strong>{" "}
+                {new Date(orderDetails.orderDate).toLocaleDateString()}
+              </p>
+              <p>
+                <strong>Estimated Completion Date:</strong>{" "}
+                {orderDetails.estimatedCompletionDate
+                  ? new Date(
+                      orderDetails.estimatedCompletionDate
+                    ).toLocaleDateString()
+                  : "N/A"}
+              </p>
+              <p>
+                <strong>Completion Date:</strong>{" "}
+                {orderDetails.completionDate
+                  ? new Date(orderDetails.completionDate).toLocaleDateString()
+                  : "In Progress"}
+              </p>
+              <p>
+                <strong>Additional Requests:</strong>{" "}
+                {orderDetails.additionalRequest}
+              </p>
+              <p>
+                <strong>Notes for Internal Use:</strong>{" "}
+                {orderDetails.notesForInternalUse || "N/A"}
+              </p>
+              <p>
+                <strong>Notes for Customer:</strong>{" "}
+                {orderDetails.notesForCustomer || "N/A"}
+              </p>
+              <p>
+                <strong>Order Total Price:</strong> $
+                {orderDetails.orderTotalPrice}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default OrderStatus;

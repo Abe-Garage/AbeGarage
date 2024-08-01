@@ -71,6 +71,7 @@ async function createOrders(orderData) {
 
     const order_hash = crypto.randomUUID();
 
+
     // Check if the customer exists
     const customerExists = await checkCustomerExists(customer_id);
     if (!customerExists) {
@@ -508,6 +509,107 @@ async function sendEmail(customerID,orderHash) {
 }
 
 
+async function getOrderAllDetail(orderHash) {
+  try {
+    console.log("Received request with order_hash:", orderHash);
+
+    // Query to get basic order details
+    const orderQuery = `
+            SELECT 
+                orders.order_id, 
+                orders.order_hash, 
+                orders.customer_id, 
+                orders.employee_id, 
+                orders.vehicle_id, 
+                orders.order_date, 
+                orders.order_description,
+                order_info.order_total_price,
+                order_info.estimated_completion_date,
+                order_info.completion_date,
+                order_info.additional_request,
+                order_info.notes_for_internal_use,
+                order_info.notes_for_customer,
+                employee_info.employee_first_name,
+                employee_info.employee_last_name,
+                customer_vehicle_info.vehicle_make,
+                customer_vehicle_info.vehicle_serial,
+                order_status.order_status
+            FROM orders
+            INNER JOIN order_info ON orders.order_id = order_info.order_id
+            INNER JOIN employee_info ON orders.employee_id = employee_info.employee_id
+            INNER JOIN customer_vehicle_info ON orders.vehicle_id = customer_vehicle_info.vehicle_id
+            INNER JOIN order_status ON orders.order_id = order_status.order_id
+            WHERE orders.order_hash = ?
+        `;
+
+    const queryResult = await conn.query(orderQuery, [orderHash]);
+
+    console.log(" Result:", queryResult);
+    console.log(typeof queryResult);
+
+    if (!Array.isArray(queryResult) || queryResult.length === 0) {
+      throw new Error("No order found with the provided hash.");
+    }
+
+    const order = queryResult[0];
+
+    console.log("Order:", order);
+
+    // Query to get associated services
+    const servicesQuery = `
+            SELECT 
+                common_services.service_name,
+                common_services.service_description,
+                order_services.service_completed
+            FROM order_services
+            INNER JOIN common_services ON order_services.service_id = common_services.service_id
+            WHERE order_services.order_id = ?
+        `;
+    const [servicesResult] = await conn.query(servicesQuery, [order.order_id]);
+
+    console.log("Services result:", servicesResult);
+
+    // Attach services to the order details
+    const orderDetails = {
+      orderId: order.order_id,
+      orderHash: order.order_hash,
+      customerId: order.customer_id,
+      employeeId: order.employee_id,
+      vehicleId: order.vehicle_id,
+      orderDate: order.order_date,
+      activeOrder: order.active_order,
+      orderDescription: order.order_description,
+      orderTotalPrice: order.order_total_price,
+      estimatedCompletionDate: order.estimated_completion_date,
+      completionDate: order.completion_date,
+      additionalRequest: order.additional_request,
+      notesForInternalUse: order.notes_for_internal_use,
+      notesForCustomer: order.notes_for_customer,
+      additionalRequestsCompleted: order.additional_requests_completed,
+      employeeFirstName: order.employee_first_name,
+      employeeLastName: order.employee_last_name,
+      vehicleMake: order.vehicle_make,
+      vehicleSerial: order.vehicle_serial,
+      orderStatus: order.order_status,
+      services: servicesResult || [], // Attach services to order details
+    };
+
+    console.log("Processed order details:", orderDetails);
+
+    return orderDetails;
+  } catch (error) {
+    console.error("Error fetching order details with hash", orderHash, error);
+    throw new Error("An error occurred while retrieving the order details");
+  }
+}
+
+
+
+
+
+
+
+
 module.exports = {
   createOrders,
   checkVehicle,
@@ -517,5 +619,6 @@ module.exports = {
   getAllOrders,
   getOrderById,
   updateOrder,
-  getOrderByCustomerId
+  getOrderByCustomerId, 
+  getOrderAllDetail
 };
