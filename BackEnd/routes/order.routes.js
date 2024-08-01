@@ -15,6 +15,10 @@ router.get("/orders", orderController.getAllOrders);
 // Route to get an order by ID
 router.get("/order/:id", orderController.getOrderById);
 
+// Route to get detailed order information by order hash
+router.get("/order/details/:order_hash", orderController.getOrderAllDetail);
+
+
 // Route to update an order
 router.put("/order/:order_id", orderController.updateOrder);
 // 
