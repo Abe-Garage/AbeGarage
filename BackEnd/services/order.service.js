@@ -243,43 +243,41 @@ module.exports = {
 
 
 
-// async function getOrderById(id) {
-//   try {
-//     // Query to get order details
-//     const orderQuery = `SELECT 
-//     customer_identifier.customer_email,
-//       customer_identifier.customer_phone_number, 
-//       customer_info.customer_first_name,
-//       customer_info.customer_last_name ,
-//       customer_vehicle_info.*,
-//       employee_info.employee_first_name,
-//       employee_info.employee_last_name, 
-//       orders.order_date,
-//       orders.order_hash, 
-//       order_status.* ,
-//       common_services.*,       
-//       order_services.service_id
-//       FROM customer_identifier 
-//       INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id 
-//       INNER JOIN customer_vehicle_info ON customer_info.customer_id = customer_vehicle_info.customer_id 
-//       INNER JOIN orders ON orders.vehicle_id =  customer_vehicle_info.vehicle_id 
-//       INNER JOIN order_services ON orders.order_id =  order_services.order_id 
-//       INNER JOIN order_status ON orders.order_id = order_status.order_id 
-//       INNER JOIN employee_info ON orders.employee_id = employee_info.employee_id
-//       INNER JOIN common_services ON common_services.service_id = order_services.service_id
-// WHERE 
-// order_hash = ?;
-// `;
-//     const orderResult = await conn.query(orderQuery, [id]);
-
+async function getOrderDetailById(id) {
+  try {
+    // Query to get order details
+    const orderQuery = `SELECT 
+    customer_identifier.customer_email,
+      customer_identifier.customer_phone_number, 
+      customer_info.customer_first_name,
+      customer_info.customer_last_name ,
+      customer_vehicle_info.*,
+      employee_info.employee_first_name,
+      employee_info.employee_last_name, 
+      orders.order_date,
+      orders.order_hash, 
+      order_status.* ,
+      common_services.*,       
+      order_services.service_id
+      FROM customer_identifier 
+      INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id 
+      INNER JOIN customer_vehicle_info ON customer_info.customer_id = customer_vehicle_info.customer_id 
+      INNER JOIN orders ON orders.vehicle_id =  customer_vehicle_info.vehicle_id 
+      INNER JOIN order_services ON orders.order_id =  order_services.order_id 
+      INNER JOIN order_status ON orders.order_id = order_status.order_id 
+      INNER JOIN employee_info ON orders.employee_id = employee_info.employee_id
+      INNER JOIN common_services ON common_services.service_id = order_services.service_id
+WHERE 
+order_hash = ?;
+`;
+    const orderResult = await conn.query(orderQuery, [id]);
     
-//     return orderResult;
-
-//   } catch (error) {
-//     console.error(`Error fetching order with ID ${id}:`, error);
-//     throw new Error("An error occurred while retrieving the order");
-//   }
-// }
+    return orderResult;
+  } catch (error) {
+    console.error(`Error fetching order with ID ${id}:`, error);
+    throw new Error("An error occurred while retrieving the order");
+  }
+}
 
 // async function getOrderById(id) {
 //   try {
@@ -688,5 +686,6 @@ module.exports = {
   getOrderById,
   updateOrder,
   getOrderByCustomerId, 
-  getOrderAllDetail
+  getOrderAllDetail,
+  getOrderDetailById
 };

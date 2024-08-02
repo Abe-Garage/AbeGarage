@@ -79,6 +79,21 @@ async function getOrderById(req, res) {
   }
 }
 
+async function getOrderDetailById(req, res) {
+  try {
+    const { id } = req.params;
+    const order = await orderService.getOrderDetailById(id);
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+    res.status(200).json(order);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "An error occurred while retrieving the order" });
+  }
+}
+
 
 
 
@@ -214,7 +229,8 @@ module.exports = {
   updateOrder,
   searchOrder,
   getOrderByCustomerId,
-  getOrderAllDetail
+  getOrderAllDetail,
+  getOrderDetailById
 };
 
 

@@ -58,8 +58,8 @@
     position: relative;
 }
 
-/* Status specific styles */
-.status-box-inline {
+
+.status-box-inline h6{
     padding: 5px 10px;
     border-radius: 25px;
     font-weight: bold;
@@ -68,7 +68,7 @@
     right: 10px;
 }
 
-.status-box {
+.status-box h6{
     padding: 5px 10px;
     border-radius: 25px;
     position: absolute;

@@ -13,7 +13,7 @@ const OrderDetail = () => {
   const token = employee?.employee_token;
 
  
-  
+
   useEffect(() => {
     const fetchOrder = async () => {
       if (!token) {
@@ -21,7 +21,7 @@ const OrderDetail = () => {
         return;
       }
       try {
-        const fetchedOrder = await ordersService.getOrderById(token, id);
+        const fetchedOrder = await ordersService.getOrderDetailById(token, id);
         // console.log(fetchedOrder);
         setOrderData(fetchedOrder);
         setOrder(fetchedOrder[0]);
@@ -69,8 +69,7 @@ const OrderDetail = () => {
             <div className="inner-box hvr-float-shadow">
               <h5>CUSTOMER</h5>
               <h2>
-                {order.customer_first_name}
-                {order.customer_last_name}
+                {order.customer_first_name} {order.customer_last_name}
               </h2>
               <div>Email: {order.customer_email}</div>
               <div>Phone Number: {order.customer_phone_number}</div>
