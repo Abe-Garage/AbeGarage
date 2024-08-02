@@ -38,7 +38,7 @@ function CreateNewOrder() {
       const data = await serviceService.getServiceList();
 
       console.log("create order", data);
-      setServices(data.data.data);
+      setServices(data.data);
 
     } catch (error) {
       console.error("Error fetching services:", error);

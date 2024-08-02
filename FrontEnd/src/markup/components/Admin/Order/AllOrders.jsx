@@ -128,7 +128,8 @@ function AllOrders() {
                       onClick={() => handleClick(order)}
                     />
                   </Link>
-                  <Link to="/admin/all-orders/order-detail">
+                  
+                  <Link to={`/admin/order-detail/${order.order_hash}`}>
                     <PiArrowSquareOutBold
                       className="mx-1 fw-bold scale-on-hover cursor-pointer"
                       onClick={() => handleClick(order)}

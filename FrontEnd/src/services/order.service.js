@@ -11,6 +11,7 @@ const ordersService = {
           "x-access-token": token,
         },
       });
+      console.log(response);
       return response.data;
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -41,6 +42,7 @@ getOrderById: async (token, id) => {
         "x-access-token": token,
       },
     });
+    console.log(response);
     return response.data;
   } catch (error) {
     console.error("Error fetching orders:", error);

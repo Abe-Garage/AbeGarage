@@ -7,7 +7,7 @@ For now, we only need the navigation structure. Which we have already identified
       - Services page (/services) 
       - Contact us page (/contact) 
       - Admin page 
-        - Show only if logged in, link to the dashboard (/dashboard)
+        - Show only if logged in, link to the dashboard (/dashbdoard)
       - Login (/login)
       - Order details (/order/{orderHash}) 
         - Not to be included on the menu 
