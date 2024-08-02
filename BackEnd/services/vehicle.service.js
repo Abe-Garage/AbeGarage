@@ -134,21 +134,6 @@ async function vehiclePerCustomer(ID){
     
 }
 
-
-async function deleteVehicle(vehicle_id) {
-    try {
-      const result = await connection.query(
-        "DELETE FROM customer_vehicle_info WHERE vehicle_id = ?",
-        [ vehicle_id]
-      );
-  
-      return result;
-    } catch (error) {
-      throw new Error("Error Deleting service: " + error.message);
-    }
-  }
-  
-
 async function hasServiceOrder(ID){
     try {
         console.log("vehicle_id",ID)
@@ -176,7 +161,57 @@ async function hasServiceOrder(ID){
     }
 }
 
-module.exports={
-    singleVehicle,addVehicle,updateVehicleInfo,vehiclePerCustomer,hasServiceOrder,deleteVehicle
+async function deleteVehicle(vehicle_id) {
+    try {
+      const result = await connection.query(
+        "DELETE FROM customer_vehicle_info WHERE vehicle_id = ?",
+        [ vehicle_id]
+      );
+  
+      return result;
+    } catch (error) {
+      throw new Error("Error Deleting service: " + error.message);
+    }
+  }
+;
 
+async function searchVehicle(customer_id, query) {
+  try {
+    // Clean the input to remove any newline characters
+    const cleanQuery = query.replace(/\n/g, "").trim();
+
+    const sql = `
+      SELECT * FROM customer_vehicle_info 
+      WHERE customer_id = ? AND (
+        vehicle_make LIKE ? OR 
+        vehicle_model LIKE ? OR 
+        vehicle_serial LIKE ?
+      )
+    `;
+    const values = [
+      customer_id,
+      `%${cleanQuery}%`,
+      `%${cleanQuery}%`,
+      `%${cleanQuery}%`,
+    ];
+
+    console.log("SQL Query:", sql); // Log the SQL query
+    console.log("Values:", values);
+    const result = await connection.query(sql, values);
+    console.log()
+    return result;
+  } catch (error) {
+    console.error("Error searching vehicles:", error.message);
+    throw new Error("Database Error");
+  }
 }
+
+module.exports = {
+  singleVehicle,
+  addVehicle,
+  updateVehicleInfo,
+  vehiclePerCustomer,
+  deleteVehicle,
+  hasServiceOrder,
+  searchVehicle,
+};

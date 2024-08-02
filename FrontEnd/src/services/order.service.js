@@ -52,8 +52,28 @@ getOrderById: async (token, id) => {
 
   // console.log(data);
 
+  //A fucntion to  fetching all order details by hash
+getOrderAllDetail: async (token, hash) => {
+    try {
+      const response = await axios.get(`${api_url}/api/order/details/${hash}`, {
+        headers: {
+          "x-access-token": token,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching all order details:", error);
+      throw error;
+    }
+  },
 
 }
+
+
+
+
+
+
 
 
 

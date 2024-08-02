@@ -38,7 +38,7 @@ async function getCustomerOrderbyId(id,token) {
 
 
 
-// afunction to customer update request
+// a function to customer update request
 async function updateCustomer(formData, loggedInCustomerToken) {
   console.log(formData)
   const headers = {
@@ -62,7 +62,7 @@ async function singleCustomer(ID, Token) {
   console.log(ID, Token)
   const {data }= await axios.get(`/api/customer/single/${ID}`, {headers});
 
-  console.log(data);
+  // console.log(data);
 
   return data;
 }
@@ -110,7 +110,27 @@ const searchedCustomers = async(word,token)=>{
       return data.customers;
 }
 
-
+const searchCustomerVehicles = async (customerId, token, searchQuery) => {
+  try {
+    const response = await axios.get(
+      `${api_url}/api/customer-vehicle/search/${customerId}`,
+      {
+        headers: {
+                  "x-access-token": token
+,
+        },
+        params: {
+          query: searchQuery,
+        },
+      }
+    );
+    // console.log(response)
+    return response.data;
+  } catch (error) {
+    console.error("Error searching customer vehicles:", error);
+    throw error;
+  }
+};
 
 const customerService = {
   createCustomer,
@@ -120,8 +140,8 @@ const customerService = {
   formatDate,
   totalNofCustomers,
   searchedCustomers,
-  getCustomerOrderbyId
-
+  getCustomerOrderbyId,
+  searchCustomerVehicles,
 };
 
 export default customerService;

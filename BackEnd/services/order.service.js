@@ -71,6 +71,7 @@ async function createOrders(orderData) {
 
     const order_hash = crypto.randomUUID();
 
+
     // Check if the customer exists
     const customerExists = await checkCustomerExists(customer_id);
     if (!customerExists) {
@@ -198,8 +199,9 @@ async function getAllOrders({ limit, sortby, completed }) {
       customer_vehicle_info.vehicle_tag,
       employee_info.employee_first_name,
       employee_info.employee_last_name, 
-      orders.order_date,
-      orders.order_hash, 
+      orders.*,
+      order_info.*,
+      order_services.*,
       order_status.* 
       FROM customer_identifier 
       INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id 
@@ -207,6 +209,8 @@ async function getAllOrders({ limit, sortby, completed }) {
       INNER JOIN orders ON orders.vehicle_id =  customer_vehicle_info.vehicle_id 
       INNER JOIN order_status ON orders.order_id = order_status.order_id 
       INNER JOIN employee_info ON orders.employee_id = employee_info.employee_id
+      INNER JOIN order_info ON orders.order_id = order_info.order_id
+      INNER JOIN order_services ON orders.order_id = order_services.order_id
       ORDER BY orders.order_id DESC
     `;
     let queryParams = [];
@@ -239,36 +243,6 @@ module.exports = {
 
 
 
-// async function getOrderById(id) {
-//   try {
-//     // Query to get order details
-//     const orderQuery = `SELECT * FROM orders WHERE order_hash = ?`;
-//     const orderResult = await conn.query(orderQuery, [id]);
-//     if (orderResult.length === 0) {
-//       return null; // No order found
-//     }
-
-//     const order = orderResult;
-//     // Query to get associated services
-//     console.log("order",order[0].order_id)
-
-//     const OrderID= order[0].order_id;
-
-//     const servicesQuery = `
-//       SELECT * FROM order_services
-//       WHERE order_id = ?
-//     `;
-//     const servicesResult = await conn.query(servicesQuery, [OrderID]);
-//     console.log("ser",servicesResult)
-//     order.order_services = servicesResult || [];
-//     console.log("last ",order)
-
-//     return order;
-//   } catch (error) {
-//     console.error(`Error fetching order with ID ${id}:`, error);
-//     throw new Error("An error occurred while retrieving the order");
-//   }
-// }
 async function getOrderById(id) {
   try {
     // Query to get order details
@@ -297,8 +271,10 @@ WHERE
 order_hash = ?;
 `;
     const orderResult = await conn.query(orderQuery, [id]);
+
     
     return orderResult;
+
   } catch (error) {
     console.error(`Error fetching order with ID ${id}:`, error);
     throw new Error("An error occurred while retrieving the order");
@@ -354,6 +330,7 @@ async function updateOrder(orderData, order_id) {
       estimated_completion_date,
       completion_date,
       order_services,
+      order_status,
     } = orderData;
 
      // Validate required fields
@@ -361,13 +338,19 @@ async function updateOrder(orderData, order_id) {
       throw new Error("Order ID and description are required");
     }
 
-    const query = `
+     // Validate order_services
+     if (!Array.isArray(order_services) || order_services.length === 0) {
+      throw new Error("Order services must be a non-empty array");
+    }
+
+    const updateOrderQuery = `
       UPDATE orders
       SET order_description = ?
       WHERE order_id = ?
     `;
-    const result = await conn.query(query, [order_description, order_id]);
- console.log("result:",result)
+    const result = await conn.query(updateOrderQuery, [order_description, order_id]);
+ console.log("result for the first order service:",result)
+   
 
     if (result.affectedRows === 0) {
       throw new Error(`Order with ID ${id} not found`);
@@ -384,27 +367,74 @@ async function updateOrder(orderData, order_id) {
       completion_date || null,            // Replace undefined with null
       order_id,
     ]);
-    console.log("resultTwo:",resultTwo)
+    // console.log("resultTwo:",resultTwo)
+
     const deleteOrderServicesQuery = `
       DELETE FROM order_services WHERE order_id = ?
     `;
     await conn.query(deleteOrderServicesQuery, [order_id]);
-
-    const orderServiceQuery = `
-      INSERT INTO order_services (order_id, service_id, service_completed)
-      VALUES (?, ?, ?)
-    `;
+    console.log("deleteOrderServicesQuery:",deleteOrderServicesQuery)
     for (const service of order_services) {
+      // Verify that service_id exists in common_services
+      const serviceCheckQuery = `
+          SELECT service_id FROM common_services WHERE service_id = ?
+          
+        `;
+        const serviceCheckResult = await conn.query(serviceCheckQuery, [service.service_id]);
+        
+        if (!Array.isArray(serviceCheckResult) || serviceCheckResult.length === 0) {
+          throw new Error(`Service with ID ${service.service_id} does not exist in common_services`);
+        } 
+        
       const serviceCompletedValue = service.service_completed ? 1 : 0;
+       // Insert or update order_service
+      const orderServiceQuery = `
+      INSERT INTO order_services (order_id, service_id, service_completed)
+        VALUES (?, ?, ?)
+        ON DUPLICATE KEY UPDATE
+          service_completed = VALUES(service_completed)
+    `;
       const orderServiceResult = await conn.query(orderServiceQuery, [
         order_id,
         service.service_id,
         serviceCompletedValue,
       ]);
-      if (!orderServiceResult.affectedRows) {
-        throw new Error("Failed to create order service");
+
+      console.log("OrderServiceResult:",orderServiceResult)
+      if (orderServiceResult.affectedRows === 0) {
+        throw new Error("Failed to create or update order service");
       }
     }
+
+    // Update or insert order status
+    const statusExistsQuery = `
+      SELECT order_status_id FROM order_status WHERE order_id = ?
+    `;
+    const statusExistsResult = await conn.query(statusExistsQuery, [order_id]);
+
+    if (statusExistsResult.length > 0) {
+      // If status exists, update it
+      const updateStatusQuery = `
+        UPDATE order_status
+        SET order_status = ?
+        WHERE order_id = ?
+      `;
+      const updateStatusResult = await conn.query(updateStatusQuery, [order_status, order_id]);
+      if (updateStatusResult.affectedRows === 0) {
+        throw new Error("Failed to update order status");
+      }
+    } else {
+      // If status does not exist, insert it
+      const insertStatusQuery = `
+        INSERT INTO order_status (order_id, order_status)
+        VALUES (?, ?)
+      `;
+      const insertStatusResult = await conn.query(insertStatusQuery, [order_id, order_status]);
+      if (insertStatusResult.affectedRows === 0) {
+        throw new Error("Failed to insert order status");
+      }
+    }
+
     return { message: "Order updated successfully" };
   } catch (error) {
     throw new Error(error);
@@ -467,6 +497,107 @@ async function sendEmail(customerID,orderHash) {
 }
 
 
+async function getOrderAllDetail(orderHash) {
+  try {
+    console.log("Received request with order_hash:", orderHash);
+
+    // Query to get basic order details
+    const orderQuery = `
+            SELECT 
+                orders.order_id, 
+                orders.order_hash, 
+                orders.customer_id, 
+                orders.employee_id, 
+                orders.vehicle_id, 
+                orders.order_date, 
+                orders.order_description,
+                order_info.order_total_price,
+                order_info.estimated_completion_date,
+                order_info.completion_date,
+                order_info.additional_request,
+                order_info.notes_for_internal_use,
+                order_info.notes_for_customer,
+                employee_info.employee_first_name,
+                employee_info.employee_last_name,
+                customer_vehicle_info.vehicle_make,
+                customer_vehicle_info.vehicle_serial,
+                order_status.order_status
+            FROM orders
+            INNER JOIN order_info ON orders.order_id = order_info.order_id
+            INNER JOIN employee_info ON orders.employee_id = employee_info.employee_id
+            INNER JOIN customer_vehicle_info ON orders.vehicle_id = customer_vehicle_info.vehicle_id
+            INNER JOIN order_status ON orders.order_id = order_status.order_id
+            WHERE orders.order_hash = ?
+        `;
+
+    const queryResult = await conn.query(orderQuery, [orderHash]);
+
+    console.log(" Result:", queryResult);
+    console.log(typeof queryResult);
+
+    if (!Array.isArray(queryResult) || queryResult.length === 0) {
+      throw new Error("No order found with the provided hash.");
+    }
+
+    const order = queryResult[0];
+
+    console.log("Order:", order);
+
+    // Query to get associated services
+    const servicesQuery = `
+            SELECT 
+                common_services.service_name,
+                common_services.service_description,
+                order_services.service_completed
+            FROM order_services
+            INNER JOIN common_services ON order_services.service_id = common_services.service_id
+            WHERE order_services.order_id = ?
+        `;
+    const [servicesResult] = await conn.query(servicesQuery, [order.order_id]);
+
+    console.log("Services result:", servicesResult);
+
+    // Attach services to the order details
+    const orderDetails = {
+      orderId: order.order_id,
+      orderHash: order.order_hash,
+      customerId: order.customer_id,
+      employeeId: order.employee_id,
+      vehicleId: order.vehicle_id,
+      orderDate: order.order_date,
+      activeOrder: order.active_order,
+      orderDescription: order.order_description,
+      orderTotalPrice: order.order_total_price,
+      estimatedCompletionDate: order.estimated_completion_date,
+      completionDate: order.completion_date,
+      additionalRequest: order.additional_request,
+      notesForInternalUse: order.notes_for_internal_use,
+      notesForCustomer: order.notes_for_customer,
+      additionalRequestsCompleted: order.additional_requests_completed,
+      employeeFirstName: order.employee_first_name,
+      employeeLastName: order.employee_last_name,
+      vehicleMake: order.vehicle_make,
+      vehicleSerial: order.vehicle_serial,
+      orderStatus: order.order_status,
+      services: servicesResult || [], // Attach services to order details
+    };
+
+    console.log("Processed order details:", orderDetails);
+
+    return orderDetails;
+  } catch (error) {
+    console.error("Error fetching order details with hash", orderHash, error);
+    throw new Error("An error occurred while retrieving the order details");
+  }
+}
+
+
+
+
+
+
+
+
 module.exports = {
   createOrders,
   checkVehicle,
@@ -476,5 +607,6 @@ module.exports = {
   getAllOrders,
   getOrderById,
   updateOrder,
-  getOrderByCustomerId
+  getOrderByCustomerId, 
+  getOrderAllDetail
 };
