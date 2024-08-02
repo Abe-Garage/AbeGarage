@@ -33,9 +33,11 @@ import SingleOrderPage from "./markup/pages/Admin/Orders/SingleOrderPage";
 import ServicePage from "./markup/pages/Admin/Service/ServicePage";
 import OrderStatus from "./markup/pages/Main/OrderStatus/OrderStatus";
 import UpdateOrderPage from "./markup/pages/Admin/Orders/UpdateOrderPage";
+import OrderDetail from "./markup/components/Admin/Order/OrderDetail";
 
 // Import the PrivateAuthRoute component
 import PrivateAuthRoute from "./markup/components/Auth/PrivateAuthRoute";
+
 
 // Import css from the template
 import "./assets/template/css/bootstrap.css";
@@ -143,6 +145,11 @@ const App = () => {
             </PrivateAuthRoute>
           }
         />
+ <Route path="/admin/order-detail/:id" element={
+          <PrivateAuthRoute roles={[3]}>
+            <OrderDetail />
+          </PrivateAuthRoute>
+        } />
         <Route path="/order-status/:order_hash" element={<OrderStatus />} />
       </Routes>
       <Footer />

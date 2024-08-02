@@ -1,0 +1,102 @@
+/* Center the entire JSX content on the page */
+.order-detail-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.order-detail-card {
+    width: 80%;
+    padding: 20px;
+    
+    
+    position: relative; /* Added for absolute positioning of status box */
+}
+
+/* Style the customer and vehicle info boxes */
+.service-block-one {
+    margin-bottom: 20px;
+}
+
+.inner-box {
+    padding: 20px;
+}
+
+.order_details {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-bottom: 3px solid #ee0d09;
+
+}
+
+.order_details h2{
+    font-size: 20px;
+    color: #001659;
+    font-weight: 700;
+}
+.order_details h5{
+    position: relative;
+    font-size: 12px;
+    color: #001659;
+    text-transform: uppercase;
+}
+
+.order_details p{
+    color: #666;
+    font-weight: 500;
+    font-size: 15px;
+}
+.order_detail_items {
+    padding: 5px;
+}
+
+.requested_service {
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* Status specific styles */
+.status-box-inline {
+    padding: 5px 10px;
+    border-radius: 25px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.status-box {
+    padding: 5px 10px;
+    border-radius: 25px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-weight: bold;
+}
+
+.status-received {
+    background-color: grey;
+    color: white;
+}
+
+.status-in-progress {
+    background-color: yellow;
+    color: black;
+}
+
+.status-completed {
+    background-color: green;
+    color: white;
+}
+
+/* Media Query for responsiveness */
+@media (max-width: 900px) {
+    .status-box-inline {
+        position: static;
+        margin-top: 10px;
+        width: 100px;
+    }
+}
