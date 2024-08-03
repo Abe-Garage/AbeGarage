@@ -145,7 +145,7 @@ const App = () => {
             </PrivateAuthRoute>
           }
         />
- <Route path="/admin/order-detail/:id" element={
+       <Route path="/admin/order-detail/:id" element={
           <PrivateAuthRoute roles={[3]}>
             <OrderDetail />
           </PrivateAuthRoute>
