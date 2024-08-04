@@ -9,8 +9,8 @@ import { useAuth } from "../../../../Context/AuthContext";
 const formatDateForInput = (dateString) => {
   const date = new Date(dateString);
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
 
@@ -21,17 +21,14 @@ function UpdateOrder() {
   const { employee } = useAuth();
   const token = employee?.employee_token;
 
-  
-
   const [orderData, setOrderData] = useState({
     order_id: orderId,
-    order_description: '',
-    estimated_completion_date: '',
-    completion_date: '',
-    order_status: '',
+    order_description: "",
+    estimated_completion_date: "",
+    completion_date: "",
+    order_status: "",
     order_services: [],
   });
-  console.log(orderData)
   const [availableServices, setAvailableServices] = useState([]);
   const [serverMsg, setServerMsg] = useState("");
   const [apiError, setApiError] = useState(false);
@@ -43,46 +40,63 @@ function UpdateOrder() {
   const completionDateDom = useRef();
   const statusDom = useRef();
 
-  const descriptionTracker = () => setOrderData((prev) => ({ ...prev, order_description: descriptionDom.current.value }));
-  const estimatedDateTracker = () => setOrderData((prev) => ({ ...prev, estimated_completion_date: estimatedDateDom.current.value }));
-  const completionDateTracker = () => setOrderData((prev) => ({ ...prev, completion_date: completionDateDom.current.value }));
-  const statusTracker = () => setOrderData((prev) => ({ ...prev, order_status: statusDom.current.value }));
+  const descriptionTracker = () =>
+    setOrderData((prev) => ({
+      ...prev,
+      order_description: descriptionDom.current.value,
+    }));
+  const estimatedDateTracker = () =>
+    setOrderData((prev) => ({
+      ...prev,
+      estimated_completion_date: estimatedDateDom.current.value,
+    }));
+  const completionDateTracker = () =>
+    setOrderData((prev) => ({
+      ...prev,
+      completion_date: completionDateDom.current.value,
+    }));
+  const statusTracker = () =>
+    setOrderData((prev) => ({
+      ...prev,
+      order_status: statusDom.current.value,
+    }));
 
   useEffect(() => {
     console.log(location.state);
-    // If data is passed through location.state
     if (!location.state?.order) {
-      // Format the date for input fields if data is passed via state
       const formattedOrder = {
         ...location.state.order,
-        estimated_completion_date: formatDateForInput(location.state.order.estimated_completion_date),
-        completion_date: formatDateForInput(location.state.order.completion_date),
-        // Initialize order_services with a single service ID if necessary
-        order_services: [{ service_id: location.state.order.service_id, service_completed: location.state.order.service_completed }] || [],
+        estimated_completion_date: formatDateForInput(
+          location.state.order.estimated_completion_date
+        ),
+        completion_date: formatDateForInput(
+          location.state.order.completion_date
+        ),
+        order_services:
+          [
+            {
+              service_id: location.state.order.service_id,
+              service_completed: location.state.order.service_completed,
+            },
+          ] || [],
       };
       setOrderData(formattedOrder);
-      
     } else {
-      // Fetch data based on URL parameter
       const fetchData = async () => {
         try {
-          const [fetchedOrder] = await ordersService.getOrderById(token, orderId);
-          console.log('Fetched Order:', fetchedOrder);
+          const [fetchedOrder] = await ordersService.getOrderById(
+            token,
+            orderId
+          );
+          console.log("Fetched Order:", fetchedOrder);
           const formattedOrder = {
             ...fetchedOrder,
-            estimated_completion_date: formatDateForInput(fetchedOrder.estimated_completion_date),
+            estimated_completion_date: formatDateForInput(
+              fetchedOrder.estimated_completion_date
+            ),
             completion_date: formatDateForInput(fetchedOrder.completion_date),
-          } // Debugging line
-          console.log(formattedOrder)
-      //     setOrderData({
-      //       ...fetchedOrder,
-      //       estimated_completion_date: formatDateForInput(fetchedOrder.estimated_completion_date),
-      //       completion_date: formatDateForInput(fetchedOrder.completion_date),
-            
-      // order_services: [{ service_id: fetchedOrder.order_service_id, service_completed: fetchedOrder.service_completed }] || [],
-      //     });
-          
-      setOrderData(formattedOrder);
+          };
+          setOrderData(formattedOrder);
         } catch (error) {
           setApiError(true);
           setApiErrorMessage("An error occurred while fetching order data.");
@@ -91,11 +105,9 @@ function UpdateOrder() {
       fetchData();
     }
 
-    // Fetch available services
     const fetchServices = async () => {
       try {
         const fetchedServices = await serviceService.getServiceList(token);
-        // console.log(fetchedServices.data)
         setAvailableServices(fetchedServices.data);
       } catch (error) {
         setApiError(true);
@@ -108,11 +120,19 @@ function UpdateOrder() {
 
   const handleServiceChange = (serviceId, checked) => {
     setOrderData((prevState) => {
-      const existingService = prevState.order_services.find((service) => service.service_id === serviceId);
-      console.log(existingService)
+      const existingService = prevState.order_services.find(
+        (service) => service.service_id === serviceId
+      );
       const updatedServices = checked
-        ? existingService ? prevState.order_services : [...prevState.order_services, { service_id: serviceId, service_completed: false }]
-        : prevState.order_services.filter((service) => service.service_id !== serviceId);
+        ? existingService
+          ? prevState.order_services
+          : [
+              ...prevState.order_services,
+              { service_id: serviceId, service_completed: false },
+            ]
+        : prevState.order_services.filter(
+            (service) => service.service_id !== serviceId
+          );
       return {
         ...prevState,
         order_services: updatedServices,
@@ -124,12 +144,16 @@ function UpdateOrder() {
     e.preventDefault();
     try {
       setSpinner(true);
-      await ordersService.updateOrder(orderData, token);
+      const updatedOrderData = { ...orderData };
+      if (updatedOrderData.order_status !== "1") {
+        updatedOrderData.completion_date = "";
+      }
+      await ordersService.updateOrder(updatedOrderData, token);
       setServerMsg("Order updated successfully. Redirecting...");
       setTimeout(() => {
         setSpinner(false);
         setServerMsg("");
-        navigate("/admin/orders", { state: { updated: true } }); // Navigate back with a state
+        navigate("/admin/orders", { state: { updated: true } });
       }, 2000);
     } catch (error) {
       setSpinner(false);
@@ -137,15 +161,11 @@ function UpdateOrder() {
       setApiErrorMessage("An error occurred while updating the order.");
     }
   };
-  console.log(orderData)
-  console.log('Available Services:', availableServices);
-console.log('Order Services:', orderData.order_service_id);
 
   return (
     <section className="update-order-section">
       <div className="mx-4">
-      {/* <div className="container"> */}
-      <div className="contact-title mb-1 sec-title style-two">
+        <div className="contact-title mb-1 sec-title style-two">
           <h2>Update Orders</h2>
         </div>
         {spin && <BeatLoader color="#36d7b7" />}
@@ -155,9 +175,9 @@ console.log('Order Services:', orderData.order_service_id);
             <div className="form-group">
               <label htmlFor="order_description">Order Description:</label>
               <br />
-              <input   
-              className="form-control"
-              type="text"
+              <input
+                className="form-control"
+                type="text"
                 id="order_description"
                 ref={descriptionDom}
                 value={orderData.order_description}
@@ -166,7 +186,9 @@ console.log('Order Services:', orderData.order_service_id);
               />
             </div>
             <div className="form-group">
-              <label htmlFor="estimated_completion_date">Estimated Completion Date:</label>
+              <label htmlFor="estimated_completion_date">
+                Estimated Completion Date:
+              </label>
               <input
                 className="form-control"
                 type="date"
@@ -190,7 +212,14 @@ console.log('Order Services:', orderData.order_service_id);
             </div>
             <div className="form-group">
               <label htmlFor="order_status">Status:</label>
-              <select  className="form-control" id="order_status" ref={statusDom} value={orderData.order_status} onChange={statusTracker} required>
+              <select
+                className="form-control"
+                id="order_status"
+                ref={statusDom}
+                value={orderData.order_status}
+                onChange={statusTracker}
+                required
+              >
                 <option value="">Select status</option>
                 <option value="0">In Progress</option>
                 <option value="1">Completed</option>
@@ -198,37 +227,43 @@ console.log('Order Services:', orderData.order_service_id);
               </select>
             </div>
             <div className="service_list_container">
-            <div className="services-list" >
-              <label className="customer_name v_font">Order Services:</label>
-              {availableServices && availableServices?.length > 0 && availableServices.map((service) => (
-                <div className="service-item" key={service.service_id}>
-                  <div className="service-d w-100">
-                 
-                  <div>
-              <h3 className="service_font">{service?.service_name}</h3>
-              <p>{service?.service_description}</p>
-            </div> 
-                    
-                  <input
-                    type="checkbox"
-                    id={`service_${service.service_id}`}
-                   
-                    checked={orderData.order_services?.some((os) => os.service_id === service.service_id)}
-                    onChange={(e) => handleServiceChange(service.service_id, e.target.checked)}
-                  />
-                  
-                </div>
-                </div>
-              ))}
-              
+              <div className="services-list">
+                <label className="customer_name v_font">Order Services:</label>
+                {availableServices &&
+                  availableServices.length > 0 &&
+                  availableServices.map((service) => (
+                    <div className="service-item" key={service.service_id}>
+                      <div className="service-d w-100">
+                        <div>
+                          <h3 className="service_font">
+                            {service.service_name}
+                          </h3>
+                          <p>{service.service_description}</p>
+                        </div>
+                        <input
+                          type="checkbox"
+                          id={`service_${service.service_id}`}
+                          checked={orderData.order_services.some(
+                            (os) => os.service_id === service.service_id
+                          )}
+                          onChange={(e) =>
+                            handleServiceChange(
+                              service.service_id,
+                              e.target.checked
+                            )
+                          }
+                        />
+                      </div>
+                    </div>
+                  ))}
+              </div>
             </div>
-            </div>
-            
-            <button type="submit" className="submit-order">Update Order</button>
+            <button type="submit" className="submit-order">
+              Update Order
+            </button>
             {serverMsg && <p>{serverMsg}</p>}
           </form>
         )}
-      {/* </div> */}
       </div>
     </section>
   );

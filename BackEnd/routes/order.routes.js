@@ -7,7 +7,7 @@ const  searchOrder  = require("../controllers/order.controller");
 const { verifyToken,isAdmin, } = require("../middlewares/auth.middleware");
 
 // Route to create a new order
-router.post("/order",[verifyToken,isAdmin], orderController.createOrder);
+router.post("/order",[verifyToken], orderController.createOrder);
 
 // Route to get all orders
 router.get("/orders", orderController.getAllOrders);

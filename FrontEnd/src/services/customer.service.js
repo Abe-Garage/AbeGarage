@@ -53,7 +53,7 @@ async function updateCustomer(formData, loggedInCustomerToken) {
 }
 
 // a funtion to get single customer
-async function singleCustomer(ID, Token) {
+async function  singleCustomer(ID, Token) {
 
   const headers = {
     "x-access-token": Token,

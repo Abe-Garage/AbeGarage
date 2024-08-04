@@ -8,19 +8,21 @@ const {
     isAdmin,
   } = require("../middlewares/auth.middleware");
 
-router.get('/api/vehicle/:id',[verifyToken, isAdmin], vehicleController.singleVehicle)
-router.post('/api/vehicle',[verifyToken, isAdmin],vehicleController.addVehicle)
-router.put('/api/vehicle',[verifyToken, isAdmin],vehicleController.updateVehicle)
-router.get('/api/vehicles/:customer_id',[verifyToken, isAdmin],vehicleController.vehiclePerCustomer)
+router.get('/api/vehicle/:id',[verifyToken], vehicleController.singleVehicle)
+router.post('/api/vehicle',[verifyToken],vehicleController.addVehicle)
+router.put('/api/vehicle',[verifyToken],vehicleController.updateVehicle)
+router.get('/api/vehicles/:customer_id',[verifyToken],vehicleController.vehiclePerCustomer)
 router.get(
   "/api/customer-vehicle/search/:customer_id",
-  [verifyToken, isAdmin],
+  [verifyToken],
   vehicleController.searchVehicle
 );
 
-router.delete('/api/deleteVehicle/:vehicle_id', vehicleController.deleteVehicle);
+router.delete('/api/deleteVehicle/:vehicle_id', 
+[verifyToken, isAdmin],
+vehicleController.deleteVehicle);
 
-router.get('/api/vehicle_order/:vehicle_id',[verifyToken, isAdmin],vehicleController.hasServiceOrder)
+router.get('/api/vehicle_order/:vehicle_id',[verifyToken],vehicleController.hasServiceOrder)
 
 
 module.exports = router
