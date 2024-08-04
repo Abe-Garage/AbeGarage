@@ -33,7 +33,7 @@ import SingleOrderPage from "./markup/pages/Admin/Orders/SingleOrderPage";
 import ServicePage from "./markup/pages/Admin/Service/ServicePage";
 import OrderStatus from "./markup/pages/Main/OrderStatus/OrderStatus";
 import UpdateOrderPage from "./markup/pages/Admin/Orders/UpdateOrderPage";
-import OrderDetail from "./markup/components/Admin/Order/OrderDetail";
+import OrderDetail from "./markup/pages/Admin/Orders/OrderDetailPage";
 
 // Import the PrivateAuthRoute component
 import PrivateAuthRoute from "./markup/components/Auth/PrivateAuthRoute";

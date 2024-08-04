@@ -21,6 +21,7 @@ const OrderDetail = () => {
         const fetchedOrder = await ordersService.getOrderDetailById(token, id);
         setOrderData(fetchedOrder);
         setOrder(fetchedOrder[0]);
+        
       } catch (error) {
         console.error("Error fetching order:", error);
       }
@@ -28,6 +29,8 @@ const OrderDetail = () => {
 
     fetchOrder();
   }, [token, id]);
+
+  console.log(order);
 
   if (!orderData) {
     return <div>Loading...</div>;
