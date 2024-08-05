@@ -4,10 +4,13 @@ import { useParams } from "react-router-dom";
 import ordersService from "../../../../services/order.service";
 import { useAuth } from "../../../../Context/AuthContext";
 
+
 const OrderDetail = () => {
   const { id } = useParams(); // Get the order ID from the URL
   const [orderData, setOrderData] = useState(null);
+   const [loading, setLoading] = useState(true);
   const [order, setOrder] = useState(null);
+  const [orderDetails, setOrderDetails] = useState(null);
   const { employee } = useAuth();
   const token = employee?.employee_token;
 
@@ -30,7 +33,30 @@ const OrderDetail = () => {
     fetchOrder();
   }, [token, id]);
 
-  console.log(order);
+  // console.log(order);
+
+  
+  useEffect(() => {
+    const fetchOrderDetails = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const data = await ordersService.getOrderAllDetail(token, id);
+        setOrderDetails(data);
+        console.log(data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrderDetails();
+  }, [id]);
+
+
+const formatMileage = (mileage) => {
+  return mileage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
 
   if (!orderData) {
     return <div>Loading...</div>;
@@ -74,7 +100,8 @@ const OrderDetail = () => {
               <div>Email: {order.customer_email}</div>
               <div>Phone Number: {order.customer_phone_number}</div>
               <div>
-                Active Customer: {order.customer?.active ? "Yes" : "No"}
+                Active Customer:{" "}
+                {orderDetails.customerActiveStatus ? "Yes" : "No"}
               </div>
             </div>
           </div>
@@ -87,7 +114,7 @@ const OrderDetail = () => {
               </h2>
               <div>Vehicle tag: {order.vehicle_tag}</div>
               <div>Vehicle year: {order.vehicle_year}</div>
-              <div>Vehicle mileage: {order.vehicle_mileage}</div>
+              <div>Vehicle mileage: {formatMileage(order.vehicle_mileage)}</div>
             </div>
           </div>
         </div>
