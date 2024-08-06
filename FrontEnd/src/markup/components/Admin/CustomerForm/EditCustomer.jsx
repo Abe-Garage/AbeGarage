@@ -66,7 +66,7 @@ const EditCustomer = () => {
   // Fetch customer data using useEffect
   useEffect(() => {
       fetchData();
-  }, []);
+  }, [employee]);
 
   // console.log(customer_first_name, customer_last_name,customer_email)
   // console.log(active_customer_status)

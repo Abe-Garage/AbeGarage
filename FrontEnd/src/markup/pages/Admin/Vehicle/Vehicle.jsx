@@ -57,32 +57,51 @@ const Vehicle = () => {
             id,
             token
           );
-          const response1 = await customerService.searchCustomerVehicles(
-            id,
-            token,
-            searchQuery
-          );
+        
           // console.log(data?.customer)
           // console.log(response1)
           // console.log(response?.data)
           setCustomerInfo(data.customer);
           setTable(response?.data);
-          setSearchResult(response1)
+          
+          
         } catch (error) {
           console.log(error);
         }
       };
+
+
+      const searchFunction =  async()=>{
+
+        try {
+          const response1 = await customerService.searchCustomerVehicles(
+            id,
+            token,
+            searchQuery
+          );
+
+          // console.log(response1)
+
+          setSearchResult(response1)
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+
         useEffect(() => {
-          singCustomerData(searchQuery);
-        }, [searchQuery]);
+           searchFunction();
+        }, [searchQuery,employee]);
 
      useEffect(()=>{
          singCustomerData()
-     },[])
+     },[employee])
 
     //  console.log(customerinfo)
 
     console.log(searchResult)
+    console.log(customerinfo)
+    console.log(table)
 
  
   return (
