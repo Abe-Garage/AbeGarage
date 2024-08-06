@@ -101,7 +101,7 @@ const formatMileage = (mileage) => {
               <div>Phone Number: {order.customer_phone_number}</div>
               <div>
                 Active Customer:{" "}
-                {orderDetails.customerActiveStatus ? "Yes" : "No"}
+                {orderDetails?.customerActiveStatus ? "Yes" : "No"}
               </div>
             </div>
           </div>
