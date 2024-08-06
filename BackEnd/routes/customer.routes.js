@@ -23,7 +23,7 @@ router.post(
 // Create a route to handle the get all customers request in get
 router.get(
   "/api/customers/:offset",
-  [verifyToken, isAdmin],
+  [verifyToken],
   customerController.getAllCustomersController
 );
 
@@ -38,14 +38,14 @@ router.get(
 
 router.get(
   "/api/customer/single/:customer_id",
-  [verifyToken,  isAdmin],
+  [verifyToken],
   customerController.getSingleCustomerController
 );
 
 // Create a route to handle the customer update request in put
 router.put(
   "/api/customer/update",
-  [verifyToken, isAdmin],
+  [verifyToken],
   customerController.updateCustomerController
 );
 

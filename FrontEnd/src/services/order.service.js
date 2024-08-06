@@ -42,7 +42,21 @@ getOrderById: async (token, id) => {
         "x-access-token": token,
       },
     });
-    console.log(response);
+    // console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    throw error;
+  }
+},
+getOrderDetailById: async (token, id) => {
+  try {
+    const response = await axios.get(`${api_url}/api/order_detail/${id}`, {
+      headers: {
+        "x-access-token": token,
+      },
+    });
+    // console.log(response);
     return response.data;
   } catch (error) {
     console.error("Error fetching orders:", error);
