@@ -156,3 +156,33 @@
     font-weight: 600 !important;
     font-size: 20px !important;
   }
+
+  
+  .header-1 {
+    /* background-color: #f8f9fa; */
+
+    transition: transform 0.3s ease-in-out;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .header-1.hidden {
+    transform: translateY(-100%);
+  }
+  
+  .header-2 {
+ 
+    transition: transform 0.3s ease-in-out;
+    z-index: 1;
+    position: relative;
+  }
+  
+  .header-2.sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000 !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  

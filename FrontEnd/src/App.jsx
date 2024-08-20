@@ -38,6 +38,8 @@ import OrderDetail from "./markup/pages/Admin/Orders/OrderDetailPage";
 // Import the PrivateAuthRoute component
 import PrivateAuthRoute from "./markup/components/Auth/PrivateAuthRoute";
 
+import ScrollToTop from './markup/components/Scroll/ScrollToTop'
+
 
 // Import css from the template
 import "./assets/template/css/bootstrap.css";
@@ -56,6 +58,7 @@ const App = () => {
   return (
     <>
       {showHeader && <Header />}
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
