@@ -17,9 +17,7 @@ function Address() {
           <div className="inner-column">
             <h4>Our Address</h4>
             <div className="text">
-              Completely synergize resource taxing relationships via premier
-              niche markets. Professionally cultivate one-to-one customer
-              service.
+            Visit us at our convenient location listed below for all your automotive needs.
             </div>
             <ul>
               <li>
@@ -28,8 +26,7 @@ function Address() {
                 <i className="flaticon-pin"></i>
                 </div>
                 <div>
-                <h5>Address:</h5> 54B Tailstoi Town 5238 MT, La city, IA
-                5224
+                <h5>Address:</h5> 123 Main St, Evangadi City, MD 20601
                 </div>
                 </div>
               </li>
@@ -40,7 +37,7 @@ function Address() {
                     <i className="flaticon-email"></i>
                   </div>
                   <div>
-                  <h5>email:</h5> contact@buildtruck.com
+                  <h5>email:</h5> contact@abegarage.com
                   </div>
                 </div>
               </li>

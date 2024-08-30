@@ -16,10 +16,7 @@ const AdminDashBoard = () => {
             <div className="sec-title style-two">
               <h2>Admin Dashboard</h2>
               <div className="text">
-                Bring to the table win-win survival strategies to ensure
-                proactive domination. At the end of the day, going forward, a
-                new normal that has evolved from generation X is on the runway
-                heading towards a streamlined cloud solution.
+              Welcome to the Abe Garage Admin Dashboard! This centralized hub provides you with all the tools and insights needed to manage and streamline operations effectively. From monitoring service requests to tracking customer interactions and overseeing inventory, the dashboard offers a comprehensive view of your business performance. Stay on top of key metrics, manage appointments, and ensure top-notch service delivery—all from one intuitive interface designed to keep your garage running smoothly.
               </div>
             </div>
 
@@ -126,7 +123,7 @@ const AdminDashBoard = () => {
               <div className="col-lg-4 service-block-one">
                 <div className="inner-box hvr-float-shadow">
                   <h5>SERVICE AND REPAIRS</h5>
-                  <h2>Engine Service & Repair</h2>
+                  <h2>Air Conditioning</h2>
                   <Link to="/admin/services" className="read-more">
                     read more +
                   </Link>
@@ -139,7 +136,7 @@ const AdminDashBoard = () => {
               <div className="col-lg-4 service-block-one">
                 <div className="inner-box hvr-float-shadow">
                   <h5>SERVICE AND REPAIRS</h5>
-                  <h2>Tyre & Wheels</h2>
+                  <h2>Brake Check</h2>
                   <Link to="/admin/services" className="read-more">
                     read more +
                   </Link>

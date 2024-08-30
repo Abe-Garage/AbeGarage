@@ -7,9 +7,7 @@ const ServicesSec = () => {
       <div className="sec-title style-two">
         <h2>Our Services</h2>
         <div className="text">
-          Bring to the table win-win survival strategies to ensure proactive domination. At
-          the end of the day, going forward, a new normal that has evolved from generation X is on the
-          runway heading towards a streamlined cloud solution.
+        At Abe Garage, we are committed to delivering top-notch automotive care that keeps your vehicle performing at its best. Our comprehensive range of services is designed to address every aspect of your car’s maintenance and repair needs. Explore our services below to see how we can help you keep your car in peak condition.
         </div>
       </div>
       <div className="row">

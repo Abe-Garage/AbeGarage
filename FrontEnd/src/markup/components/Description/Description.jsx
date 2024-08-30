@@ -10,8 +10,8 @@ function Description() {
                 <div class="content">
                     <h2>We are highly skilled mechanics <br/> for your car repair</h2>
                     <div class="text">
-                        <p>Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.</p>
-                        <p>Capitalize on low hanging fruit to identify a ballpark value added activity to beta test. Override the digital divide with additional clickthroughs from DevOps. Nanotechnology immersion along the information heading towards a streamlined cloud solution. User generated content in real-time will have multiple.</p>
+                        <p>At Abe Garage, we are committed to providing exceptional automotive care, backed by over 24 years of industry experience. Our state-of-the-art facility and team of certified expert mechanics are equipped to handle everything from routine maintenance to complex repairs, ensuring that your vehicle remains in top condition. We pride ourselves on delivering fast, high-quality service at the best prices in town, making us the go-to choice for drivers who value both performance and reliability.</p>
+                        <p>Whether it's a simple oil change, a detailed diagnostic, or a major repair, Abe Garage is dedicated to meeting and exceeding your expectations. Our award-winning workshop is a testament to our commitment to quality and customer satisfaction. Trust us to keep your vehicle running smoothly, safely, and efficiently—every time you visit.</p>
                     </div>
                 </div>
             </div>

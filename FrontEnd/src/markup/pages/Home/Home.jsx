@@ -10,21 +10,6 @@ import TopBannerHome from "../../components/Banner/TopBannerHome";
 const Home = () => {
   return (
     <div className="page-wrapper">
-      {/* Preloader */}
-      {/* <div className="loader-wrap">
-        <div className="preloader">
-          <div className="preloader-close">Preloader Close</div>
-        </div>
-        <div className="layer layer-one">
-          <span className="overlay"></span>
-        </div>
-        <div className="layer layer-two">
-          <span className="overlay"></span>
-        </div>
-        <div className="layer layer-three">
-          <span className="overlay"></span>
-        </div>
-      </div> */}
       {/* Video Section */}
       <TopBannerHome />
       {/* About Us Section */}
@@ -33,7 +18,7 @@ const Home = () => {
       <ServicesSec />
       {/* Services Section */}
       <FeaturesSec />
-      {/* Why Choose US Sestion */}
+      {/* Why Choose US Section */}
       <WhyChooseUs />
       {/* Video Section */}
       <BottomBanner />

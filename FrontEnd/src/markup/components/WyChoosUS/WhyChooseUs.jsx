@@ -9,9 +9,7 @@ const WhyChooseUs = () => {
             <div className="sec-title style-two">
               <h2>Why Choose Us</h2>
               <div className="text">
-                Bring to the table win-win survival strategies to ensure proactive
-                domination. At the end of the day, going forward, a new normal that has evolved from
-                generation heading towards.
+              When it comes to maintaining and repairing your vehicle, Abe Garage stands out as the top choice for drivers who demand the best. Choose Abe Garage for unparalleled expertise, exceptional service, and the peace of mind that comes with knowing your car is in the best hands.
               </div>
             </div>
             <div className="icon-box">
