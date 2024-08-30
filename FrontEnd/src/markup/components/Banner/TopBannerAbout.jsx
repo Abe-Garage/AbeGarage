@@ -1,5 +1,5 @@
 import React from "react";
-import b3 from "../../../assets/images/banner/banner2.jpeg";
+import b3 from "../../../assets/images/banner/banner2_darker.jpg";
 function TopBannerAbout() {
   return (
     <div>
