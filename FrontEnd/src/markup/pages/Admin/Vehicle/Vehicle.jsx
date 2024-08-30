@@ -106,19 +106,19 @@ const Vehicle = () => {
  
   return (
     <div>
-      <div className="container-fluid admin-pages">
+      <div className="container-fluid admin-pages ">
         <div className="row">
           <div className="col-md-3 admin-left-side">
             <AdminMenu />
           </div>
 
           <div
-            className="col-md-9 admin-right-side d-flex"
+            className="col-md-9 admin-right-side d-flex "
             style={{ position: "relative" }}
           >
             {/* <div style={lineStyle}></div> */}
-
-            <div className="pl-5 pt-5 d-flex flex-column">
+         <div className='d-sm-none d-md-block'>
+            <div className="pl-2 pt-5 d-flex flex-column k">
               <div className="text-center bg-info my-5" style={circleStyle}>
                 Info
               </div>
@@ -131,6 +131,7 @@ const Vehicle = () => {
                 Orders
               </div>
             </div>
+         </div>
 
             <div className="col-md-9">
               <div className=" contact-section row">

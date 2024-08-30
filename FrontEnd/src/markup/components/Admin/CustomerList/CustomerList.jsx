@@ -98,9 +98,9 @@ const CustomerList = () => {
               setValue(e.target.value);
             }}
           />
-          <div className="search_btn">
+          {/* <div className="search_btn">
             <CiSearch size={20} />
-          </div>
+          </div> */}
         </div>
 
         <div className="table-responsive rounded-3 ">

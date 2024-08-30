@@ -71,9 +71,9 @@ function CreateOrder() {
             onChange={handleSearchChange}
           />
 
-          <div className="search_btn">
+          {/* <div className="search_btn">
               <CiSearch size={20} />
-          </div>
+          </div> */}
             
       </div>
 

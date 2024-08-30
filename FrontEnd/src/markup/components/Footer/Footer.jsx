@@ -6,8 +6,8 @@ function Footer() {
       <footer className="main-footer">
         <div className="upper-box">
           <div className="auto-container">
-            <div className="row no-gutters">
-              <div className="footer-info-box col-md-4 col-sm-6 col-xs-12">
+            <div className="row no-gutters pt-5">
+              <div className="footer-info-box col-md-4 col-sm-12">
                 <div className="info-inner">
                   <div className="content">
                     <div className="icon">
@@ -20,7 +20,7 @@ function Footer() {
                 </div>
               </div>
 
-              <div className="footer-info-box col-md-4 col-sm-6 col-xs-12">
+              <div className="footer-info-box col-md-4 col-sm-12">
                 <div className="info-inner">
                   <div className="content">
                     <div className="icon">
@@ -36,7 +36,7 @@ function Footer() {
                 </div>
               </div>
 
-              <div className="footer-info-box col-md-4 col-sm-6 col-xs-12">
+              <div className="footer-info-box col-md-4 col-sm-12 ">
                 <div className="info-inner">
                   <div className="content">
                     <div className="icon">
