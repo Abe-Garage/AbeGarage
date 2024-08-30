@@ -1,5 +1,5 @@
 import React from 'react';
-import carRev from "../../../assets/images/misc/enginetacho.jpg";
+import carRev from "../../../assets/images/misc/EngineTacho.jpg";
 
 const FeaturesSec = () => {
   return (
