@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import mechanic from "../../../assets/images/misc/mechanic.jpg";
 
 const WhyChooseUs = () => {
   return (
@@ -35,7 +36,7 @@ const WhyChooseUs = () => {
             </div>
             <div className="row">
               <div className="col-md-5">
-                <div className="image"><img src="assets/images/resource/image-4.jpg" alt="" /></div>
+                <div className="image"><img src={mechanic} alt="mechanic" /></div>
               </div>
               <div className="col-md-7">
                 <ul className="list">
