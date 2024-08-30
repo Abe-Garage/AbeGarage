@@ -18,22 +18,14 @@ const About24 = () => {
           </div>
           <div className="col-lg-7 pl-lg-5">
             <div className="sec-title">
-              <h5>Welcome to Our workshop</h5>
+              <h5>Welcome to our workshop</h5>
               <h2>We have 24 years experience</h2>
               <div className="text">
                 <p>
-                  Bring to the table win-win survival strategies to ensure
-                  proactive domination. At the end of the day, going forward, a
-                  new normal that has evolved from generation X is on the runway
-                  heading towards a streamlined cloud solution. User generated
-                  content in real-time will have multiple touchpoints for
-                  offshoring.
+                At Abe Garage, we pride ourselves on offering a comprehensive range of automotive services designed to keep your vehicle running smoothly and safely. From routine auto repair and maintenance to more complex transmission repair and replacement, our experienced technicians are equipped to handle all your vehicle's needs. We understand the importance of keeping your car in peak condition, which is why we offer state emissions inspections, tire repair and replacement, brake services, and wheel alignments. Our commitment to quality and safety ensures that every service we provide meets the highest standards, giving you peace of mind on the road.
                 </p>
                 <p>
-                  Capitalize on low hanging fruit to identify a ballpark value
-                  added activity to beta test. Override the digital divide with
-                  additional clickthroughs from DevOps. Nanotechnology immersion
-                  along the information highway will close the loop on focusing.
+                Our expertise extends beyond standard repair services. We specialize in electrical diagnostics, fuel system repairs, and starting and charging repairs, ensuring that every aspect of your vehicle is thoroughly checked and maintained. At Abe Garage, we also offer steering and suspension work, emission repairs, and computer diagnostic testing, making us your one-stop shop for all automotive needs. Our state-of-the-art facility and skilled team are dedicated to providing exceptional service, making sure your vehicle receives the best care possible. Whether you're in for a routine check-up or a more involved repair, you can trust Abe Garage to deliver reliable and efficient service every time.
                 </p>
               </div>
               <div className="link-btn mt-40">

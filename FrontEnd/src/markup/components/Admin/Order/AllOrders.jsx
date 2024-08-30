@@ -59,7 +59,8 @@ function AllOrders() {
         <div className="contact-title mb-1">
           <h2>Orders</h2>
         </div>
-        <table className="table table-striped table-hover border">
+        <div className="table-responsive">
+          <table className="table table-striped table-hover border">
           <thead>
             <tr>
               <th scope="col" className="border">
@@ -152,6 +153,8 @@ function AllOrders() {
             ))}
           </tbody>
         </table>
+        </div>
+        
       </div>
     </section>
   );

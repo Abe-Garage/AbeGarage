@@ -6,7 +6,7 @@ const TopBanner = () => {
       <div
         data-parallax='{"y": 50}'
         className="sec-bg"
-        style={{ backgroundImage: `url(${banner1})` }}
+        style={{ backgroundImage: `url(${banner1})`, objectFit: "contain" }}
       ></div>
       <div className="auto-container">
         <h5>Working since 1992</h5>
@@ -18,7 +18,7 @@ const TopBanner = () => {
             <a
               href="https://youtu.be/PUkAIAIzA0I?si=ugtpBZ2RHYXcn037"
               className="overlay-link lightbox-image video-fancybox ripple"
-              target= "_blank"
+              target="_blank"
             >
               <i className="flaticon-play"></i>
             </a>

@@ -117,7 +117,7 @@ const EmployeesList = () => {
         </section>
       ) : (
         <section className="contact-section">
-          <div className="container">
+          <div className="containerr">
             <div className="row">
               <div className="col-12">
                 <div className="contact-title">
@@ -135,7 +135,8 @@ const EmployeesList = () => {
                     onChange={handleSearch}
                   />
                 </div>
-                <Table
+                <div className="table-responsive">
+                  <Table
                   responsive
                   striped
                   bordered
@@ -207,6 +208,8 @@ const EmployeesList = () => {
                     ))}
                   </tbody>
                 </Table>
+                </div>
+                
                 <Pagination className="justify-content-center custom-pagination">
                   <Pagination.Prev
                     onClick={() => paginate(currentPage - 1)}

@@ -54,7 +54,7 @@
   color: #666;
 }
 
-.row {
+/* .row {
   display: flex;
   flex-wrap: wrap;
 }
@@ -63,7 +63,7 @@
   flex: 1;
   max-width: 50%;
   padding: 10px;
-}
+} */
 
 .service-block-one {
   background: #f8f8f8;
@@ -102,4 +102,10 @@
   color: white;
   padding: 10px;
   border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .col-lg-6 {
+    padding: 10px;
+  }
 }
