@@ -65,10 +65,10 @@
 require('dotenv').config();
 
 // Log environment variables (do not log passwords in production)
-console.log("DB Config - Host:", process.env.DB_HOST);
-console.log("DB Config - User:", process.env.DB_USER);
-console.log("DB Config - Database:", process.env.DB_NAME);
-console.log("DB Config - Password:", process.env.DB_PASSWORD);
+// console.log("DB Config - Host:", process.env.DB_HOST);
+// console.log("DB Config - User:", process.env.DB_USER);
+// console.log("DB Config - Database:", process.env.DB_NAME);
+// console.log("DB Config - Password:", process.env.DB_PASSWORD);
 
 // Import mysql2 promise wrapper
 const mysql = require('mysql2/promise');
